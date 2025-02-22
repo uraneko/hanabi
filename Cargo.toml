@@ -1,0 +1,14 @@
+[package]
+name = "momo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = { version = "4.9.0", features = ["http2", "openssl"] }
+openssl = "0.10.66"
+rusqlite = "0.33.0"
+
+[build-dependencies]
+curl = "0.4.47"
+openssl = "0.10.70"
+rusqlite = "0.33.0"
