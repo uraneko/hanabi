@@ -1,0 +1,30 @@
+vector-coll {
+	display: flex;
+	width: max-content;
+	height: max-content;
+
+	&.column {
+		flex-direction: column;
+	}
+
+	&.row {
+		flex-direction: row
+	}
+
+	& button {
+		cursor: pointer;
+	}
+
+	& .vector-child.icon {
+		background: none;
+		border: none;
+		width: 4vw;
+		height: 4vh;
+
+		svg {
+			color: antiquewhite;
+			stroke: antiquewhite;
+			fill: antiquewhite;
+		}
+	}
+}
