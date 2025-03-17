@@ -8,7 +8,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import atImport from "postcss-import";
 
 export default {
-	input: './src/main.ts',
+	input: './src/ts/main.ts',
 	output: {
 		file: './dist/app/main.js',
 		format: 'module',

@@ -27,9 +27,6 @@ attrs,
 /// the element children
 children) => {
     const html = document.createElement(tag);
-    if (children != undefined) {
-        html.append(...children.filter((child) => child != undefined));
-    }
     if (attrs != undefined) {
         for (const [k, v] of Object.entries(attrs)) {
             if (v == undefined) {
@@ -81,6 +78,20 @@ class Parcel extends Clone {
     headers;
     type_names;
     _parsers;
+    /// adds new header or updates header value if already there
+    header(key, val) {
+        this.headers.has(key) ? this.headers.set(key, val) : this.headers.append(key, val);
+    }
+    remove(key) {
+        if (!this.headers.has(key))
+            return undefined;
+        const val = this.headers.get(key);
+        this.headers.delete(key);
+        return val;
+    }
+    clear() {
+        this.headers = new Headers();
+    }
     request(uri, data) {
         return new ParcelRequest(uri, this.headers, this.content_type(), data);
     }
@@ -205,14 +216,14 @@ const parse_json = (data) => {
     // const json = data.json();
     // TODO
     for (let [k, v] of Object.entries(data)) {
-        if (v.startsWith("<svg ")) {
-            data[k] = new DOMParser().parseFromString(v, "image/svg+xml").childNodes[0];
+        if (v.startsWith("<svg")) {
+            data[k] = parse_svg(v);
         }
-        else if (v.startsWith("<a ") ||
-            v.startsWith("<div ") ||
-            v.startsWith("<span ") ||
-            v.startsWith("<button ")) {
-            data[k] = new DOMParser().parseFromString(v, "text/html").body.childNodes[0];
+        else if (v.startsWith("<a") ||
+            v.startsWith("<div") ||
+            v.startsWith("<span") ||
+            v.startsWith("<button")) {
+            data[k] = parse_html(v);
         }
     }
     return data;
@@ -244,36 +255,68 @@ const DEF_PARSERS = new Map([
 ]);
 
 class Vector /* extends Map<string,Element> */ {
-    constructor(nodes, id, kind = "button", direction = "row") {
+    constructor(nodes, id) {
         // super(Object.entries(nodes));
         this._id = id;
-        this._kind = kind;
-        this._direction = direction;
+        this._direction = "row";
         this._nodes = new Map(Object.entries(nodes));
         this._is_frozen = false;
-        this.cocoon();
+        // this.cocoon();
     }
     _id;
-    _kind;
     _direction;
     _nodes;
     _is_frozen;
-    cocoon() {
-        const iter = this.nodes();
-        let next = iter.next();
-        while (next.done == false) {
-            this._nodes.set(next.value[0], vector_child(next.value, this.kind()));
-            next = iter.next();
-        }
+    // cocoon() {
+    // 	const iter = this.nodes();
+    // 	let next = iter.next();
+    // 	while (next.done == false) {
+    // 		this._nodes.set(next.value[0], vector_child(next.value, this._kind));
+    // 		next = iter.next();
+    // 	}
+    // }
+    update(name, e) {
+        if (!this.contains(name))
+            return undefined;
+        this._nodes.set(name, e);
     }
     nodes() {
         return this._nodes.entries();
     }
     id() { return this._id; }
-    kind() {
-        return this._kind;
-    }
     direction() { return this._direction; }
+    /// inserts a new node right before the node with the given name 
+    /// costly  
+    insert(node, name) {
+        const map = new Map();
+        const iter = this.nodes();
+        let next = iter.next();
+        while (!next.done) {
+            if (next.value[0] == name) {
+                map.set(node[0], node[1]);
+            }
+            map.set(next.value[0], next.value[1]);
+            next = iter.next();
+        }
+        this._nodes = map;
+    }
+    // reorders the nodes according to the key array given 
+    // TODO better send a vec from the server rather than reorder the data at the front end side
+    order(...order) {
+        if (order.length == 0 ||
+            this._nodes.size == 0)
+            return false;
+        order.filter((k) => this.contains(k));
+        const map = new Map();
+        const iter = order.values();
+        let next = iter.next();
+        while (!next.done) {
+            map.set(next.value, this._nodes.get(next.value));
+            next = iter.next();
+        }
+        this._nodes = map;
+        return true;
+    }
     // adds a new Node to the end of queue
     push(node) {
         this._nodes.set(node[0], node[1]);
@@ -285,12 +328,10 @@ class Vector /* extends Map<string,Element> */ {
     contains(name) {
         return this._nodes.has(name);
     }
-    event(name, kind, callback) {
+    read(name) {
         if (!this.contains(name))
             return undefined;
-        // TODO
-        const node = this._nodes.get(name);
-        node.addEventListener(kind, callback);
+        return this._nodes.get(name);
     }
     collect() {
         return new Array(...this._nodes.values());
@@ -355,26 +396,6 @@ class VectorElement extends HTMLElement {
     }
 }
 customElements.define("vector-coll", VectorElement);
-// NOTE: css should be modular? (not sure thats the word) but
-// should write many varying css rules for the same element based on different class lists
-// and then js code only changes the class list values 
-// which effectively changes the css rules 
-const vector_child = (n, kind) => {
-    const tag = n[1].tagName.toLowerCase();
-    const node_kind = (() => {
-        if (tag == "svg") {
-            return "icon";
-        }
-        else if (tag == "span") {
-            return "text";
-        }
-        else {
-            // tag == "div"
-            return "icon+text";
-        }
-    })();
-    return make(kind, { "class": n[0] + "-node-wrapper " + node_kind + " vector-child" }, [n[1]]);
-};
 // TODO: click events are not set 
 /*  "a:home:landing-page",
     "b:server-events:",
@@ -384,36 +405,180 @@ const vector_child = (n, kind) => {
     "b:msg:messages",
     "b:bell:notifications" */
 
+const parent_kind = (parent) => {
+    return parent == "vector-coll" ? "vector" : parent == "tree-coll" ? "tree" : "matrix";
+};
+class Jar extends HTMLElement {
+    constructor(parent, name, child) {
+        super();
+        this._event = "none";
+        const child_tag = child.tagName.toLowerCase();
+        const kind = child_tag == "svg" ? "-icon" : child_tag == "span" ? "-text" : "-mixed";
+        this.classList.add(name + kind + "-jar");
+        this.classList.add(parent_kind(parent.toLowerCase()) + "-child");
+        this.appendChild(child);
+    }
+    _event;
+    static observedAttributes = [];
+    connectedCallback() { }
+    event(event, callback) {
+        this.addEventListener(event, callback);
+    }
+    has_no_events() { return this._event == "none"; }
+    make_key(callback) {
+        this._event = "key";
+        this.setAttribute("tabIndex", String(0));
+        this.classList.add("pointer");
+        this.event("click", callback);
+    }
+    make_link(uri) {
+        this._event = "link";
+        this.setAttribute("tabIndex", String(0));
+        this.setAttribute("href", uri);
+        this.classList.add("pointer");
+        this.event("click", link_event(uri));
+    }
+    is_key() { return this._event == "key"; }
+    is_link() { return this._event == "link"; }
+    contains_icon() {
+        // @ts-ignore
+        return this.childNodes[0].tagName.toLowerCase() == "svg";
+        // return this.childNodes
+        // 	.values()
+        // 	// @ts-ignore
+        // 	.some((node: Element) =>
+        // 		node.tagName.toLowerCase() == "svg");
+    }
+    contains_text() {
+        // @ts-ignore
+        return this.childNodes[0].tagName.toLowerCase() == "span";
+        // return this.childNodes
+        // 	.values()
+        // 	// @ts-ignore
+        // 	.some((node: Element) =>
+        // 		node.tagName.toLowerCase() == "span");
+    }
+    clone() {
+        return structuredClone(this);
+    }
+    into_frozen() {
+        return Object.freeze(this);
+    }
+    to_frozen() {
+        return Object.freeze(this.clone());
+    }
+}
+customElements.define("jar-vessel", Jar);
+const link_event = (uri) => {
+    return (e) => {
+        const ke = e;
+        if (ke.ctrlKey) {
+            open(uri, "_blank");
+        }
+        else
+            location.href = uri;
+    };
+};
+
+const DOMAIN_ROOT = "https://localhost:6877";
+
+async function main_menu$1(parcel, app_menu) {
+    parcel.header("Content-Type", "application/json");
+    const main_menu_icons = await parcel.get("/comp-icons/main-menu");
+    const main_menu_vec = new Vector(main_menu_icons, "main-menu");
+    main_menu_vec.order("home", "apps", "configs", "colors", "messages", "notifications", "user");
+    const sep = make("span", { "class": "span-icon-sep" });
+    main_menu_vec.insert(["sep", sep], "messages");
+    const cc = (e) => {
+        console.log(hlcp.value);
+        document.documentElement.style.setProperty("--hl-clr", hlcp.value);
+    };
+    const hlcp = make("input", { "class": "hl-clr-pkr hidden", "type": "color", "e:input": cc });
+    const hl_color_picker = (node) => {
+        return (e) => {
+            hlcp.click();
+        };
+    };
+    main_menu_vec.nodes().forEach((n) => {
+        const name = n[0];
+        const node = n[1];
+        const jar = new Jar("vector-coll", name, node);
+        if (name == "home") {
+            jar.make_link(DOMAIN_ROOT + "/home");
+        }
+        else if (name == "colors") {
+            jar.make_key(hl_color_picker());
+        }
+        else if (name == "apps") {
+            jar.make_key(() => {
+                if (jar.contains(app_menu)) {
+                    app_menu.remove();
+                }
+                else {
+                    console.log("appended and focused");
+                    jar.appendChild(app_menu);
+                    app_menu.focus();
+                    console.log(document.activeElement);
+                }
+            });
+        }
+        else if (name != "sep") {
+            jar.make_key((e) => console.log("ive been clicked", e.target));
+        }
+        main_menu_vec.update(name, jar);
+    });
+    return main_menu_vec.to_element();
+}
+
+async function app_menu$1(parcel) {
+    parcel.header("Content-Type", "application/json");
+    const app_icons = await parcel.get("/comp-icons/app-menu");
+    const app_vec = new Vector(app_icons, "app-menu");
+    app_vec.order("files", "quests", "scheduler", "discussions");
+    app_vec.nodes().forEach((n) => {
+        const name = n[0];
+        const node = n[1];
+        const jar = new Jar("vector-coll", name, node);
+        jar.make_key((e) => console.log("ive been clicked", e.target));
+        app_vec.update(name, jar);
+    });
+    const vec = app_vec.to_element();
+    vec.direction("row");
+    vec.setAttribute("tabindex", "-1");
+    vec.appendChild(tip1());
+    vec.addEventListener("focusout", () => {
+        const focused = document.activeElement;
+        if (!vec.contains(focused)) {
+            setTimeout(() => {
+                console.log(focused, "lost focus");
+                vec.remove();
+            }, 500);
+        }
+    });
+    return vec;
+}
+const tip1 = () => {
+    return make("div", { "class": "app-menu-tip" });
+};
+
 class Automata extends HTMLBodyElement {
     constructor() {
+        if (document.body.hasAttribute("is"))
+            throw Error("automata is already registered. The automata is the app root, there can only be one instance of it in the dom tree at one time.");
         super();
         this.id = "app";
-        this.setAttribute("is", "root-automata");
-        console.log("started");
-        // document.body.remove();
+        this.setAttribute("is", "an-automata");
         document.body = this;
     }
-    render() {
-        document.appendChild(this);
-    }
+    static observedAttributes = [];
     connectedCallback() {
         console.log("connected");
     }
 }
-customElements.define("root-automata", Automata, { extends: "body" });
+customElements.define("an-automata", Automata, { extends: "body" });
 new Automata();
-const headers = new Headers();
-headers.append("Content-Type", "application/json");
-const parcel = new Parcel(headers);
-const main_menu_icons = await parcel.get("/main-menu-icons");
-// console.log("0", main_menu_icons);
-// const store = new DataStore();
-// store.allow_many("icons", "artefacts");
-// store.add(new DataItem("main_menu_icons", main_menu_icons, "icons"));
-const main_menu_vec = new Vector(main_menu_icons, "main-menu");
-function run() {
-    document.body.style.background = "#a21185";
-}
-main_menu_vec.event("apps", "click", run);
-const main_menu = main_menu_vec.to_element();
+const parcel = new Parcel();
+const app_menu = await app_menu$1(parcel);
+app_menu.direction("row");
+const main_menu = await main_menu$1(parcel, app_menu);
 main_menu.render();
