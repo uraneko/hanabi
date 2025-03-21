@@ -7,14 +7,14 @@
 	"keywords": [],
 	"type": "module",
 	"scripts": {
-		"dev": "momo",
+		"dev": "cargo install --path ~/forge/rust/momo_server && momo",
 		"test": "vitest",
-		"build": "rollup -c && mv dist/app/main.css dist/app/styles.css",
-		"help": "rollup --help",
+		"build": "rolldown -c && fish .build:css.fish",
+		"b:css": "fish .build:css.fish",
+		"b:js": "rolldown -c",
 		"doc": "typedoc src/main.ts"
 	},
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "^16.0.1",
 		"autoprefixer": "^10.4.21",
 		"cssnano": "^7.0.6",
 		"momo_components": "link:../momo/momo_components",
@@ -22,11 +22,8 @@
 		"postcss": "^8.5.3",
 		"postcss-cli": "^11.0.1",
 		"postcss-import": "^16.1.0",
-		"postcss-nested-import": "^1.3.0",
 		"postcss-preset-env": "^10.1.5",
-		"rollup": "^4.35.0",
-		"rollup-plugin-css-bundle": "^1.0.4",
-		"rollup-plugin-typescript2": "^0.36.0",
+		"rolldown": "1.0.0-beta.6",
 		"typedoc": "^0.27.9",
 		"typescript": "^5.8.2",
 		"vitest": "^3.0.8"
