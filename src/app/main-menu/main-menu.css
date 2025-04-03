@@ -1,34 +1,22 @@
-vector-coll#app-menu {
+@import "apps-menu.css";
+
+.pointer {
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+vector-coll#main-menu {
 	display: flex;
 	padding: 11px;
 	width: max-content;
 	height: max-content;
 	align-items: center;
+	justify-self: center;
 
-	position: absolute;
-	top: 59px;
-
-	div.app-menu-tip {
-		position: absolute;
-		width: 15px;
-		height: 15px;
-		bottom: 32px;
-		left: 54px;
-		background: var(--bg-clr-1);
-		backdrop-filter: blur(16px) saturate(180%);
-		transform: rotate(45deg);
-	}
-
-	canvas.app-menu-tip {
-		position: absolute;
-		width: 15px;
-		height: 15px;
-		bottom: 32px;
-		left: 54px;
-		fill: var(--bg-clr-1);
-	}
-
-	background: var(--bg-clr-1);
+	background: var(--bg-clr-0);
 	backdrop-filter: blur(16px) saturate(180%);
 	border-radius: 1px;
 	margin-top: 11px;
@@ -51,7 +39,7 @@ vector-coll#app-menu {
 		background: none;
 		border: none;
 		margin: 0 4px;
-		width: 18px;
+		width: 19px;
 		/* height: 2vh; */
 
 		& svg {
@@ -63,8 +51,9 @@ vector-coll#app-menu {
 		& span {
 			background: var(--hl-clr);
 			border-radius: 1px;
-			height: 32px;
+			height: 19px;
 			width: 1px;
+			margin-top: 1px;
 		}
 	}
 }

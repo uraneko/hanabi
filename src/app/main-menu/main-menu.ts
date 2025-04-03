@@ -1,14 +1,15 @@
-import { make, type Maybe } from "momo_core/core";
+import { make } from "momo_core/core";
 import { Parcel } from "momo_core/parcel";
 import { Vector, VectorElement } from "momo_components/collections/vector"
 import { Jar } from "momo_components/wrappers/jar";
-import { DOMAIN_ROOT } from "./root"
+import { ShadowContainer } from "momo_components/wrappers/container";
+import { apps_menu } from "./apps-menu";
 
-export async function main_menu(parcel: Parcel, app_menu: Element): Promise<VectorElement> {
+async function main_menu(parcel: Parcel, apps_menu: Element): Promise<VectorElement> {
 	parcel.header("Content-Type", "application/json");
-	const main_menu_icons = await parcel.get("/comp-icons/main-menu");
+	const main_menu_icons = await parcel.get("/comp-icons", "main-menu");
 
-	const main_menu_vec = new Vector(main_menu_icons, "main-menu");
+	const main_menu_vec = new Vector("main-menu", main_menu_icons as JSON);
 	main_menu_vec.order("home", "apps", "configs", "colors",
 		"messages", "notifications", "user");
 
@@ -16,7 +17,7 @@ export async function main_menu(parcel: Parcel, app_menu: Element): Promise<Vect
 	main_menu_vec.insert(["sep", sep], "messages");
 
 	const cc = (e: Event) => {
-		console.log((hlcp as HTMLInputElement).value);
+		// console.log((hlcp as HTMLInputElement).value);
 		document.documentElement.style.setProperty("--hl-clr", (<HTMLInputElement>hlcp).value)
 	}
 
@@ -31,20 +32,20 @@ export async function main_menu(parcel: Parcel, app_menu: Element): Promise<Vect
 	main_menu_vec.nodes().forEach((n: [string, Element]) => {
 		const name = n[0];
 		const node = n[1];
-		const jar = new Jar("vector-coll", name, node);
+		const jar = new Jar(node);
 		if (name == "home") {
-			jar.make_link(DOMAIN_ROOT + "/home");
+			jar.make_link("/home");
 		} else if (name == "colors") {
 			jar.make_key(hl_color_picker(jar));
 		} else if (name == "apps") {
 			jar.make_key(() => {
-				if (jar.contains(app_menu)) {
-					app_menu.remove()
+				if (jar.contains(apps_menu)) {
+					apps_menu.remove()
 				} else {
-					console.log("appended and focused")
-					jar.appendChild(app_menu);
-					(<VectorElement>app_menu).focus();
-					console.log(document.activeElement);
+					// console.log("appended and focused")
+					jar.appendChild(apps_menu);
+					(<VectorElement>apps_menu).focus();
+					// console.log(document.activeElement);
 				}
 			});
 		} else if (name != "sep") {
@@ -55,4 +56,16 @@ export async function main_menu(parcel: Parcel, app_menu: Element): Promise<Vect
 	});
 
 	return main_menu_vec.to_element();
+}
+
+export async function main_menu_shadow(parcel: Parcel) {
+	const apps = await apps_menu(parcel);
+	const main = await main_menu(parcel, apps);
+
+	const cont = new ShadowContainer("main-menu", main);
+	cont.push("main-menu", main);
+	cont.push("apps-menu", apps);
+	cont.css("styles/main-menu.css");
+
+	return cont;
 }

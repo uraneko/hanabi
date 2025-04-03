@@ -11,4 +11,6 @@ export default defineConfig({
 		target: "esnext",
 		esModule: true
 	},
+	// NOTE may also use define 
+	inject: {},
 })
