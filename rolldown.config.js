@@ -6,7 +6,7 @@ export default defineConfig({
 	},
 	platform: "browser",
 	output: {
-		file: 'dist/app/bundle.js',
+		file: 'dist/bundle.js',
 		format: "esm",
 		target: "esnext",
 		esModule: true

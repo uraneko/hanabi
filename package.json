@@ -8,9 +8,10 @@
 	"scripts": {
 		"dev": "cargo install --path ~/forge/rust/momo/momo_server && momo",
 		"test": "vitest",
-		"build": "pnpm run b:ts && pnpm run b:css",
+		"build": "pnpm b:ts; pnpm b:css",
 		"b:css": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/app.css --sourcemap -- src/styles.css",
 		"b:ts": "rolldown -c",
+		"check": "tsc",
 		"doc": "typedoc src/main.ts"
 	},
 	"devDependencies": {
