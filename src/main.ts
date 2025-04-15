@@ -1,9 +1,8 @@
 import { Parcel } from "momo_core/parcel";
-import { main_menu_shadow } from "./main-menu";
-import { files as files_shadow } from "./files";
-import { apps_menu as app_menu_component } from "./apps-menu";
-
-class Loader { }
+// TODO change where single exposed component ts file is kept
+import { main_menu_shadow } from "./app/main-menu/main-menu";
+// import { files as files_shadow } from "./files";
+// import { apps_menu as app_menu_component } from "./apps-menu";
 
 // singleton
 class Automata extends HTMLBodyElement {
@@ -52,8 +51,8 @@ main_menu.render(app);
 // const files_menu = await files_menu_component(parcel);
 // files_menu.render(app);
 
-const files = await files_shadow(parcel);
-files.render(app);
+// const files = await files_shadow(parcel);
+// files.render(app);
 
 // import "../css/styles.css";
 // import "../css/main-menu.css";

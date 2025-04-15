@@ -2,7 +2,7 @@ import { defineConfig } from 'rolldown'
 
 export default defineConfig({
 	input: {
-		file: 'src/ts/main.ts',
+		file: 'src/main.ts',
 	},
 	platform: "browser",
 	output: {

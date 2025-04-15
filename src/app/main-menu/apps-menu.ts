@@ -1,4 +1,4 @@
-import { make, type Maybe } from "momo_core/core";
+import { make, } from "momo_core/core";
 import { Parcel } from "momo_core/parcel";
 import { Vector, VectorElement } from "momo_components/collections/vector"
 import { Jar } from "momo_components/wrappers/jar";

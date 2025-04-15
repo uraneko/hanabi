@@ -8,6 +8,14 @@
 	display: none;
 }
 
+shadow-container#main-menu {
+	justify-self: center;
+	width: 100%;
+	height: fit-content;
+	display: grid;
+	padding-bottom: 15px;
+}
+
 vector-coll#main-menu {
 	display: flex;
 	padding: 11px;

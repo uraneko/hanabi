@@ -10,6 +10,7 @@
 /* 	initial-value: #faebd7; */
 /* } */
 
+@import "app/main-menu/main-menu.css";
 
 html,
 body {
@@ -44,20 +45,4 @@ body[is="an-automata"] {
 
 .hidden {
 	display: none;
-}
-
-shadow-container#main-menu {
-	justify-self: center;
-	width: 100%;
-	height: fit-content;
-	display: grid;
-	padding-bottom: 15px;
-}
-
-shadow-container#files {
-	justify-self: center;
-	width: 100%;
-	height: fit-content;
-	display: grid;
-	padding-bottom: 15px;
 }
