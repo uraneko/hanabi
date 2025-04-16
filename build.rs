@@ -8,298 +8,543 @@ use std::path::PathBuf;
 // fetch the front end project repo
 // basically installation of the server app
 
-mod openssl {
-    use openssl::x509::{
-        X509Extension, X509Name, X509NameBuilder, X509NameRef, X509Req, X509ReqBuilder,
-    };
+pub use std::env::set_current_dir;
+pub use std::fs::{copy, create_dir, read_dir, read_to_string, write};
+pub use std::process::Command;
 
-    fn prepare_subject_name(nb: &mut X509NameBuilder, cn: &str, dn: &str) {
-        _ = nb.append_entry_by_text("CN", cn);
-        _ = nb.append_entry_by_text("distinguished_name", dn);
+fn cd(path: impl AsRef<str>) {
+    let path = path.as_ref();
+    if !path.is_empty() {
+        set_current_dir(path).unwrap();
     }
-
-    fn prepare_exts(san: &str, ku: &str, eku: &str) -> X509Extension {
-        todo!()
-        // let ext = X509Extension::new(None, Some(), "subjectAltName", san);
-    }
-
-    pub(super) fn mk_cert() -> X509Req {
-        let mut nb = X509NameBuilder::new().unwrap();
-        _ = &prepare_subject_name(&mut nb, "momo-build.rs-cn", "momo-build.rs-dn");
-        let nref = nb.build();
-
-        let exts = prepare_exts("DNS:localhost", "digitalSignature", "serverAuth");
-
-        let mut builder = X509ReqBuilder::new().unwrap();
-        _ = builder.set_subject_name(nref.as_ref());
-        // _ = builder.set_pubkey();
-        todo!();
-
-        builder.build()
-    }
-
-    const REQ: &str = "
-    openssl
-        req -x509
-        -out localhost.crt
-        -keyout localhost.key
-        -newkey rsa:2048 -nodes -sha256
-        -subj '/CN=localhost' -extensions EXT
-        -config (printf
-            \"[dn]\n
-                CN=localhost\n
-            [req]\n
-                distinguished_name = dn\n
-            [EXT]\n
-                subjectAltName=DNS:localhost\n
-                keyUsage=digitalSignature\n
-                extendedKeyUsage=serverAuth\"
-        | psub)
-    ";
 }
 
-// makes the necessary dirs/files for the server persistent databases
-mod data {
-    use super::{config::InstallConfigs, HashMap, Keys, PathBuf};
-    use rusqlite::{params, Connection, Error, Params, Result};
-    use std::fs::{self, create_dir, create_dir_all};
-
-    #[derive(Debug)]
-    pub(super) struct DataConfigs<'a> {
-        dir: PathBuf,
-        plugins: Option<Keys<'a, &'a str, HashMap<&'a str, &'a str>>>,
-        // ...
-    }
-
-    impl<'a> DataConfigs<'a> {
-        pub(super) fn from_install_configs(ic: &'a InstallConfigs) -> Self {
-            Self {
-                dir: ic.data_dir(),
-                plugins: ic.plugins_data(),
-            }
-        }
-
-        fn dir_str(&self) -> String {
-            self.dir.as_path().display().to_string()
-        }
-
-        pub(super) fn mk_dbs(self) {
-            let dir = self.dir_str();
-            let res = create_dir_all(dir.clone() + "/main");
-            if let Err(e) = res {
-                panic!(
-                    "Failed to create data directories. Aborting install...\n[ERR] {:?}",
-                    e
-                );
-            }
-
-            self.plugins.unwrap().for_each(|p| {
-                _ = create_dir(dir.clone() + "/" + &p.replace(['[', ']'], ""));
-            });
-        }
-
-        fn mk_dbs_main(&self) {
-            let res = fs::File::create_new(self.dir_str() + "/main.db");
-            if let Err(e) = res {
-                // TODO proper logging
-                eprintln!("error creating new 'main.db' database file\n{:?}", e);
-            }
-
-            let conn = Connection::open(self.dir_str() + "/main.db").unwrap();
-
-            let res = conn.execute(USERS_TABLE_INIT, []);
-            if let Err(e) = res {
-                eprintln!("error creating users table in main.db");
-            }
-
-            // users table
-
-            if self.plugins.is_none() {
-                return;
-            }
-
-            let res = conn.execute(PLUGINS_TABLE_INIT, []);
-            if let Err(e) = res {
-                eprintln!("error creating plugins table in main.db");
-            }
-
-            // plugins table
-
-            // since this is created only if user installs the server with some plugins
-            // TODO dont forget to add this when user without plugins adds a plugin at some point
-        }
-
-        // parses the plugin configs into a string ref that can be inputted in
-        // a plugins table entry
-        fn parse_plugin(&self) -> &str {
-            ""
-        }
-    }
-
-    const PLUGINS_TABLE_INIT: &str = "create table plugins ()";
-    const USERS_TABLE_INIT: &str = "create table users ()";
+fn pwd() {
+    panic!(
+        "{}",
+        String::from_utf8_lossy(&Command::new("pwd").output().unwrap().stdout)
+    );
 }
 
-mod config {
-    use super::{HashMap, Keys, PathBuf};
-
-    fn is_header(line: &str) -> bool {
-        line.starts_with('[') && line.ends_with(']') && !line.contains('=')
-    }
-
-    const CONFIGS: &str = include_str!("install.cfg");
-
-    #[derive(Debug)]
-    pub(super) struct InstallConfigs {
-        main: Option<HashMap<&'static str, &'static str>>,
-        plugins: Option<HashMap<&'static str, HashMap<&'static str, &'static str>>>,
-    }
-
-    impl InstallConfigs {
-        // splits up the config sections into a vec of Lines items
-        fn parse_config_file() -> HashMap<&'static str, HashMap<&'static str, &'static str>> {
-            // sections headers:
-            // start with [
-            // end with ]
-            // don't contain an '='
-            let lines = CONFIGS.lines().filter(|l| !l.is_empty());
-            let mut configs: HashMap<&str, HashMap<&str, &str>> = HashMap::with_capacity(7);
-            let mut section: (&'static str, HashMap<&'static str, &'static str>) =
-                ("", HashMap::new());
-            lines.for_each(|line| match is_header(line) {
-                true => {
-                    if !section.0.is_empty() {
-                        eprintln!("configs is not empty");
-                        configs.insert(section.0, section.1.drain().collect());
-                    }
-                    section.0 = line.trim();
-                }
-                false => {
-                    let [k, v] = if let Some((k, v)) = line.split_once('=') {
-                        [k.trim(), v.trim()]
-                    } else {
-                        [line.trim(), "@@@"]
-                    };
-
-                    section.1.insert(k, v);
-                }
-            });
-            configs.insert(section.0, section.1);
-
-            configs
-        }
-
-        // reads the install.cfg file into hash map of static &str k/v
-        // returns self
-        pub(super) fn from_config_file() -> Self {
-            let mut configs = Self::parse_config_file();
-            eprintln!("{:?}", configs);
-            Self {
-                main: configs.remove("[main]"),
-                plugins: if configs.is_empty() {
-                    None
-                } else {
-                    Some(configs)
-                },
-            }
-        }
-
-        pub(super) fn data_dir(&self) -> PathBuf {
-            PathBuf::from(
-                self.main
-                    .as_ref()
-                    .unwrap()
-                    .get("data_dir")
-                    .unwrap_or(&"./data"),
-            )
-        }
-
-        pub(super) fn plugins_data(&self) -> Option<Keys<&str, HashMap<&str, &str>>> {
-            if self.plugins.is_none() {
-                return None;
-            }
-            Some(self.plugins.as_ref().unwrap().keys())
-        }
-
-        fn skip_tests(&self) -> bool {
-            self.main
-                .as_ref()
-                .unwrap()
-                .get("ignore_test")
-                .unwrap_or(&"false")
-                .parse()
-                .unwrap_or(false)
-        }
-
-        fn ignore_non_fatal_build_errors(&self) -> bool {
-            self.main
-                .as_ref()
-                .unwrap()
-                .get("ignore_non_fatal_build_errors")
-                .unwrap_or(&"false")
-                .parse()
-                .unwrap_or(false)
-        }
-
-        fn no_plugins(&self) -> bool {
-            self.main
-                .as_ref()
-                .unwrap()
-                .get("no_plugins")
-                .unwrap_or(&"false")
-                .parse()
-                .unwrap_or(false)
-        }
-
-        fn has_plugins(&self) -> bool {
-            self.plugins.is_some()
-        }
-    }
+fn print<T>(items: T)
+where
+    T: std::fmt::Debug,
+{
+    panic!("{:?}", items);
 }
 
 // fetches the web front-end repo with the version corresponding to this repo's backend version'
 mod fetch {
-    use curl::easy::Easy;
-    use std::fs::{self, File};
-    use std::io::Write;
+    use std::fs;
 
-    const WEB_UI_VERSION: &str = "0.1.0";
-    const WEB_UI_URL: &str = concat!("github.com/uraneko/momo-web-ui/tag/", "0.1.0");
+    use git2::Repository as Repo;
 
-    pub(super) fn web_ui() {
-        _ = fs::create_dir("web-ui").unwrap();
-        let mut repo = Easy::new();
-        repo.url(WEB_UI_URL).unwrap();
-        repo.write_function(|data| {
-            let mut f = File::open("web-ui/frontend.zip").unwrap();
-            _ = f.write_all(data);
-            Ok(data.len())
-        })
-        .unwrap();
-        repo.perform().unwrap();
+    const CORE_URI: &str = "https://github.com/uraneko/momo_web_ui";
+
+    pub(crate) fn core() {
+        if std::path::Path::new("app").is_dir() {
+            fs::remove_dir_all("app").unwrap();
+        }
+        fs::create_dir("app").unwrap();
+
+        Repo::clone(CORE_URI, "app/app").unwrap();
     }
 
-    pub(super) fn plugins() {}
+    fn repo_from_uri(uri: &str) -> &str {
+        uri.rsplit('/').next().unwrap()
+    }
+
+    pub(crate) fn plugins(plugins: Vec<String>) {
+        if !std::path::Path::new("app/plugins").is_dir() {
+            _ = fs::create_dir("app/plugins");
+        }
+        plugins.into_iter().for_each(|p| {
+            let plg = "app/plugins/".to_string() + repo_from_uri(&p);
+            if std::path::Path::new("app/plugins").is_dir() {
+                _ = fs::remove_dir_all(&plg);
+            }
+            Repo::clone(&p, plg).unwrap();
+        });
+    }
+}
+
+// TODO call lightning css and rolldown from rust
+// dont build anything from js side
+
+// FIXME this implementation assumes unix/cp is installed and accessible to build script
+mod build {
+    use super::{cd, print, pwd};
+    use std::env::set_current_dir;
+    use std::fs::{copy, create_dir, read_dir, read_to_string, write};
+    use std::process::Command;
+
+    // installs pnpm dependencies and run pnpm b:css to build the plugin components css
+    fn lightningcss() {
+        Command::new("pnpm").arg("install").output().unwrap();
+        Command::new("pnpm").arg("b:css").output().unwrap();
+    }
+
+    // copies a plugin's typescript src files into the main app src dir
+    // also returns the plugin's exported component function that will be injected in app main.ts
+    fn copy_ts(p: &str) -> [String; 2] {
+        let dist_dir = "../../app/src/".to_owned() + p;
+        Command::new("cp")
+            .args(["src/components", "-r", &dist_dir])
+            .output()
+            .unwrap();
+        copy("src/main.ts", dist_dir + "/main.ts").unwrap();
+
+        let data = read_to_string("src/main.ts").unwrap();
+        [
+            p.to_owned(),
+            data.lines()
+                .find(|l| l.contains("export async function"))
+                .unwrap()
+                .split('(')
+                .next()
+                .unwrap()
+                .trim_start_matches("export async function ")
+                .to_owned(),
+        ]
+    }
+
+    fn copy_icons() {
+        if !std::path::Path::new("icons").is_dir() {
+            return;
+        }
+        read_dir("icons")
+            .unwrap()
+            .filter(|e| e.is_ok())
+            .map(|e| e.unwrap().file_name())
+            .for_each(|e| {
+                let icon = e.as_os_str().to_str().unwrap();
+                let in_icon = "icons/".to_owned() + icon;
+                let out_icon = "../../app/dist/icons/".to_owned() + icon;
+                copy(in_icon, out_icon).unwrap();
+            })
+    }
+
+    pub(crate) fn app_css() {
+        // move to app dir
+        cd("app/app");
+        // substitute local momo lib with gh version
+        Command::new("pnpm")
+            .args(["remove", "momo_lib"])
+            .output()
+            .unwrap();
+        Command::new("pnpm")
+            .args(["add", "github/uraneko/momo_lib"])
+            .output()
+            .unwrap();
+
+        // install momo_lib pnpm dev dep
+        Command::new("pnpm")
+            .args(["add", "https://github.com/uraneko/momo_lib", "-D"])
+            .output()
+            .unwrap();
+        // create styles dir
+        create_dir("dist/styles/").unwrap();
+        // parse css
+        lightningcss();
+        // move back
+        cd("..")
+    }
+
+    // build the app typescript after injecting the plugins typescript src code
+    pub(crate) fn app_typescript(comps: Vec<[String; 2]>) {
+        let mut data = read_to_string("app/src/main.ts").unwrap();
+        comps
+            .into_iter()
+            .map(|c| {
+                [
+                    format!("import {{ {} }} from \"./{}/main\";\n", c[1], c[0]),
+                    format!(
+                        "\nconst {}_shadow_container = await {}(parcel);\n{}_shadow_container.render(app);\n",
+                        c[1], c[1], c[1]
+                    ),
+                ]
+            })
+            .for_each(|s| {
+                data = s[0].clone() + &data + &s[1];
+            });
+        write("app/src/main.ts", data).unwrap();
+        // move to app
+        cd("app");
+        // build ts bundle
+        Command::new("pnpm").arg("b:ts").output().unwrap();
+        // return to project root
+        cd("../..");
+    }
+
+    // NOTE cwd is crate_dir/app and not crate_dir
+    pub(crate) fn plugins() -> Vec<[String; 2]> {
+        read_dir("plugins")
+            .unwrap()
+            .filter(|e| e.is_ok())
+            .map(|e| e.unwrap().file_name())
+            .map(|p| {
+                let p = p.as_os_str().to_str().unwrap();
+                let p2 = String::from("plugins/") + p;
+                plugin(p, &p2)
+            })
+            .collect::<Vec<[String; 2]>>()
+    }
+
+    // p is plugin name
+    // p2 is plugin path
+    fn plugin(p: &str, p2: &str) -> [String; 2] {
+        // create plugin ts dir in app src in preparation for plugin ts injection
+        create_dir("app/src/".to_string() + p).unwrap();
+        // move to plugin dir
+        cd(&p2);
+        // copy icons if any
+        copy_icons();
+        // build css
+        lightningcss();
+        // copy the plugin ts files to main app src
+        let comp = copy_ts(p);
+        // move back to app dir (parent of the main app dir)
+        cd("../..");
+
+        comp
+    }
+}
+
+mod services {
+    use super::{cd, print, pwd};
+    use std::env::set_current_dir;
+    use std::fs::{copy, create_dir, read_dir, read_to_string, write};
+    use std::process::Command;
+
+    pub(crate) fn init() {
+        if std::path::Path::new("install").is_dir() {
+            std::fs::remove_dir_all("install").unwrap();
+        }
+        create_dir("install").unwrap();
+
+        Command::new("cp")
+            .args(["src", "-r", "install/src"])
+            .output()
+            .unwrap();
+
+        let mut manifest = read_to_string("Cargo.toml").unwrap();
+        manifest = manifest.replace("license = \"MIT\"", "license = \"MIT\"\n[workspace]");
+        write("install/Cargo.toml", manifest).unwrap();
+
+        cd("app");
+    }
+
+    // NOTE cwd is crate_dir/app and not crate_dir
+    pub(crate) fn plugins() -> Vec<(String, Vec<String>)> {
+        read_dir("plugins")
+            .unwrap()
+            .filter(|e| e.is_ok())
+            .map(|e| e.unwrap().file_name())
+            .map(|p| {
+                let p = p.as_os_str().to_str().unwrap();
+                let p2 = String::from("plugins/") + p;
+                plugin(p, &p2)
+            })
+            .collect::<Vec<(String, Vec<String>)>>()
+    }
+
+    // p is plugin name
+    // p2 is plugin path
+    fn plugin(p: &str, p2: &str) -> (String, Vec<String>) {
+        let services = copy_services(p, p2);
+
+        (p.to_owned(), services)
+    }
+
+    // copy services into install dir
+    fn copy_services(p: &str, p2: &str) -> Vec<String> {
+        // copy plugin's lib.rs into install/src/plugin_name.rs
+        let in_path = p2.to_owned() + "/src/";
+        let out_path = "../install/src/".to_owned() + p;
+
+        let lib = read_to_string(in_path.clone() + "lib.rs").unwrap();
+        let lib = lib.trim_start_matches("#[path = \"services/services.rs\"]\n");
+
+        // get services from lib exports
+        let services = lib
+            .lines()
+            .filter(|l| l.contains("pub use"))
+            .map(|l| {
+                l.trim_start_matches("pub use services::")
+                    .trim_end_matches(';')
+                    .to_owned()
+            })
+            .collect::<Vec<String>>();
+
+        // write updated lib.rs to plugin_name.rs
+        write(out_path.clone() + ".rs", lib).unwrap();
+
+        // copy plugin's services
+        Command::new("cp")
+            .args([&(in_path + "services/"), "-r", &out_path])
+            .output()
+            .unwrap();
+
+        services
+    }
+
+    // add plugins services to server main file
+    pub(crate) fn build(services: Vec<(String, Vec<String>)>) {
+        let mut data = read_to_string("../install/src/main.rs").unwrap();
+        services
+            .iter()
+            .map(|s| {
+                [
+                    format!("mod {};\n", s.0),
+                    s.1.iter()
+                        .map(|srv| format!("\n\t\t\t.service({}::{})", s.0, srv))
+                        .fold(String::new(), |acc, e| acc + &e)
+                        + "\n\t\t\t// <service>",
+                ]
+            })
+            .for_each(|s| {
+                data = s[0].clone() + &data;
+                data = data.replace("// <service>", &s[1]);
+            });
+        write("../install/src/main.rs", data).unwrap();
+        // cd to install dir
+        cd("../install");
+        // cargo build server
+        Command::new("cargo")
+            .args(["build", "-r"])
+            .output()
+            .unwrap();
+        // return to project root
+        cd("..");
+        Command::new("cp")
+            .args(["ssl_files/", "-r", "install"])
+            .output()
+            .unwrap();
+
+        Command::new("cp")
+            .args(["app/app/icons/", "-r", "install/dist"])
+            .output()
+            .unwrap();
+
+        Command::new("cp")
+            .args(["app/app/dist/", "-r", "install"])
+            .output()
+            .unwrap();
+
+        Command::new("cp")
+            .args(["install/target/release/momo", "install"])
+            .output()
+            .unwrap();
+    }
 }
 
 fn main() {
-    return;
-    println!("cargo::rerun-if-changed=data/main.db");
+    let mut it = parse::open();
+    let plgs = parse::read_sections(&mut it);
+
+    let p = plgs[0].plugins();
+    fetch::core();
+    fetch::plugins(p);
+
+    build::app_css();
+    let comps = build::plugins();
+    build::app_typescript(comps);
+
+    services::init();
+    let services = services::plugins();
+    services::build(services);
+
     println!("cargo::warning=build script finished running");
+}
 
-    // parse install.cfg config file
-    let configs = config::InstallConfigs::from_config_file();
-    eprintln!("{:#?}", configs);
+mod parse {
+    use std::collections::HashMap;
+    use std::fs;
+    use std::io::Read;
 
-    // fetch the front end source code
-    fetch::web_ui();
-    fetch::plugins();
+    pub(crate) fn open() -> fs::File {
+        let Ok(f) = fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open("install.toml")
+        else {
+            unreachable!("could not find install config file install.toml in binary server crate")
+        };
 
-    // initialize databases
-    let dc = data::DataConfigs::from_install_configs(&configs);
-    eprintln!("{:#?}", dc);
-    dc.mk_dbs();
+        f
+    }
 
-    // make ssl self signed certificate
-    openssl::mk_cert();
+    pub(crate) fn read_sections(f: &mut fs::File) -> Vec<Section> {
+        let mut s = String::new();
+        _ = f.read_to_string(&mut s);
+
+        let vec: Vec<String> = s
+            .lines()
+            .filter(|l| !l.trim().is_empty())
+            .map(|l| l.into())
+            .collect();
+        vec.chunk_by(|a, b| !a.starts_with('[') && !b.starts_with('['))
+            .collect::<Vec<&[String]>>()
+            .chunks(2)
+            .map(|c| (c[0][0].to_owned(), c[1].to_vec()).into())
+            .collect::<Vec<Section>>()
+    }
+
+    #[derive(Debug, Default)]
+    pub(crate) struct Section {
+        name: String,
+        items: HashMap<String, SectionValue>,
+    }
+
+    impl Section {
+        pub(crate) fn plugins(&self) -> Vec<String> {
+            let SectionValue::Arr(a) = self.items.get("plugins").unwrap() else {
+                panic!("cant find plugins arr variant instance")
+            };
+
+            a.into_iter()
+                .map(|p| {
+                    let SectionValue::Str(s) = p else {
+                        panic!("plugihn wasnt a string")
+                    };
+                    s.to_owned()
+                })
+                .collect::<Vec<String>>()
+        }
+    }
+
+    impl From<(String, Vec<String>)> for Section {
+        fn from(value: (String, Vec<String>)) -> Self {
+            let vals = value.1;
+            if vals.is_empty() {
+                return Self::default();
+            }
+
+            let vals = vals
+                .into_iter()
+                .map(|kv| {
+                    let mut kv = kv.split('=');
+
+                    (
+                        kv.next().unwrap().trim().into(),
+                        kv.next().unwrap_or("_").trim().into(),
+                    )
+                })
+                .collect::<HashMap<String, SectionValue>>();
+
+            Self {
+                name: value.0.trim_matches(['[', ']']).to_owned(),
+                items: vals,
+            }
+        }
+    }
+
+    #[derive(Debug)]
+    enum SectionValue {
+        Obj(HashMap<String, SectionValue>),
+        Str(String),
+        UInt(u64),
+        Flt(f64),
+        Arr(Vec<SectionValue>),
+        Bool(bool),
+    }
+
+    impl SectionValue {
+        fn obj(hm: HashMap<String, SectionValue>) -> Self {
+            Self::Obj(hm)
+        }
+
+        fn arr(ar: Vec<SectionValue>) -> Self {
+            Self::Arr(ar)
+        }
+
+        fn parse(v: &str) -> Self {
+            let v = v.trim_matches([' ', '"']);
+            if v.starts_with('[') {
+                Self::parse_arr(v).into()
+            } else if v.starts_with('{') {
+                Self::parse_obj(v).into()
+            } else if v.chars().all(|c| c.is_numeric()) {
+                Self::parse_uint(v).into()
+            } else if v == "true" || v == "false" {
+                Self::parse_bool(v).into()
+            } else if {
+                let len = v.len();
+                let has_dot = v.contains('.');
+                let nums_only = v.chars().filter(|c| c.is_numeric()).count();
+
+                has_dot && len - nums_only == 1
+            } {
+                Self::parse_flt(v).into()
+            } else {
+                Self::Str(v.into())
+            }
+        }
+
+        fn parse_obj(o: &str) -> HashMap<String, Self> {
+            o.trim_matches(['{', '}'])
+                .split(',')
+                .map(|kv| {
+                    let mut kv = kv.split(':');
+
+                    (
+                        kv.next().unwrap().trim().into(),
+                        Self::parse(kv.next().unwrap().trim()),
+                    )
+                })
+                .collect()
+        }
+
+        fn parse_arr(a: &str) -> Vec<Self> {
+            a.trim_matches(['[', ']'])
+                .split(',')
+                .map(|v| Self::parse(v))
+                .collect::<Vec<Self>>()
+        }
+        fn parse_bool(b: &str) -> bool {
+            b.parse().unwrap()
+        }
+        fn parse_flt(f: &str) -> f64 {
+            f.parse().unwrap()
+        }
+        fn parse_uint(i: &str) -> u64 {
+            i.parse().unwrap()
+        }
+    }
+
+    impl From<&str> for SectionValue {
+        fn from(value: &str) -> Self {
+            Self::parse(value)
+        }
+    }
+
+    impl From<Vec<SectionValue>> for SectionValue {
+        fn from(value: Vec<SectionValue>) -> Self {
+            Self::Arr(value)
+        }
+    }
+
+    impl From<u64> for SectionValue {
+        fn from(value: u64) -> Self {
+            Self::UInt(value)
+        }
+    }
+
+    impl From<f64> for SectionValue {
+        fn from(value: f64) -> Self {
+            Self::Flt(value)
+        }
+    }
+
+    impl From<bool> for SectionValue {
+        fn from(value: bool) -> Self {
+            Self::Bool(value)
+        }
+    }
+
+    impl From<HashMap<String, SectionValue>> for SectionValue {
+        fn from(value: HashMap<String, SectionValue>) -> Self {
+            Self::obj(value)
+        }
+    }
 }
