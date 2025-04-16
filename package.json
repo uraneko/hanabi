@@ -9,7 +9,9 @@
 		"dev": "cargo install --path ~/forge/rust/momo/momo_server && momo",
 		"test": "vitest",
 		"build": "pnpm b:ts; pnpm b:css",
-		"b:css": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/app.css --sourcemap -- src/styles.css",
+		"b:css:app": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/app.css --sourcemap -- src/styles.css",
+		"b:css:menu": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/main-menu.css --sourcemap -- src/app/main-menu/main-menu.css",
+		"b:css": "pnpm b:css:app; pnpm b:css:menu",
 		"b:ts": "rolldown -c",
 		"check": "tsc",
 		"doc": "typedoc src/main.ts"
