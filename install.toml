@@ -1,0 +1,3 @@
+[build]
+plugins = ["https://github.com/uraneko/momo_file_system"]
+default_plugins = true
