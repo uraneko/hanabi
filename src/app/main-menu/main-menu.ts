@@ -1,8 +1,8 @@
-import { make } from "momo_core/core";
-import { Parcel } from "momo_core/parcel";
-import { Vector, VectorElement } from "momo_components/collections/vector"
-import { Jar } from "momo_components/wrappers/jar";
-import { ShadowContainer } from "momo_components/wrappers/container";
+import { make } from "momo_lib/core/core";
+import { Parcel } from "momo_lib/core/parcel";
+import { Vector, VectorElement } from "momo_lib/components/collections/vector"
+import { Jar } from "momo_lib/components/wrappers/jar";
+import { ShadowContainer } from "momo_lib/components/wrappers/container";
 import { apps_menu } from "./apps-menu";
 
 async function main_menu(parcel: Parcel, apps_menu: Element): Promise<VectorElement> {

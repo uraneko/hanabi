@@ -1,4 +1,4 @@
-import { Parcel } from "momo_core/parcel";
+import { Parcel } from "momo_lib/core/parcel";
 // TODO change where single exposed component ts file is kept
 import { main_menu_shadow } from "./app/main-menu/main-menu";
 // import { files as files_shadow } from "./files";

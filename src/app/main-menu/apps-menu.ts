@@ -1,7 +1,7 @@
-import { make, } from "momo_core/core";
-import { Parcel } from "momo_core/parcel";
-import { Vector, VectorElement } from "momo_components/collections/vector"
-import { Jar } from "momo_components/wrappers/jar";
+import { make, } from "momo_lib/core/core";
+import { Parcel } from "momo_lib/core/parcel";
+import { Vector, VectorElement } from "momo_lib/components/collections/vector"
+import { Jar } from "momo_lib/components/wrappers/jar";
 
 export async function apps_menu(parcel: Parcel): Promise<VectorElement> {
 	parcel.header("Content-Type", "application/json");
