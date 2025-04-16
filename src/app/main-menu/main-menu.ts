@@ -7,7 +7,9 @@ import { apps_menu } from "./apps-menu";
 
 async function main_menu(parcel: Parcel, apps_menu: Element): Promise<VectorElement> {
 	parcel.header("Content-Type", "application/json");
-	const main_menu_icons = await parcel.get("/comp-icons", "main-menu");
+	const main_menu_icons = await parcel.get("/icons",
+		"home.svg+apps.svg+configs.svg+colors.svg+messages.svg+notifications.svg+user.svg"
+	);
 
 	const main_menu_vec = new Vector("main-menu", main_menu_icons as JSON);
 	main_menu_vec.order("home", "apps", "configs", "colors",

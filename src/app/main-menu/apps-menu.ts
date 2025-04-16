@@ -5,7 +5,9 @@ import { Jar } from "momo_lib/components/wrappers/jar";
 
 export async function apps_menu(parcel: Parcel): Promise<VectorElement> {
 	parcel.header("Content-Type", "application/json");
-	const apps_icons = await parcel.get("/comp-icons", "apps-menu");
+	const apps_icons = await parcel.get("/icons",
+		"files.svg+quests.svg+discussions.svg+scheduler.svg",
+	);
 
 	const apps_vec = new Vector("apps-menu", apps_icons as JSON);
 	apps_vec.order("files", "quests", "scheduler", "discussions");
