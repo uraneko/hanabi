@@ -1,43 +1,42 @@
-use actix_web::{get, web, App, HttpServer, Responder};
+mod services;
+
+// actix imports
+use actix_web::{web, App, HttpServer};
+// openssl imports
 use openssl::ssl::{SslAcceptor, SslAcceptorBuilder, SslFiletype, SslMethod};
+// crate local imports
+
+// pub(self) use files::FILES_MENU_ICONS;
 
 fn upgrade_to_https() -> SslAcceptorBuilder {
-    let mut axptr_bldr = SslAcceptor::mozilla_intermediate_v5(SslMethod::tls()).unwrap();
-    eprintln!(
-        "{:?}",
-        axptr_bldr.set_private_key_file("ssl_files/key.pem", SslFiletype::PEM)
-    );
-    eprintln!(
-        "{:?}",
-        axptr_bldr.set_certificate_file("ssl_files/cert.pem", SslFiletype::PEM)
-    );
+    let mut builder = SslAcceptor::mozilla_intermediate_v5(SslMethod::tls()).unwrap();
 
-    axptr_bldr
-}
+    _ = builder.set_private_key_file("ssl_files/key.pem", SslFiletype::PEM);
 
-#[get("/hello/{name}")]
-async fn hello(name: web::Path<String>) -> impl Responder {
-    eprintln!("method: get, path = '/hello', params: [name] = {}", name);
-    format!("hello, {}", name)
-}
+    _ = builder.set_certificate_file("ssl_files/cert.pem", SslFiletype::PEM);
 
-#[get("/")]
-async fn init() -> impl Responder {
-    eprintln!("init() called, launching the app on web front");
-
-    HTML_SRC
+    builder
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let listener = HttpServer::new(|| App::new().service(hello).service(init))
-        .bind_openssl(("0.0.0.0", 6877), upgrade_to_https());
-    let listener = listener.unwrap();
-    eprintln!("serving greetings on localhost port 6877 secure ssl connection");
+    let server = HttpServer::new(|| {
+        App::new()
+            // .service(actix_files::Files::new("/", "./dist"))
+            .service(
+                web::resource(vec!["/", "index.html", "home"]).route(web::get().to(services::html)),
+            )
+            .route("/bundle.js", web::get().to(services::js))
+            .route("favicon.svg", web::get().to(services::favicon))
+            .service(services::css)
+            .service(services::icon)
+            .service(services::icons)
+        // <service>
+    })
+    .bind_openssl(("127.0.0.1", 6877), upgrade_to_https());
+    let server = server.unwrap();
 
-    listener.workers(4).run().await
+    eprintln!("\x1b[1;38;2;213;123;169mmomo serving on https://127.0.0.1:6877\x1b[0m");
+
+    server.workers(4).run().await
 }
-
-const HTML_SRC: &str = include_str!("../dist/index.html");
-const CSS_SRC: &str = include_str!("../dist/styles.css");
-const JS_SRC: &str = include_str!("../dist/main.js");
