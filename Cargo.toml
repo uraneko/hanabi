@@ -1,12 +1,12 @@
 [package]
-name = "momo_server"
+name = "hanabi"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
 
 [[bin]]
-name = "momo"
-path = "src/main.rs"
+name = "hanabi"
+path = "src/rust/main.rs"
 
 [dependencies]
 actix-files = "0.6.6"

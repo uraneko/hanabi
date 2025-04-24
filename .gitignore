@@ -1,3 +1,6 @@
-/target
-/app
-/install
+target
+app
+install
+node_modules
+dist/bundle.js
+dist/styles/**

@@ -1,0 +1,47 @@
+/* @property --hl-clr { */
+/* 	syntax: "<color>"; */
+/* 	inherits: false; */
+/* 	initial-value: #c54456; */
+/* } */
+/**/
+/* @property --icon-hl-clr { */
+/* 	syntax: "<color>"; */
+/* 	inherits: false; */
+/* 	initial-value: #faebd7; */
+/* } */
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+html {
+	width: 100vw;
+	height: 100vh;
+
+}
+
+:root {
+	--hl-clr: #c54456;
+	--icon-hl-clr: #faebd7;
+	--bg-clr-0: rgba(0, 0, 0, 0.2);
+	--bg-clr-1: rgba(255, 228, 196, 0.12);
+}
+
+body[is="an-automata"] {
+	width: 100%;
+	height: 100%;
+	background: #332f3e;
+	background: #b7aece;
+	display: grid;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
