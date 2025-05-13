@@ -1,3 +1,4 @@
+mod fs;
 mod services;
 
 // actix imports
@@ -31,12 +32,14 @@ async fn main() -> std::io::Result<()> {
             .service(services::css)
             .service(services::icon)
             .service(services::icons)
+            .service(fs::files_meta)
+            .service(fs::files_tree)
         // <service>
     })
     .bind_openssl(("127.0.0.1", 6877), upgrade_to_https());
     let server = server.unwrap();
 
-    eprintln!("\x1b[1;38;2;213;123;169mmomo serving on https://127.0.0.1:6877\x1b[0m");
+    eprintln!("\x1b[1;38;2;213;123;169mhanabi serving on https://127.0.0.1:6877\x1b[0m");
 
     server.workers(4).run().await
 }

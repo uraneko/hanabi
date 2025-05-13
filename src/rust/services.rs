@@ -65,7 +65,10 @@ pub(super) async fn icons(icons: web::Path<String>) -> ActixResult<impl Responde
             .map(|i| {
                 let mut path = PathBuf::from("dist/icons/");
                 path.push(i);
-                (i.to_owned(), read_to_string(path).unwrap())
+                (
+                    i.trim_end_matches(".svg").to_owned(),
+                    read_to_string(path).unwrap(),
+                )
             })
             .collect::<HashMap<String, String>>(),
     ))

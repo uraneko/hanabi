@@ -1,4 +1,4 @@
-import { Parcel } from "momo_lib/core/parcel";
+import { Parcel } from "momotaro/core/parcel";
 // TODO change where single exposed component ts file is kept
 import { main_menu_shadow } from "./app/main-menu/main-menu";
 // import { files as files_shadow } from "./files";
@@ -56,3 +56,30 @@ main_menu.render(app);
 
 // import "../css/styles.css";
 // import "../css/main-menu.css";
+
+// import { ColorPalette } from "momotaro/components/primitives/color-palette"
+// let plte = new ColorPalette();
+// plte.render(app);
+
+import { make, type _, type Maybe } from "momotaro/core/core"
+const canvas = make("canvas", { "id": "color_palette" });
+class ColorPalette {
+	constructor(target: HTMLCanvasElement, width: number, height: number) {
+		this.width = width;
+		this.height = height;
+		this.target = target;
+		this.target.width = width;
+		this.target.height = height;
+		this.context = this.target.getContext("2d")!;
+		this.cursor = { x: 10, y: 10, width: 7, height: 7 };
+	}
+
+	private target: HTMLCanvasElement;
+	private width: number;
+	private height: number;
+	private context: CanvasRenderingContext2D;
+	private cursor: { x: number, y: number, width: number, height: number };
+
+	draw() { }
+
+}

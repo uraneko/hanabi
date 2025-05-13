@@ -38,6 +38,10 @@ body[is="an-automata"] {
 	display: grid;
 }
 
+shadow-container {
+	display: grid;
+}
+
 .pointer {
 	cursor: pointer;
 }
