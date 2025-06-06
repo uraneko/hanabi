@@ -1,10 +1,12 @@
 import { Parcel } from "momotaro/core/parcel";
 // TODO change where single exposed component ts file is kept
-import { main_menu_shadow } from "./app/main-menu/main-menu";
+import { main_menu_shadow } from "./automata/main-menu/main-menu";
 // import { files as files_shadow } from "./files";
 // import { apps_menu as app_menu_component } from "./apps-menu";
 
-// singleton
+// an spa is composed of many pages, a single page is called an artefact
+// an artefact is composed of many components that are a mixture of reusable components and derived components 
+
 class Automata extends HTMLBodyElement {
 	constructor() {
 		if (document.body.hasAttribute("is")) throw Error("automata is already registered. The automata is the app root, there can only be one instance of it in the dom tree at one time.");

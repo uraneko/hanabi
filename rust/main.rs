@@ -1,5 +1,8 @@
 mod fs;
 mod services;
+// TODO: add whisper client app
+// TODO: add different scripting languages repls
+// TODO: add video streaming capabilities from one user to another
 
 // actix imports
 use actix_web::{web, App, HttpServer};
@@ -12,9 +15,9 @@ use openssl::ssl::{SslAcceptor, SslAcceptorBuilder, SslFiletype, SslMethod};
 fn upgrade_to_https() -> SslAcceptorBuilder {
     let mut builder = SslAcceptor::mozilla_intermediate_v5(SslMethod::tls()).unwrap();
 
-    _ = builder.set_private_key_file("ssl_files/key.pem", SslFiletype::PEM);
+    _ = builder.set_private_key_file("tls/key.pem", SslFiletype::PEM);
 
-    _ = builder.set_certificate_file("ssl_files/cert.pem", SslFiletype::PEM);
+    _ = builder.set_certificate_file("tls/cert.pem", SslFiletype::PEM);
 
     builder
 }

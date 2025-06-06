@@ -9,12 +9,12 @@
 		"dev": "cargo run",
 		"test": "vitest",
 		"build": "pnpm b:ts; pnpm b:css",
-		"b:css:app": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/app.css --sourcemap -- src/js/styles.css",
-		"b:css:menu": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/main-menu.css --sourcemap -- src/js/app/main-menu/main-menu.css",
+		"b:css:app": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/app.css --sourcemap -- ts/styles.css",
+		"b:css:menu": "lightningcss --minify --bundle --targets '>= 0.25%' -o dist/styles/main-menu.css --sourcemap -- ts/app/main-menu/main-menu.css",
 		"b:css": "pnpm b:css:app; pnpm b:css:menu",
 		"b:ts": "rolldown -c",
 		"check": "tsc",
-		"doc": "typedoc src/js/main.ts"
+		"doc": "typedoc ts/main.ts"
 	},
 	"devDependencies": {
 		"lightningcss-cli": "^1.29.3",
