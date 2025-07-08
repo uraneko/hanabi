@@ -82,7 +82,7 @@
 	cursor: default;
 }
 
-.KeepMeCheckBox {
+.RememberMeCheckBox {
 	display: flex;
 	flex-direction: row;
 	border: none;
@@ -128,6 +128,7 @@ button {
 	border-radius: 2px;
 
 	margin-bottom: 1.2em;
+	margin-top: 1.2em;
 
 	&:hover,
 	&:focus {

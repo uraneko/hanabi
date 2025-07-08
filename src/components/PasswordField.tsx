@@ -15,22 +15,33 @@ export const PasswordField: Component = () => {
 	const nosee = svg(noseeSVG);
 
 	const [psw, psw_up] = createSignal({ ty: "password", svg: see });
-	const update = () => psw_up((psw: PswMeta) => {
+	const psw_signal = () => psw_up((psw: PswMeta) => {
 		console.log(0);
 
 		return psw.ty == "password" ? { ty: "text", svg: nosee } : { ty: "password", svg: see };
 	});
 
+	const [focused, focus_up] = createSignal(false);
+	const focus_signal = () => focus_up((on: boolean) => {
+		const parent = document.querySelector(`.${formStl.InputField}`)!;
+		on ? parent.removeAttribute("input-focus")
+			: parent.setAttribute("input-focus", String(on));
+
+		return !on;
+	});
+
 	return (
 		<div class={styles.PswWrapper}>
-			<div class={formStl.InputJar}>
+			<div class={formStl.InputJar} input-focus={focused()}>
 				<legend class={formStl.InputLegend}>Password</legend>
 				<input type={psw().ty}
+					onfocus={focus_signal}
+					onblur={focus_signal}
 					id="Password"
 					class={formStl.InputField}
-					name="psw" />
+					name="user_psw" />
 			</div>
-			<button class={styles.PswSwitch} onclick={update}>
+			<button type="button" class={styles.PswSwitch} onclick={psw_signal}>
 				{psw().svg}
 			</button>
 		</div>

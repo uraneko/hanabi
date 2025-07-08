@@ -18,6 +18,10 @@ a {
 	}
 }
 
+a {
+	text-decoration: none;
+}
+
 .AppRoute {
 	display: grid;
 	grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
