@@ -9,6 +9,8 @@
 	margin-bottom: 1.2em;
 	opacity: 1;
 
+	width: max-content;
+
 	cursor: pointer;
 }
 

@@ -3,7 +3,6 @@ import { type Component, createSignal } from 'solid-js';
 import { svg } from "../App";
 
 import styles from './PasswordField.module.css';
-import formStl from './SigninForm.module.css';
 
 import { TextField } from './TextField';
 
@@ -16,18 +15,16 @@ export const PasswordField: Component = () => {
 	const see = svg(seeSVG);
 	const nosee = svg(noseeSVG);
 
-	const [psw, psw_up] = createSignal({ ty: "password", svg: see });
+	const [psw, psw_up] = createSignal({ type: "password", svg: see });
 	const psw_signal = () => psw_up((psw: PswMeta) => {
-		console.log(0);
-
 		return psw.type == "password" ?
 			{ type: "text", svg: nosee } : { type: "password", svg: see };
 	});
 
 	return (
-		<div class={styles.PswWrapper}>
+		<div class={styles.PasswordField}>
 			<TextField type={psw().type} name="user_psw" legend="Password" />
-			<button type="button" class={styles.PswSwitch} onclick={psw_signal}>
+			<button type="button" class={styles.PswSwitch} on:click={psw_signal}>
 				{psw().svg}
 			</button>
 		</div>
