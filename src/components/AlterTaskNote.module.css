@@ -1,0 +1,14 @@
+.Note {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+
+	font-size: 11pt;
+	font-family: carlito;
+
+
+}
+
+.Link {
+	color: forestgreen;
+}
