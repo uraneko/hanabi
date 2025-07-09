@@ -9,7 +9,7 @@ const defaultProps = {
 	height: 0.6,
 	state: false,
 	tick: "",
-	accent: "forestgreen",
+	accent: "#485d6c",
 
 };
 

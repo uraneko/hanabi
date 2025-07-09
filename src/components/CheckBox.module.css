@@ -36,8 +36,8 @@
 	&[box-state="false"] {
 		&:not(:has(.TickMark)) {
 			.Content {
-				width: 0.1em !important;
-				height: 0.1em !important;
+				width: 1px !important;
+				height: 1px !important;
 				border-radius: 50%;
 			}
 		}
