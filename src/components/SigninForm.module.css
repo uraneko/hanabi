@@ -42,8 +42,6 @@
 	height: 2em;
 
 	margin-bottom: 1.2em;
-
-
 }
 
 .InputJar[input-focus="true"] {
@@ -82,6 +80,7 @@
 	transform: translateY(16px);
 	transition: transform 100ms ease-out, font-size 100ms ease-out;
 	cursor: default;
+	cursor: text;
 }
 
 .PswWrapper {

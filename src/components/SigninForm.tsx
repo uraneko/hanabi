@@ -3,6 +3,7 @@ import { type Component } from 'solid-js';
 import styles from './SigninForm.module.css';
 
 import { PasswordField } from '../components/PasswordField';
+import { TextField } from '../components/TextField';
 
 export const SigninForm: Component = () => {
 	return (
@@ -12,13 +13,7 @@ export const SigninForm: Component = () => {
 			class={styles.SigninForm}
 		>
 			<h4 class={styles.FormTitle}>Sign in</h4>
-			<div class={styles.InputJar}>
-				<legend class={styles.InputLegend}>User Name</legend>
-				<input type="text"
-					id="Name"
-					class={styles.InputField}
-					name="user_name" />
-			</div>
+			<TextField type="text" name="user_name" legend="User Name" />
 			<PasswordField />
 			<div class={styles.RememberMeCheckBox}>
 				<input
