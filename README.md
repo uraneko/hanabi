@@ -3,9 +3,9 @@
 This is the web frontend for my home server. Written in solidjs.
 
 ## Contents
-- (Features)[#Features]
-- (Usage)[#Usage]
-- (License)[#License]
+- [Features](#Features)
+- [Usage](#Usage)
+- [License](#License)
 
 ###
 ### Features
