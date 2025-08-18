@@ -21,7 +21,7 @@ export const App: Component = () => {
 	);
 }
 
-export const svg = (svg: string): SVGSVGElement => {
+export const parse_svg = (svg: string): SVGSVGElement => {
 	return new DOMParser().parseFromString(svg, "image/svg+xml").querySelector("svg")!;
 }
 

@@ -1,25 +1,27 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
-  "description": "",
-  "type": "module",
-  "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "lightningcss-cli": "^1.30.1",
-    "rolldown": "1.0.0-beta.23",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.0",
-    "vite-plugin-solid": "^2.11.6",
-    "vitest": "^3.2.4"
-  },
-  "dependencies": {
-    "@solidjs/router": "^0.15.3",
-    "solid-js": "^1.9.5"
-  }
+	"name": "hanabi",
+	"version": "0.0.0",
+	"description": "",
+	"type": "module",
+	"scripts": {
+		"start": "vite",
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "^5.7.2",
+		"vite": "^6.0.0",
+		"vite-plugin-solid": "^2.11.6",
+		"vitest": "^3.2.4"
+	},
+	"dependencies": {
+		"@solidjs/router": "^0.15.3",
+		"comps": "link:../hanabi_components",
+		"esbuild": "^0.25.8",
+		"esbuild-plugin-solid": "^0.6.0",
+		"esbuild-solid": "^0.0.1",
+		"solid-js": "^1.9.5"
+	}
 }

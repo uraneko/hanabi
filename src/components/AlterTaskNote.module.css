@@ -2,6 +2,12 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	&:hover {
+		.GrandLine {
+			border-bottom: 1px solid forestgreen;
+		}
+	}
 }
 
 .Note {
@@ -14,7 +20,6 @@
 }
 
 .GrandLine {
-	color: #595858d8;
 	border: none;
 	border-bottom: 1px solid #595858d8;
 	border-radius: 59%;

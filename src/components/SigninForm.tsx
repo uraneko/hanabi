@@ -12,7 +12,7 @@ export const SigninForm: Component = () => {
 
 	return (
 		<form
-			action="http://localhost:8883/auth?action=signin"
+			action="/auth?action=signin"
 			method="post"
 			class={styles.AuthForm}
 		>
