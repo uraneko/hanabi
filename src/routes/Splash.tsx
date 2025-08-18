@@ -3,7 +3,7 @@ import { type Component, createSignal } from 'solid-js';
 import styles from './Splash.module.css';
 import appStl from '../App.module.css';
 
-import { LoadingLogo } from "../components/LoadingLogo";
+import { LoadingLogo } from 'comps/primitives';
 
 export const Splash: Component = () => {
 	return (
