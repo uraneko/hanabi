@@ -1,6 +1,6 @@
 import { type Component, createSignal } from 'solid-js';
-import { HomeLogo } from 'comps/primitives';
-import { SignupForm } from 'comps/containers';
+import { HomeLogo } from 'core/primitives';
+import { SignupForm } from 'core/containers';
 
 import styles from './Signup.module.css';
 import appStl from '../App.module.css';

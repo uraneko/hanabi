@@ -1,6 +1,6 @@
 import { type Component, For, createSignal, createContext, useContext } from 'solid-js';
 import styles from './AppsMenu.module.css';
-import { parse_svg } from 'comps';
+import { parse_svg } from 'core';
 
 import puzzleSVG from "../../../assets/puzzle.svg?raw";
 import eventsSVG from "../../../assets/events.svg?raw";
@@ -42,9 +42,9 @@ const app_card = (icon: string, description: string, name: string): AppMeta => {
 }
 
 export const AppsBox: Component = () => {
-	const drive = app_card(driveSVG, "Manage and share files", "Drive");
-	const events = app_card(eventsSVG, "Stay up on your schedule", "Events");
-	const chat = app_card(chatSVG, "Connect and talk with others", "Chat");
+	const drive = app_card(driveSVG, "We have cloud storage at home", "Drive");
+	const events = app_card(eventsSVG, "Plan your events like a pro", "Events");
+	const chat = app_card(chatSVG, "Communicate on the fly", "Chat");
 
 	return (
 		<div class={styles.AppsBox}>
@@ -56,6 +56,13 @@ export const AppsBox: Component = () => {
 		</div>
 	);
 };
+
+await fetch("http://localhost:7070?who=9io", {
+	method: "GET",
+	headers: {
+		"Content-Type": "text/html",
+	}
+})
 
 export const AppCard: Component<{ meta: AppMeta }> = (props: { meta: AppMeta }) => {
 	const meta = props.meta;

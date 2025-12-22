@@ -1,6 +1,6 @@
 import { type Component, Show } from 'solid-js';
-import { HomeLogo } from 'comps/primitives';
-import { SigninButton } from 'comps/primitives';
+import { HomeLogo } from 'core/primitives';
+import { SigninButton } from 'core/primitives';
 import { AppsMenu, appsMenuCtx } from '../components/AppsMenu';
 
 import styles from './Home.module.css';
