@@ -4,6 +4,7 @@ import { Router, Route } from "@solidjs/router";
 import styles from './App.module.css';
 
 import { Home } from './routes/Home';
+import { Auth } from './routes/Auth';
 import { Signup } from './routes/Signup';
 import { Signin } from './routes/Signin';
 import { Initializer } from './routes/Initializer';
@@ -26,8 +27,7 @@ export const App: Component = () => {
 					<Match when={[1, 2, 4].includes(user())}>
 						<Router>
 							<Route path="/" component={Home} />
-							<Route path="/signin" component={Signin} />
-							<Route path="/signup" component={Signup} />
+							<Route path="/auth" component={Auth} />
 						</Router>
 					</Match>
 					<Match when={user() > 4 || user() < 0}>

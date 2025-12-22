@@ -39,7 +39,7 @@ export const Validate = (props: _) => {
 	);
 };
 
-const host = "http://127.10.10.1:6668";
+const host = "http://127.10.10.1:6680";
 async function negotiate() {
 	let resp = await fetch(host + "/auth/user", {
 		method: "GET",

@@ -1,4 +1,5 @@
 import { type Component, createSignal, createResource, JSX } from 'solid-js';
+import { HomeLogo } from "core/primitives";
 import { _ } from "core";
 import styles from './Page.module.css';
 
@@ -19,6 +20,7 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 	const children = () => props.children;
 	return (
 		<div class={styles.Page}>
+			<HomeLogo />
 			{children()}
 		</div>
 	);
