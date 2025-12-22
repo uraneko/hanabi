@@ -23,12 +23,15 @@ export const App: Component = () => {
 					<Match when={user() == 0}>
 						<Initializer />
 					</Match>
-					<Match when={true}>
+					<Match when={[1, 2, 4].includes(user())}>
 						<Router>
-							<Route path="/..." component={Initializer} />
+							<Route path="/" component={Home} />
 							<Route path="/signin" component={Signin} />
 							<Route path="/signup" component={Signup} />
 						</Router>
+					</Match>
+					<Match when={user() > 4 || user() < 0}>
+						<span>Error: User authentication error. Try clearing all page caches then refreshing.</span>
 					</Match>
 				</Switch>
 			</Page>

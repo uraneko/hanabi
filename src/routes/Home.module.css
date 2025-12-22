@@ -1,3 +1,74 @@
-.Home {
+.Home {}
+
+.Apps {
+	margin-left: 4em;
+
+	grid-row: 3/8;
+	grid-column: 6/9;
+
+	display: grid;
+	transform: rotate(183deg);
+
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+
+	background: #e4eaeaa1;
+	height: max-content;
+}
+
+.App {
+	filter: opacity(.8);
+
+	& svg {
+		transform: rotate(6deg);
+		scale: 0.5;
+	}
+}
+
+.A1 {
 	grid-row: 1/2;
+	grid-column: 1/2;
+
+	&:hover {
+		/* amber */
+		stroke: #ffbf00;
+		color: #ffbf00;
+		fill: #ffbf00;
+	}
+}
+
+.A2 {
+	grid-row: 1/2;
+	grid-column: 2/3;
+
+	&:hover {
+		stroke: crimson;
+		color: crimson;
+		fill: crimson;
+	}
+}
+
+.A3 {
+	grid-row: 2/3;
+	grid-column: 1/2;
+
+	&:hover {
+		stroke: #00a86b;
+		color: #00a86b;
+		fill: #00a86b;
+	}
+
+
+}
+
+.A4 {
+	grid-row: 2/3;
+	grid-column: 2/3;
+
+	&:hover {
+		/* coffe */
+		stroke: #6f4e37;
+		color: #6f4e37;
+		fill: #6f4e37;
+	}
 }
