@@ -1,0 +1,14 @@
+.Button {
+	background: none;
+	border: none;
+	color: forestgreen;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}

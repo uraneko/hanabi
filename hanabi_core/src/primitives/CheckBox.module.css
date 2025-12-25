@@ -1,0 +1,75 @@
+.CheckBox {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: none;
+	font-size: 11pt;
+	font-family: carlito;
+
+	margin-bottom: 1.2em;
+	opacity: 1;
+
+	width: max-content;
+
+	cursor: pointer;
+}
+
+.Box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	border-radius: 0.1em;
+	margin-left: 4px;
+
+	transition: opacity 500ms;
+
+	&:hover {
+		opacity: 0.7;
+
+		&[box-state="true"] {
+			opacity: 1;
+		}
+	}
+
+	&[box-state="false"] {
+		&:not(:has(.TickMark)) {
+			.Content {
+				width: 1px !important;
+				height: 1px !important;
+				border-radius: 50%;
+			}
+		}
+
+		&:has(.TickMark) {
+			& .TickMark {
+				display: none;
+			}
+		}
+
+	}
+}
+
+.Postman {
+	display: none;
+}
+
+
+.Content {
+	padding: 1px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	border-radius: 0.03em;
+
+	transition: border-radius 150ms ease-in-out, width 150ms ease-in-out, height 150ms ease-in-out;
+}
+
+.TickMark {
+	-moz-user-select: none;
+	user-select: none;
+	font-size: 4pt;
+}

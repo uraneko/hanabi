@@ -1,0 +1,14 @@
+.Separator {
+	border: none;
+	border-bottom: 1px solid #595858d8;
+	border-radius: 59%;
+	margin-bottom: 12px;
+	padding-top: 1px;
+
+	width: -moz-available;
+
+	&[active=true] {
+		border-bottom: 1px solid forestgreen;
+	}
+
+}

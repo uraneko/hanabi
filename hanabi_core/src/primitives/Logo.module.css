@@ -1,0 +1,18 @@
+.Logo {
+	display: flex;
+	flex-direction: row;
+	padding-top: 6px;
+	position: fixed;
+
+	& .Anchor {
+		display: flex;
+		flex-direction: row;
+		justify-content: start;
+		align-items: start;
+	}
+
+	& svg {
+		width: 140px;
+		height: 60px;
+	}
+}
