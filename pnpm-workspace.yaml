@@ -1,0 +1,8 @@
+packages:
+  - hanabi
+  - hanabi_core
+  - hanabi_drive
+  - '!**/test/**'
+
+onlyBuiltDependencies:
+  - esbuild

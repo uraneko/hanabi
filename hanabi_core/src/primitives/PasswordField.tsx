@@ -6,8 +6,8 @@ import styles from './PasswordField.module.css';
 
 import { TextField } from './TextField';
 
-import seeSVG from "../assets/see.svg?raw";
-import noseeSVG from "../assets/nosee.svg?raw";
+import seeSVG from "../../../assets/icons/see.svg?raw";
+import noseeSVG from "../../../assets/icons/nosee.svg?raw";
 
 type _ = any;
 type PswMeta = { type: string, svg: SVGSVGElement };
