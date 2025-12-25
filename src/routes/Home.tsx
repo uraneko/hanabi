@@ -1,11 +1,6 @@
-import { type Component, Show } from 'solid-js';
-import { HomeLogo } from 'core/primitives';
-import { SigninButton } from 'core/primitives';
-// import { AppsMenu, appsMenuCtx } from '../components/AppsMenu';
+import { type Component } from 'solid-js';
 
 import styles from './Home.module.css';
-import appStl from '../App.module.css';
-// import ams from '../components/AppsMenu.module.css';
 import { parse_svg } from "core";
 import chatSVG from "../../../assets/icons/chat.svg?raw"
 import colorsSVG from "../../../assets/icons/colors.svg?raw"
@@ -14,12 +9,8 @@ import eventsSVG from "../../../assets/icons/events.svg?raw"
 import filmSVG from "../../../assets/icons/film.svg?raw"
 
 export const Home: Component = () => {
-
-
 	return (
-		<div class={`${styles.Home} ${appStl.AppRoute}`}>
-			<HomeLogo />
-			<SigninButton />
+		<div class={styles.Home}>
 			<Apps />
 		</div>
 	);
@@ -35,22 +26,22 @@ export const Apps = () => {
 		<div class={styles.Apps}>
 			<div class={`${styles.A1} ${styles.App}`} >
 				<a href="#" >
-					{film}
+					{events}
 				</a>
 			</div>
 			<div class={`${styles.A2} ${styles.App}`} >
 				<a href="#" >
-					{colors}
+					{paperplane}
 				</a>
 			</div>
 			<div class={`${styles.A3} ${styles.App}`} >
 				<a href="#" >
-					{paperplane}
+					{colors}
 				</a>
 			</div>
 			<div class={`${styles.A4} ${styles.App}`} >
 				<a href="#" >
-					{events}
+					{film}
 				</a>
 			</div>
 		</div>

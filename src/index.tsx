@@ -9,15 +9,12 @@ import { SignupForm } from "./components/SignupForm";
 import './index.css';
 import { App } from "./App";
 
-
-const root = document.querySelector('#root')!;
-
-if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
+if (import.meta.env.DEV && !(document.body instanceof HTMLBodyElement)) {
 	throw new Error(
-		'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?',
+		"body not found, are you sure you're running in a browser env"
 	);
 }
 
-render(() => <App />, root);
+render(() => <App />, document.body);
 
 

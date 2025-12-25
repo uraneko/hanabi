@@ -1,0 +1,59 @@
+.Menu {
+	grid-row: 1/2;
+	grid-column: 3/10;
+	justify-content: end;
+	align-items: center;
+	display: flex;
+}
+
+.Entry {
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: end;
+	padding-right: 1em;
+
+
+}
+
+.Path {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	text-decoration: none;
+
+	/* background: #485d6c; */
+	color: #485d6c;
+	font-weight: bold;
+	font-size: 14pt;
+
+	/* border: 1px solid #485d6c; */
+	/* color: #485d6c; */
+
+	cursor: pointer;
+	padding: 0.3em 1em;
+	border-radius: 14px 35%;
+	transition: background 178ms ease-out, color 178ms ease-out;
+
+	svg {
+		fill: #485d6c;
+		width: 1.2em;
+		margin-right: 3px;
+		transition: fill 178ms ease-out;
+	}
+
+	&:hover {
+		filter: opacity(0.8);
+		background: #485d6c;
+		color: aliceblue;
+		transition: background 178ms ease-out, color 178ms ease-out;
+
+		& svg {
+			fill: aliceblue;
+			transition: fill 178ms ease-out;
+		}
+	}
+}

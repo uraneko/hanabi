@@ -58,8 +58,6 @@ export const Negotiate = (props: _) => {
 	let [auth] = createResource(negotiate);
 
 	createEffect(() => {
-		console.log('--', validate_negotiation(auth()));
-
 		(() => re_user()((level: number) =>
 			auth() === undefined ? level : Number(auth())
 		))();

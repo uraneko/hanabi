@@ -14,11 +14,9 @@ import { use_ctx } from 'core/context';
 
 export const App: Component = () => {
 	const { user, re_user } = use_ctx();
-	console.log(user());
-
 
 	return (
-		<div class={styles.App} on:click={() => console.log(user())}>
+		<div class={styles.App} >
 			<Page>
 				<Switch>
 					<Match when={user() == 0}>
@@ -39,8 +37,4 @@ export const App: Component = () => {
 		</div >
 	);
 };
-
-export const parse_svg = (svg: string): SVGSVGElement => {
-	return new DOMParser().parseFromString(svg, "image/svg+xml").querySelector("svg")!;
-}
 

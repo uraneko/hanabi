@@ -1,8 +1,8 @@
-import { type Component, createSignal, JSX, Switch, Match } from 'solid-js';
+import { type Component, createSignal, Switch, Match } from 'solid-js';
 import styles from './Auth.module.css';
-import route_styles from '../App.module.css';
 import { use_ctx } from "core/context";
-import { SigninForm, SignupForm } from "core/containers";
+import { Signup } from "../components/Signup";
+import { Signin } from "../components/Signin";
 
 export const Auth: Component = () => {
 	const { user, re_user } = use_ctx();
@@ -13,15 +13,15 @@ export const Auth: Component = () => {
 	);
 
 	return (
-		<div class={` ${styles.Auth} ${route_styles.AppRoute}`} >
+		<div class={styles.Auth} >
 			<Switch>
 				<Match when={user() == 1} >
 					<Switch>
 						<Match when={form() == 0}>
-							<SigninForm swap_call={swap_form} />
+							<Signin swap_call={swap_form} />
 						</Match>
 						<Match when={form() == 1}>
-							<SignupForm swap_call={swap_form} />
+							<Signup swap_call={swap_form} />
 						</Match>
 					</Switch>
 				</Match>

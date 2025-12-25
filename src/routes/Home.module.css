@@ -1,10 +1,10 @@
-.Home {}
+.Home {
+	grid-row: 3/8;
+	grid-column: 6/9;
+}
 
 .Apps {
 	margin-left: 4em;
-
-	grid-row: 3/8;
-	grid-column: 6/9;
 
 	display: grid;
 	transform: rotate(183deg);
@@ -20,7 +20,7 @@
 	filter: opacity(.8);
 
 	& svg {
-		transform: rotate(6deg);
+		transform: rotate(-3deg);
 		scale: 0.5;
 	}
 }
