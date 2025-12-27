@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.15.4",
-		"core": "link:../hanabi_core",
+		"core": "workspace:../hanabi_core",
 		"esbuild": "^0.27.2",
 		"esbuild-plugin-solid": "^0.6.0",
 		"esbuild-solid": "^0.0.1",

@@ -15,7 +15,7 @@ export default defineConfig({
 					if (file.names[0] == "index.css") {
 						return 'assets/styles.css';
 					} else if (file.names[0] == "hanabi.svg") {
-						return 'assets/favicon.svg';
+						return 'assets/hanabi.svg';
 					} else {
 						return `assets/[name]-[hash].[ext]`
 					}

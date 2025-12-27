@@ -4,7 +4,12 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build:main": "cd hanabi && pnpm build",
+		"build:core": "cd hanabi_core && pnpm build",
+		"build:server": "pnpm build:main && cp hanabi/build -r ../../rust/hanabi/",
+		"dev": "pnpm build:server && cd ../../rust/hanabi && cargo run",
+		"hmr": "chokidar \"hanabi/src/**/*.tsx\" \"hanabi/src/**/*.css\" \"hanabi_core/src/**/*.tsx\" \"hanabi_core/src/**/*.css\" -c \"pnpm dev\" --verbose"
 	},
 	"keywords": [],
 	"author": "",
@@ -12,6 +17,7 @@
 	"packageManager": "pnpm@10.25.0",
 	"dependencies": {
 		"@solidjs/router": "^0.15.4",
+		"chokidar-cli": "^3.0.0",
 		"esbuild": "^0.27.2",
 		"esbuild-plugin-solid": "^0.6.0",
 		"esbuild-solid": "^0.0.1",
