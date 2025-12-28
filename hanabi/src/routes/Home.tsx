@@ -18,7 +18,7 @@ export const Home: Component = () => {
 
 export const Apps = () => {
 	const film = parse_svg(filmSVG);
-	const colors = parse_svg(colorsSVG);
+	const drive = parse_svg(driveSVG);
 	const paperplane = parse_svg(chatSVG);
 	const events = parse_svg(eventsSVG);
 
@@ -36,7 +36,7 @@ export const Apps = () => {
 			</div>
 			<div class={`${styles.A3} ${styles.App}`} >
 				<a href="#" >
-					{colors}
+					{drive}
 				</a>
 			</div>
 			<div class={`${styles.A4} ${styles.App}`} >

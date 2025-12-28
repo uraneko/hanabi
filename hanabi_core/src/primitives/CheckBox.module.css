@@ -68,6 +68,10 @@
 	transition: border-radius 150ms ease-in-out, width 150ms ease-in-out, height 150ms ease-in-out;
 }
 
+.Text {
+	user-select: none;
+}
+
 .TickMark {
 	-moz-user-select: none;
 	user-select: none;

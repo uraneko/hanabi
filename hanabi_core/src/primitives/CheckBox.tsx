@@ -11,16 +11,6 @@ const defaultProps = {
 
 };
 
-// type CheckBoxProps = {
-// 	width: number,
-// 	height: number,
-// 	state: boolean,
-// 	accent: string,
-// 	tick: string,
-// 	name: string,
-// 	legend: string,
-// };
-
 export const CheckBox: Component = (_props: _) => {
 	const props = mergeProps(defaultProps, _props);
 
@@ -66,7 +56,7 @@ export const CheckBox: Component = (_props: _) => {
 				</div>
 			</div>
 			<Show when={legend() !== undefined} >
-				<legend style={{ color: accent() }}>{legend()}</legend>
+				<legend class={styles.Text} style={{ color: accent() }}>{legend()}</legend>
 			</Show>
 		</div >
 	);

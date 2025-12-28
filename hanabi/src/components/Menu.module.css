@@ -2,8 +2,9 @@
 	grid-row: 1/2;
 	grid-column: 3/10;
 	justify-content: end;
-	align-items: center;
+	align-items: start;
 	display: flex;
+	margin-top: 0.7em;
 }
 
 .Entry {
@@ -13,8 +14,6 @@
 	align-items: center;
 	justify-content: end;
 	padding-right: 1em;
-
-
 }
 
 .Path {

@@ -1,75 +1,64 @@
 import { type Component, createEffect, createSignal, createResource, Switch, Match } from 'solid-js';
-
 import styles from './Initializer.module.css';
-
 import { Splash } from 'core/primitives';
-import { use_ctx } from 'core/context';
-import { _ } from 'core';
+import { user_ctx } from 'core/context';
+import { _, is } from 'core';
 
 export const Initializer: Component = () => {
+	createEffect(() => {
+		const initializer = document.querySelector(`.${styles.Initializer}`);
+		if (initializer !== undefined) {
+			const parent = initializer!.parentElement!;
+			if (parent.childNodes.length > 1) {
+				parent.parentElement!.appendChild(initializer!);
+				parent.remove();
+			}
+		}
+	});
+
 	return (
 		<div class={`${styles.Initializer}`}>
 			<Splash />
-
 			<Negotiator />
 		</div>
 	);
 };
 
-function validate_params(user: _): boolean {
-	return [0, 1, 2, 4].includes(user())
-}
-
-export const Validate = (props: _) => {
-	let user = () => props.user;
-	let auth_is_valid = validate_params(user());
-
-	return (
-		<span class={styles.Validate}>
-			<span>validating local params...</span>
-			<Switch>
-				<Match when={!auth_is_valid}>
-					<span>&nbsp;err!</span>
-				</Match>
-				<Match when={auth_is_valid} >
-					<span>&nbsp;ok</span>
-				</Match>
-			</Switch>
-		</span>
-	);
-};
-
-const host = "http://127.10.10.1:6680";
-async function negotiate() {
-	let resp = await fetch(host + "/auth/user", {
+// const host = "http://127.10.10.1:6680";
+async function negotiate_deprecated(name?: string) {
+	let resp = await fetch(`/auth/user?name=${name === undefined ? "" : name}`, {
 		method: "GET",
 		credentials: "include",
 	});
-	const tkn = await resp.text();
 
-	return Number(tkn);
+	return await resp.text();
 }
 
-function validate_negotiation(auth: number | undefined): boolean {
-	return auth !== undefined && auth!.constructor.name === "Number" && !Number.isNaN(auth!);
+async function negotiate(name?: string) {
+	let resp = { text: async () => name ?? "user_name_alpha" };
+
+	return await resp.text();
 }
+
 export const Negotiate = (props: _) => {
 	const re_user = () => props.re_user;
-	let [auth] = createResource(negotiate);
+	const user = () => props.user;
+	let [auth] = createResource(user().name, negotiate);
 
 	createEffect(() => {
-		(() => re_user()((level: number) =>
-			auth() === undefined ? level : Number(auth())
-		))();
+		(() => re_user()((user: _) => {
+			if (is(auth())) { user.name = auth(); }
+			return user;
+		}))();
 	});
 
 	return (<span class={styles.Negotiate}>
 		<span>negotiating user authentication...</span>
 		<Switch>
-			<Match when={validate_negotiation(auth())}>
+			<Match when={is(user().name)}>
 				<span>&nbsp;ok</span>
 			</Match>
-			<Match when={!validate_negotiation(auth())}>
+			<Match when={!is(user().name)}>
 				<span>&nbsp;err!</span>
 			</Match>
 		</Switch>
@@ -79,12 +68,11 @@ export const Negotiate = (props: _) => {
 
 // await new Promise(_ => setTimeout(_, 4000))
 export const Negotiator: Component = () => {
-	const { user, re_user } = use_ctx();
+	const { user, re_user } = user_ctx();
 	console.log("loading app");
 
 	return (<div class={styles.Negotiator}>
-		<Validate user={user} />
-		<Negotiate re_user={re_user} />
+		<Negotiate user={user} re_user={re_user} />
 	</div>);
 }
 

@@ -1,4 +1,6 @@
 .Initializer {
+	background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%);
+
 	grid-column: 4/7;
 	grid-row: 4/7;
 

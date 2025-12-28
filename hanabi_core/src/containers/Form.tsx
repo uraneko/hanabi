@@ -6,10 +6,15 @@ export const Form: Component<{ children: JSX.Element, method: "get" | "post", ac
 	const action = () => props.action;
 	const method = () => props.method;
 	const children = () => props.children;
+	const target = () => props.target;
+	return target() === undefined ?
+		(<form class={styles.Form} action={action()} method={method()}  >
+			{children()}
+		</form>) :
+		(<form class={styles.Form} action={action()} method={method()} target={target()} >
+			{children()}
+		</form>)
 
-	return (<form class={styles.Form} action={action()} method={method()} >
-		{children()}
-	</form>);
 };
 
 export { styles }

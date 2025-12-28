@@ -52,4 +52,5 @@
 	transition: transform 100ms ease-out, font-size 100ms ease-out;
 	cursor: default;
 	cursor: text;
+	user-select: none;
 }

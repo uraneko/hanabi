@@ -11,13 +11,14 @@ export const Signin: Component<{ swap_call: _ }> = (props: _) => {
 
 	return (
 		<Form
-			action="http://127.10.10.1:6680/auth/user"
+			action="/auth/user"
 			method="post"
+			target="_blank"
 		>
 			<h4 class={fstyles.FormTitle}>Login</h4>
 			<TextField type="text" name="user_name" legend="User Name" />
-			<PasswordField />
-			<CheckBox name="user_remember" legend="&nbsp;remember me" />
+			<PasswordField name="user_pswd" />
+			<CheckBox name="persist_session" legend="&nbsp;persist session" />
 			<Button type="submit" class={fstyles.SubmitButton}>Login</Button>
 			<Separator />
 			<TextLine>

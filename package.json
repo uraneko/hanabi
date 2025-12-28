@@ -9,7 +9,7 @@
 		"build:core": "cd hanabi_core && pnpm build",
 		"build:server": "pnpm build:main && cp hanabi/build -r ../../rust/hanabi/",
 		"dev": "pnpm build:server && cd ../../rust/hanabi && cargo run",
-		"hmr": "chokidar \"hanabi/src/**/*.tsx\" \"hanabi/src/**/*.css\" \"hanabi_core/src/**/*.tsx\" \"hanabi_core/src/**/*.css\" -c \"pnpm dev\" --verbose"
+		"hmr": "chokidar hanabi/src/* hanabi/src/**/* hanabi_cre/src/* hanabi_core/src/**/* -c 'nu -c \"do --ignore-errors { ps | where name == hanabi | last | kill $in.pid }\"; pnpm dev' --verbose"
 	},
 	"keywords": [],
 	"author": "",

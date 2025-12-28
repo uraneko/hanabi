@@ -1,8 +1,11 @@
-import { type Component, createSignal, createResource, Show, JSX } from 'solid-js';
+import { type Component, createSignal, createResource, Switch, Match, Show, JSX } from 'solid-js';
 import { Button, Anchor } from "core/primitives";
-import { _ } from "core";
+import { _, is } from "core";
+import { user_ctx } from "core/context";
 import styles from './Menu.module.css';
+
 import { parse_svg } from "core";
+import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import loginSVG from "../../../assets/icons/login2.svg?raw";
 import registerSVG from "../../../assets/icons/register2.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
@@ -10,9 +13,13 @@ import colorsSVG from "../../../assets/icons/colors.svg?raw";
 
 
 export const Menu = () => {
+	const { user, re_user } = user_ctx();
+
 	const login = parse_svg(loginSVG);
+	const logout = parse_svg(logoutSVG);
 	const register = parse_svg(registerSVG);
 	const colors = parse_svg(colorsSVG);
+
 	const colorscheme = () => {
 		const style = document.body.style;
 		const is_on = style.getPropertyValue("filter");
@@ -25,11 +32,27 @@ export const Menu = () => {
 
 	return (
 		<div class={styles.Menu}>
-			<EntryButton call={colorscheme} icon={colors} text="colors" />
-			<EntryAnchor link="/auth" icon={login} text="login" />
-			<EntryAnchor link="/auth" icon={register} text="register" />
+			<Switch>
+				<Match when={!is(user().name)}>
+					<EntryButton call={colorscheme} icon={colors} text="colors" />
+					<EntryAnchor link="/auth" icon={login} text="login" />
+					<EntryAnchor link="/auth" icon={register} text="register" />
+				</Match>
+				<Match when={is(user().name)}>
+					<EntryAnchor link="/" icon={logout} text="logout" />
+				</Match>
+			</Switch>
 		</div>
 	);
+};
+
+export const UserAppartus = () => {
+	// 	return (
+	// 		<Button>
+	// 			<span class={styles.PFP}>{pfp_letter}</span>
+	// 			<span>{user_name}</span>
+	// 		</Button>
+	// 	);
 };
 
 export const EntryAnchor: Component<{ link: string, text: string, icon: SVGSVGElement }> = (props: _) => {

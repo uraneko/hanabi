@@ -10,16 +10,16 @@ export const Signup: Component<{ swap_call: _ }> = (props: _) => {
 	const call = () => props.swap_call;
 	return (
 		<Form
-			action="http://127.10.10.1:6680/auth/user"
+			action="/auth/user"
 			method="post"
 			target="_blank"
 		>
 			<input type="hidden" name="method_override" value="put" />
 			<h4 class={styles.FormTitle}>Register</h4>
 			<TextField type="text" name="user_name" legend="User Name" />
-			<PasswordField name="user_psw" />
-			<PasswordField name="verify_psw" legend="Verify Password" />
-			<CheckBox name="auto_login" legend="&nbsp;login automatically" />
+			<PasswordField name="user_pswd" />
+			<PasswordField legend="Verify Password" />
+			<CheckBox name="auto_login" legend="&nbsp;auto login" />
 			<Button class={fstyles.SubmitButton}>Register</Button>
 			<Separator />
 			<TextLine>

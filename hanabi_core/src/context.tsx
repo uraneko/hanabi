@@ -1,3 +1,3 @@
-import { use_ctx } from './context/user';
+import { user_ctx } from './context/user';
 
-export { use_ctx };
+export { user_ctx };
