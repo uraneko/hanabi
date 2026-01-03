@@ -8,7 +8,7 @@ export const Logo: Component = () => {
 
 	return (
 		<div class={styles.Logo}>
-			<a href="/" class={styles.Anchor}>
+			<a href="/" class={styles.Actuator}>
 				{hanabi}
 			</a>
 		</div >

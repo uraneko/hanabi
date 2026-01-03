@@ -1,9 +1,0 @@
-.Anchor {
-	&:focus {
-		outline: none;
-	}
-
-	&:not(:hover) {
-		text-decoration: none;
-	}
-}

@@ -4,7 +4,7 @@
 	padding-top: 6px;
 	position: fixed;
 
-	& .Anchor {
+	& .Actuator {
 		display: flex;
 		flex-direction: row;
 		justify-content: start;

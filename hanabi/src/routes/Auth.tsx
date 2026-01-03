@@ -1,9 +1,9 @@
-import { type Component, createSignal, createContext, useContext, Switch, Match } from 'solid-js';
+import { type Component, createSignal, createEffect, createContext, useContext, Switch, Match } from 'solid-js';
 import styles from './Auth.module.css';
 import { user_ctx } from "core/context";
 import { Signup } from "../components/Signup";
 import { Signin } from "../components/Signin";
-import { is, _ } from "core";
+import { _ } from "core";
 
 const [form, set_form] = createSignal(0);
 const form_context = createContext({ form, set_form });
@@ -25,7 +25,7 @@ export const Auth: Component = () => {
 	return (
 		<div class={styles.Auth} >
 			<Switch>
-				<Match when={!is(user().name)} >
+				<Match when={user().name === undefined}>
 					<Switch>
 						<Match when={form() == 0}>
 							<Signin swap_call={swap_form} />
@@ -35,19 +35,19 @@ export const Auth: Component = () => {
 						</Match>
 					</Switch>
 				</Match>
-				<Match when={is(user().name)} >
-					<NothingToDo text="You are already signed in." />
+				<Match when={user().name !== undefined}>
+					<TurnBack text="You are already signed in." />
 				</Match>
 			</Switch>
 		</div>
 	);
 };
 
-export const NothingToDo: Component<{ text: string }> = (props: _) => {
+export const TurnBack: Component<{ text: string }> = (props: _) => {
 	const text = () => props.text;
 	return (
-		<div class={styles.NothingToDo} >
-			<span class={styles.NothingText} >
+		<div class={styles.TurnBack} >
+			<span class={styles.TurnBackText} >
 				{text()}
 			</span>
 		</div >

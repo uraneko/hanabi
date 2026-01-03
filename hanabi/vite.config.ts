@@ -2,12 +2,12 @@ import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
 
 export default defineConfig({
-	plugins: [solidPlugin()],
-	server: {
-		port: 3000,
+	resolve: {
+		dedupe: ['solid-js'],
 	},
+	plugins: [solidPlugin()],
 	build: {
-		target: 'esnext',
+		// target: 'esnext',
 		outDir: "build",
 		rollupOptions: {
 			output: {

@@ -2,7 +2,7 @@ import { type Component, createSignal } from 'solid-js';
 import { type _ } from '../misc';
 import styles from './TextField.module.css';
 
-export const TextField: Component = (props: _) => {
+export const TextField: Component<{ legend: string, name: string, type: string }> = (props: _) => {
 	const [focused, focus_up] = createSignal(false);
 	const focus_signal = () => focus_up((on: boolean) => {
 		return true;

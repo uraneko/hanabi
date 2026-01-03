@@ -69,7 +69,6 @@ export const Negotiate = (props: _) => {
 // await new Promise(_ => setTimeout(_, 4000))
 export const Negotiator: Component = () => {
 	const { user, re_user } = user_ctx();
-	console.log("loading app");
 
 	return (<div class={styles.Negotiator}>
 		<Negotiate user={user} re_user={re_user} />

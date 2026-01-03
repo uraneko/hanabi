@@ -1,5 +1,5 @@
-import { type Component, createSignal, createResource, Switch, Match, Show, JSX } from 'solid-js';
-import { Button, Anchor } from "core/primitives";
+import { type Component, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
+import { Actuator } from "core/primitives";
 import { _, is } from "core";
 import { user_ctx } from "core/context";
 import styles from './Menu.module.css';
@@ -31,7 +31,6 @@ export const Menu = () => {
 	};
 
 	const clear_user = () => re_user((user: _) => {
-		// window.location = window.origin as Location | (string & Location);
 		return { name: undefined };
 	});
 
@@ -39,7 +38,7 @@ export const Menu = () => {
 	const login_form = () => set_form(0);
 
 	return (
-		<div class={styles.Menu}>
+		<div class={styles.Menu} >
 			<Switch>
 				<Match when={!is(user().name)}>
 					<EntryButton call={colorscheme} icon={colors} text="colors" />
@@ -57,10 +56,10 @@ export const Menu = () => {
 
 export const UserAppartus = () => {
 	// 	return (
-	// 		<Button>
+	// 		<Actuator>
 	// 			<span class={styles.PFP}>{pfp_letter}</span>
 	// 			<span>{user_name}</span>
-	// 		</Button>
+	// 		</Actuator>
 	// 	);
 };
 
@@ -72,12 +71,12 @@ export const EntryAnchor: Component<{ link: string, text: string, icon: SVGSVGEl
 
 	return (
 		<div class={styles.Entry}>
-			<Anchor link={link()} call={call()} class={styles.Path}>
+			<Actuator link={link()} call={call()} class={styles.Path}>
 				<Show when={icon() !== undefined}>
 					{icon()}
 				</Show>
 				<span>{text()}</span>
-			</Anchor>
+			</Actuator>
 		</div >
 	);
 };
@@ -89,12 +88,12 @@ export const EntryButton: Component<{ call: _, text: string, icon?: SVGSVGElemen
 
 	return (
 		<div class={styles.Entry}>
-			<Button call={call()} class={styles.Path}>
+			<Actuator call={call()} class={styles.Path}>
 				<Show when={icon() !== undefined}>
 					{icon()}
 				</Show>
 				<span>{text()}</span>
-			</Button >
+			</Actuator >
 		</div>
 	);
 };

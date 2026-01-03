@@ -28,7 +28,6 @@ function outer_class_contains(element: HTMLElement | null, substring: string): b
 
 export const App: Component = () => {
 	const { user, re_user } = user_ctx();
-	console.log(user());
 
 	const session_rotation = (e: MouseEvent) =>
 		re_user((user: _) => {

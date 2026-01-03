@@ -12,6 +12,8 @@
 }
 
 .App {
+	cursor: pointer;
+
 	align-self: start;
 	background: aliceblue;
 	box-shadow: 9px 11px 0 #25272833;
@@ -28,7 +30,8 @@
 	color: #485d6c;
 	fill: #485d6c;
 	stroke: #485d6c;
-	transition: color 178ms ease-in, fill 178ms ease-in, stroke 178ms ease-in;
+	transform: none;
+	transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out;
 
 	& svg {
 		width: 4em;
@@ -36,10 +39,18 @@
 	}
 
 	&:hover {
-		transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out;
+		transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out;
 		fill: var(--accent);
 		color: var(--accent);
 		stroke: var(--accent);
+
+		&.LeftRtt {
+			transform: rotate3D(0, 0, -1, 5deg);
+		}
+
+		&.RightRtt {
+			transform: rotate3D(0, 0, 1, 5deg);
+		}
 	}
 }
 

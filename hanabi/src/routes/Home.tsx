@@ -1,4 +1,4 @@
-import { type Component, createResource, createEffect, For } from 'solid-js';
+import { type Component, createResource, createSignal, For } from 'solid-js';
 
 import styles from './Home.module.css';
 import { parse_svg, _ } from "core";
@@ -20,7 +20,7 @@ async function get_apps_meta() {
 	return [
 		{
 			name: "calendar", icon: parse_svg(eventsSVG), accent: "#00a86b",
-			depict: "manage your schedule and happenings"
+			depict: "manage your schedule and happenings [no yet avalable]"
 		},
 		{
 			// "#9aca43" 
@@ -29,40 +29,42 @@ async function get_apps_meta() {
 		},
 		{
 			name: "comms", icon: parse_svg(chatSVG), accent: "#1475dc",
-			depict: "chat with others, be it in text, audio or video format"
+			depict: "talk with people in text, audio or video format [no yet avalable]"
 		},
 		{
 			name: "vms", icon: parse_svg(canvasSVG), accent: "#ce1f57",
-			depict: "manage your virtual machines"
+			depict: "manage your virtual machines [no yet avalable]"
 		}];
 }
 
 export const Apps = () => {
-	let [apps] = createResource(get_apps_meta);
-
-	// mutate((apps: _) =>
-	// 	apps.map((app: _) => App({ icon: app.icon, depict: app.depict, name: app.name }))
-	// );
+	const [apps] = createResource(get_apps_meta);
+	const [rtt, re_rtt] = createSignal(0);
 
 	return (
 		<div class={styles.Apps}>
 			<For each={apps()}>
-				{(app: _) => <App icon={app.icon} depict={app.depict} name={app.name} accent={app.accent} />}
+				{(app: _) => <App icon={app.icon} depict={app.depict} name={app.name} accent={app.accent} rtt={rtt()} re_rtt={re_rtt} />}
 			</For>
 		</div>
 	);
 };
 
-export const App: Component<{ name: string, depict: string, icon: SVGSVGElement, accent: string }> =
+export const App: Component<{ name: string, depict: string, icon: SVGSVGElement, accent: string, rtt: _, re_rtt: _ }> =
 	(props: _) => {
+		const rtt = () => props.rtt;
+		const re_rtt = () => props.re_rtt;
+
 		const title = () => props.name;
 		const depict = () => props.depict;
 		const icon = () => props.icon;
 		const accent = () => props.accent;
 
-		return (<div class={styles.App} style={{
+		const change_rtt = () => re_rtt()((rotate: number) => Math.abs(1 - rotate));
+
+		return (<div class={`${styles.App} ${rtt() == 0 ? styles.RightRtt : styles.LeftRtt}`} style={{
 			"--accent": accent()
-		}} >
+		}} on:mouseenter={change_rtt}>
 			{icon()}
 			<span class={styles.AppText} >
 				<span class={styles.AppTitle}>

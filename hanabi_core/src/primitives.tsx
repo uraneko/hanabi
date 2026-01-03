@@ -5,15 +5,13 @@ import { Splash } from './primitives/Splash';
 import { PasswordField } from './primitives/PasswordField';
 import { TextField } from './primitives/TextField';
 import { TextLine } from './primitives/TextLine';
-import { Button } from './primitives/Button';
-import { Anchor } from './primitives/Anchor';
+import { Actuator } from './primitives/Actuator';
 import { Separator } from './primitives/Separator';
 
 export {
 	Separator,
 	TextLine,
-	Button,
-	Anchor,
+	Actuator,
 	CheckBox,
 	Logo,
 	Item,
