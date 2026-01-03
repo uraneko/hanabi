@@ -3,6 +3,7 @@ import { Button, Anchor } from "core/primitives";
 import { _, is } from "core";
 import { user_ctx } from "core/context";
 import styles from './Menu.module.css';
+import { form_ctx } from '../routes//Auth';
 
 import { parse_svg } from "core";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
@@ -10,10 +11,9 @@ import loginSVG from "../../../assets/icons/login2.svg?raw";
 import registerSVG from "../../../assets/icons/register2.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
 
-
-
 export const Menu = () => {
 	const { user, re_user } = user_ctx();
+	const { form, set_form } = form_ctx();
 
 	const login = parse_svg(loginSVG);
 	const logout = parse_svg(logoutSVG);
@@ -30,16 +30,25 @@ export const Menu = () => {
 		}
 	};
 
+	const clear_user = () => re_user((user: _) => {
+		// window.location = window.origin as Location | (string & Location);
+		return { name: undefined };
+	});
+
+	const register_form = () => set_form(1);
+	const login_form = () => set_form(0);
+
 	return (
 		<div class={styles.Menu}>
 			<Switch>
 				<Match when={!is(user().name)}>
 					<EntryButton call={colorscheme} icon={colors} text="colors" />
-					<EntryAnchor link="/auth" icon={login} text="login" />
-					<EntryAnchor link="/auth" icon={register} text="register" />
+					<EntryAnchor link="/auth" call={login_form} icon={login} text="login" />
+					<EntryAnchor link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
 				<Match when={is(user().name)}>
-					<EntryAnchor link="/" icon={logout} text="logout" />
+					<EntryButton call={colorscheme} icon={colors} text="colors" />
+					<EntryAnchor link="/" call={clear_user} icon={logout} text="logout" />
 				</Match>
 			</Switch>
 		</div>
@@ -55,14 +64,15 @@ export const UserAppartus = () => {
 	// 	);
 };
 
-export const EntryAnchor: Component<{ link: string, text: string, icon: SVGSVGElement }> = (props: _) => {
+export const EntryAnchor: Component<{ link: string, text: string, icon: SVGSVGElement, call?: _ }> = (props: _) => {
 	const icon = () => props.icon;
 	const text = () => props.text;
 	const link = () => props.link;
+	const call = () => props.call;
 
 	return (
 		<div class={styles.Entry}>
-			<Anchor link={link()} class={styles.Path}>
+			<Anchor link={link()} call={call()} class={styles.Path}>
 				<Show when={icon() !== undefined}>
 					{icon()}
 				</Show>

@@ -1,15 +1,22 @@
-import { type Component, createSignal, Switch, Match } from 'solid-js';
+import { type Component, createSignal, createContext, useContext, Switch, Match } from 'solid-js';
 import styles from './Auth.module.css';
 import { user_ctx } from "core/context";
 import { Signup } from "../components/Signup";
 import { Signin } from "../components/Signin";
-import { is } from "core";
+import { is, _ } from "core";
+
+const [form, set_form] = createSignal(0);
+const form_context = createContext({ form, set_form });
+
+export function form_ctx() {
+	return useContext(form_context);
+}
 
 export const Auth: Component = () => {
 	const { user, re_user } = user_ctx();
 	// 0 for login 
 	// 1 for register
-	const [form, set_form] = createSignal(0);
+	const { form, set_form } = form_ctx();
 
 	const swap_form = () => set_form((form: number) =>
 		Math.abs(1 - form)
@@ -29,9 +36,20 @@ export const Auth: Component = () => {
 					</Switch>
 				</Match>
 				<Match when={is(user().name)} >
-					<span>you are already signed in.</span>
+					<NothingToDo text="You are already signed in." />
 				</Match>
 			</Switch>
 		</div>
+	);
+};
+
+export const NothingToDo: Component<{ text: string }> = (props: _) => {
+	const text = () => props.text;
+	return (
+		<div class={styles.NothingToDo} >
+			<span class={styles.NothingText} >
+				{text()}
+			</span>
+		</div >
 	);
 };

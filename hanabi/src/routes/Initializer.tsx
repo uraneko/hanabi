@@ -35,7 +35,7 @@ async function negotiate_deprecated(name?: string) {
 }
 
 async function negotiate(name?: string) {
-	let resp = { text: async () => name ?? "user_name_alpha" };
+	let resp = { text: async () => name ?? "scarecrow" };
 
 	return await resp.text();
 }
@@ -47,7 +47,7 @@ export const Negotiate = (props: _) => {
 
 	createEffect(() => {
 		(() => re_user()((user: _) => {
-			if (is(auth())) { user.name = auth(); }
+			if (is(auth())) { re_user()(auth()); }
 			return user;
 		}))();
 	});
