@@ -4,6 +4,7 @@ import { _, is } from "core";
 import { user_ctx } from "core/context";
 import styles from './Menu.module.css';
 import { form_ctx } from '../routes//Auth';
+import { is_login_session, is_authless_session } from '../App';
 
 import { parse_svg } from "core";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
@@ -30,8 +31,8 @@ export const Menu = () => {
 		}
 	};
 
-	const clear_user = () => re_user((user: _) => {
-		return { name: undefined };
+	const clear_user = () => re_user((_user: _) => {
+		return { name: "" };
 	});
 
 	const register_form = () => set_form(1);
@@ -40,12 +41,12 @@ export const Menu = () => {
 	return (
 		<div class={styles.Menu} >
 			<Switch>
-				<Match when={!is(user().name)}>
+				<Match when={is_authless_session(user())}>
 					<EntryButton call={colorscheme} icon={colors} text="colors" />
 					<EntryAnchor link="/auth" call={login_form} icon={login} text="login" />
 					<EntryAnchor link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
-				<Match when={is(user().name)}>
+				<Match when={is_login_session(user())}>
 					<EntryButton call={colorscheme} icon={colors} text="colors" />
 					<EntryAnchor link="/" call={clear_user} icon={logout} text="logout" />
 				</Match>
