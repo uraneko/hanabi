@@ -7,8 +7,10 @@ import { TextField } from './primitives/TextField';
 import { TextLine } from './primitives/TextLine';
 import { Actuator } from './primitives/Actuator';
 import { Separator } from './primitives/Separator';
+import { WildText } from './primitives/WildText';
 
 export {
+	WildText,
 	Separator,
 	TextLine,
 	Actuator,

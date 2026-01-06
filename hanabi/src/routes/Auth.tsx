@@ -3,6 +3,7 @@ import styles from './Auth.module.css';
 import { user_ctx } from "core/context";
 import { Signup } from "../components/Signup";
 import { Signin } from "../components/Signin";
+import { WildText } from "core/primitives";
 import { _ } from "core";
 import { is_authless_session, is_login_session } from '../App';
 
@@ -37,20 +38,10 @@ export const Auth: Component = () => {
 					</Switch>
 				</Match>
 				<Match when={is_login_session(user())}>
-					<TurnBack text="You are already logged-in." />
+					<WildText text="You are already logged-in." />
 				</Match>
 			</Switch>
 		</div>
 	);
 };
 
-export const TurnBack: Component<{ text: string }> = (props: _) => {
-	const text = () => props.text;
-	return (
-		<div class={styles.TurnBack} >
-			<span class={styles.TurnBackText} >
-				{text()}
-			</span>
-		</div >
-	);
-};

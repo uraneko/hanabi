@@ -68,3 +68,16 @@
 .AppDepict {
 	font-size: 14pt;
 }
+
+.Greetings {
+	display: flex;
+	flex-direction: column;
+	width: max-content;
+	padding: 2em 4em;
+	color: #485d6c;
+	font-family: carlito;
+	font-weight: bold;
+	font-size: 24pt;
+	margin-left: 40%;
+	margin-top: 15%;
+}

@@ -1,7 +1,10 @@
-import { type Component, createResource, createSignal, For } from 'solid-js';
-
-import styles from './Home.module.css';
+import { type Component, createResource, createSignal, For, Switch, Match } from 'solid-js';
 import { parse_svg, _ } from "core";
+import { is_login_session, is_authless_session } from '../App';
+import { user_ctx } from 'core/context';
+import { WildText } from 'core/primitives';
+import styles from './Home.module.css';
+
 import chatSVG from "../../../assets/icons/chat.svg?raw"
 import driveSVG from "../../../assets/icons/drive.svg?raw"
 import eventsSVG from "../../../assets/icons/events.svg?raw"
@@ -38,15 +41,23 @@ async function get_apps_meta() {
 }
 
 export const Apps = () => {
+	const { user, re_user } = user_ctx();
 	const [apps] = createResource(get_apps_meta);
 	const [rtt, re_rtt] = createSignal(0);
 
 	return (
-		<div class={styles.Apps}>
-			<For each={apps()}>
-				{(app: _) => <App icon={app.icon} depict={app.depict} name={app.name} accent={app.accent} rtt={rtt()} re_rtt={re_rtt} />}
-			</For>
-		</div>
+		<Switch>
+			<Match when={is_login_session(user())}>
+				<div class={styles.Apps}>
+					<For each={apps()}>
+						{(app: _) => <App icon={app.icon} depict={app.depict} name={app.name} accent={app.accent} rtt={rtt()} re_rtt={re_rtt} />}
+					</For>
+				</div>
+			</Match>
+			<Match when={true}>
+				<WildText class={styles.Greetings} text="welcome" />
+			</Match>
+		</Switch>
 	);
 };
 
