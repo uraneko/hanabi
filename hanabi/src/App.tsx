@@ -1,4 +1,4 @@
-import { type Component, Show, Switch, Match, createResource } from 'solid-js';
+import { type Component, Show, Switch, Match, createSignal, createContext, useContext, createResource } from 'solid-js';
 import { Router, Route } from "@solidjs/router";
 import { Home } from './routes/Home';
 import { Auth } from './routes/Auth';
@@ -42,14 +42,20 @@ function dev_ssn_rtt(user: _, e: Event): { name: string | undefined } {
 
 export const App: Component = () => {
 	const { user, re_user } = user_ctx();
+	const { active, up_active } = active_ctx();
 
+	// update the active element 
+	// const update_active = (e: Event) => up_active((active: Element) => {
+	// 	return e.target as Element ?? active
+	// });
+
+	// log-in/out on the frontend state for development ease
 	const session_rotation = (e: MouseEvent) =>
 		re_user((user: _) => dev_ssn_rtt(user, e));
 
-	const show = () => () => console.log("//", user())
-
+	// const show = () => () => console.log("//", user());
 	return (
-		<div class={styles.App} on:click={session_rotation} >
+		<div class={styles.App} on:click={session_rotation}>
 			<Switch>
 				<Match when={is_uninit_session(user())}>
 					<Initialize />
@@ -83,3 +89,10 @@ export function is_uninit_session(user: User): boolean {
 export function is_login_session(user: User): boolean {
 	return user.name === undefined ? false : user.name.constructor.name === "String" ? user.name.length !== 0 : true;
 }
+
+const [active, up_active] = createSignal(document.body as Element);
+export const active_context = createContext({ active, up_active });
+export function active_ctx() {
+	return useContext(active_context)
+}
+

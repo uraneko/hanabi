@@ -1,16 +1,21 @@
 import { type Component, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
 import { Actuator } from "core/primitives";
-import { _, is } from "core";
+import { _, spread_classes } from "core";
 import { user_ctx } from "core/context";
 import styles from './Menu.module.css';
-import { form_ctx } from '../routes//Auth';
-import { is_login_session, is_authless_session } from '../App';
+import { styles as umstyles } from './UserMenu';
+import { form_ctx } from '../routes/Auth';
+import { UserMenu } from './UserMenu';
+import { Settings } from './Settings';
+import { active_ctx, is_login_session, is_authless_session } from '../App';
 
 import { parse_svg } from "core";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import loginSVG from "../../../assets/icons/login2.svg?raw";
 import registerSVG from "../../../assets/icons/register2.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
+import rocketSVG from "../../../assets/icons/rocket.svg?raw";
+import homeSVG from "../../../assets/icons/home.svg?raw";
 
 export const Menu = () => {
 	const { user, re_user } = user_ctx();
@@ -20,6 +25,9 @@ export const Menu = () => {
 	const logout = parse_svg(logoutSVG);
 	const register = parse_svg(registerSVG);
 	const colors = parse_svg(colorsSVG);
+	const rocket = parse_svg(rocketSVG);
+	const home = parse_svg(homeSVG);
+
 
 	const colorscheme = () => {
 		const style = document.body.style;
@@ -31,40 +39,27 @@ export const Menu = () => {
 		}
 	};
 
-	const clear_user = () => re_user((_user: _) => {
-		return { name: "" };
-	});
-
 	const register_form = () => set_form(1);
 	const login_form = () => set_form(0);
 
 	return (
 		<div class={styles.Menu} >
+			<ButtonItem call={colorscheme} icon={colors} text="colors" />
+			<ContentItem class={styles.ContentItem} content={<Settings />} icon={rocket} text="settings" />
 			<Switch>
 				<Match when={is_authless_session(user())}>
-					<EntryButton call={colorscheme} icon={colors} text="colors" />
-					<EntryAnchor link="/auth" call={login_form} icon={login} text="login" />
-					<EntryAnchor link="/auth" call={register_form} icon={register} text="register" />
+					<AnchorItem link="/auth" call={login_form} icon={login} text="login" />
+					<AnchorItem link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
 				<Match when={is_login_session(user())}>
-					<EntryButton call={colorscheme} icon={colors} text="colors" />
-					<EntryAnchor link="/" call={clear_user} icon={logout} text="logout" />
+					<ContentItem class={styles.ContentItem} content={<UserMenu />} icon={home} text={user().name!} />
 				</Match>
 			</Switch>
 		</div>
 	);
 };
 
-export const UserAppartus = () => {
-	// 	return (
-	// 		<Actuator>
-	// 			<span class={styles.PFP}>{pfp_letter}</span>
-	// 			<span>{user_name}</span>
-	// 		</Actuator>
-	// 	);
-};
-
-export const EntryAnchor: Component<{ link: string, text: string, icon: SVGSVGElement, call?: _ }> = (props: _) => {
+export const AnchorItem: Component<{ link: string, text: string, icon: SVGSVGElement, call?: _ }> = (props: _) => {
 	const icon = () => props.icon;
 	const text = () => props.text;
 	const link = () => props.link;
@@ -82,7 +77,7 @@ export const EntryAnchor: Component<{ link: string, text: string, icon: SVGSVGEl
 	);
 };
 
-export const EntryButton: Component<{ call: _, text: string, icon?: SVGSVGElement }> = (props: _) => {
+export const ButtonItem: Component<{ call: _, text: string, icon?: SVGSVGElement }> = (props: _) => {
 	const icon = () => props.icon;
 	const text = () => props.text;
 	const call = () => props.call;
@@ -99,3 +94,41 @@ export const EntryButton: Component<{ call: _, text: string, icon?: SVGSVGElemen
 	);
 };
 
+export const ContentItem: Component<{ children?: JSX.Element, text: string, icon: SVGSVGElement, content: JSX.Element, class?: string | string[] }> = (props: _) => {
+	const { active, up_active } = active_ctx();
+	const icon = () => props.icon;
+	const text = () => props.text;
+	const call = () => props.call;
+	const cls = () => props.class;
+	const content = () => props.content;
+
+	const [show, re_show] = createSignal(false);
+	const update = (e: Event) => re_show((show: boolean) => {
+		// e.stopImmediatePropagation();
+		return !show
+	});
+
+	// const activity = (e: Event) => re_show((show: boolean) => {
+	// 	console.log(1);
+	// 	// e.stopImmediatePropagation();
+	// 	if (!show) return false;
+	// 	const user_menu = document.body.querySelector(`.${umstyles.UserMenu}`);
+	//
+	// 	return user_menu === null ? false : user_menu.contains(active());
+	// });
+	// document.body.addEventListener("mousedown", activity);
+
+	return (
+		<div class={styles.ContentItem} >
+			<div class={`${styles.Entry} ${spread_classes(cls())}`} onmousedown={update}>
+				<Actuator call={call()} class={styles.Path}>
+					{icon()}
+					<span>{text()}</span>
+				</Actuator >
+			</div>
+			<Show when={show()}>
+				{content()}
+			</Show>
+		</div>
+	);
+}

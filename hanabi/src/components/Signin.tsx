@@ -16,7 +16,7 @@ export const Signin: Component<{ swap_call: _ }> = (props: _) => {
 			target="_blank"
 		>
 			<h4 class={fstyles.FormTitle}>Login</h4>
-			<TextField type="text" name="user_name" legend="User Name" />
+			<TextField type="text" name="user_name" legend="User Name or Email" />
 			<PasswordField name="user_pswd" />
 			<CheckBox name="persist_session" legend="&nbsp;persist session" />
 			<Actuator type="submit" class={fstyles.SubmitButton}>Login</Actuator>

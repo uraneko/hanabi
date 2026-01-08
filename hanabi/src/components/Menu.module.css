@@ -7,8 +7,13 @@
 	margin-top: 0.7em;
 }
 
-.Entry {
+.ContentItem {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 
+.Entry {
 	display: flex;
 	flex-direction: row;
 	align-items: center;

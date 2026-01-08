@@ -12,7 +12,7 @@ import noseeSVG from "../../../assets/icons/nosee.svg?raw";
 type _ = any;
 type PswMeta = { type: string, svg: SVGSVGElement };
 
-export const PasswordField: Component<{ type: "password" | "text" | "checkbox" | "hidden", name: string, legend: string }> = (props: _) => {
+export const PasswordField: Component<{ type?: "password" | "text", name?: string, legend?: string }> = (props: _) => {
 	const name = () => props.name;
 
 	const see = parse_svg(seeSVG);

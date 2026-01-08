@@ -17,6 +17,7 @@ export const Signup: Component<{ swap_call: _ }> = (props: _) => {
 			<input type="hidden" name="method_override" value="put" />
 			<h4 class={fstyles.FormTitle}>Register</h4>
 			<TextField type="text" name="user_name" legend="User Name" />
+			<TextField type="email" name="user_email" legend="Email" />
 			<PasswordField name="user_pswd" />
 			<PasswordField legend="Verify Password" />
 			<CheckBox name="auto_login" legend="&nbsp;auto login" />
