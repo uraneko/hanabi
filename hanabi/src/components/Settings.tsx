@@ -1,5 +1,5 @@
 import { type Component, Show, createSignal } from "solid-js";
-import { _, spread_classes, parse_svg } from "core";
+import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
 import { Actuator } from "core/primitives";
 import { user_ctx } from "core/context";
 
@@ -13,14 +13,8 @@ export const Settings = () => {
 	const apps = parse_svg(puzzleSVG);
 	const scheme = parse_svg(colorsSVG);
 
-	const [dbl, up_dbl] = createSignal({ time: 0, trigger: false });
-	const dbl_clk = (e: Event) => up_dbl((last: _) => {
-		let time = e.timeStamp;
-		if (last.time === 0) return { time: time, trigger: false };
-
-		return time - last.time < 700 ? { time: 0, trigger: true } :
-			{ time: time, trigger: false };
-	});
+	const [dbl, up_dbl] = dbl_signal();
+	const dbl_clk = dbl_method(up_dbl, 700);
 	const [show, up_show] = createSignal(true);
 	const show_up = (e: Event) => up_show((show: boolean) => {
 		dbl_clk(e);

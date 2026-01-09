@@ -55,7 +55,7 @@ export const App: Component = () => {
 
 	// const show = () => () => console.log("//", user());
 	return (
-		<div class={styles.App} on:click={session_rotation}>
+		<div class={styles.App} /* on:click={session_rotation} */>
 			<Switch>
 				<Match when={is_uninit_session(user())}>
 					<Initialize />

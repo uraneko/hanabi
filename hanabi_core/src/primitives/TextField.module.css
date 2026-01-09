@@ -15,7 +15,17 @@
 	margin-bottom: 1.2em;
 }
 
-.TextField[input-focus="true"] {
+.TextField[lights_up=true][bad_value=true] {
+	.InputLegend {
+		color: crimson;
+	}
+
+	& {
+		border-bottom-color: crimson;
+	}
+}
+
+.TextField[lights_up=true] {
 	/*  .InputField { */
 	/* 	display: flex; */
 	/* } */
@@ -30,6 +40,26 @@
 
 	& {
 		border-bottom-color: forestgreen;
+	}
+}
+
+TextField[bad_value=true] {
+	.InputLegend {
+		color: crimson !important;
+	}
+
+	& {
+		border-bottom-color: crimson !important;
+	}
+}
+
+.TextField[blank_mandatory=true] {
+	.InputLegend {
+		color: crimson !important;
+	}
+
+	& {
+		border-bottom-color: crimson !important;
 	}
 }
 
