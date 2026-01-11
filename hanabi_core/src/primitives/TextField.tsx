@@ -30,7 +30,7 @@ export const TextField: Component<{ legend: string, name: string, type: string, 
 	const name = () => props.name;
 	const type = () => props.type;
 	const mandatory = () => props.mandatory ?? false;
-	const legend = () => {
+	const legend: () => string = (): _ => {
 		if (state().blank_mandatory) return () => props.legend + required;
 		else if (state().bad_value) return () => props.legend + taken;
 
@@ -38,14 +38,14 @@ export const TextField: Component<{ legend: string, name: string, type: string, 
 	};
 
 	return (
-		<div class={styles.TextField} lights_up={state().lights_up} blank_mandatory={state().blank_mandatory} bad_value={state().bad_value}>
+		<div class={styles.TextField} lights-up={state().lights_up} blank-mandatory={state().blank_mandatory} bad-value={state().bad_value}>
 			<legend on:click={click_signal} class={styles.InputLegend}>
 				{legend()}
 			</legend>
 			<input type={type()}
 				on:focus={focus_signal}
 				on:blur={blur_signal}
-				class={styles.InputField}
+				class={`${styles.InputField}${mandatory() ? " mandatory" : ""}`}
 				name={name()} />
 		</div>
 	);
