@@ -13,12 +13,67 @@ export function is<T>(t: T): boolean {
 }
 
 export function map_from_json(json: Object): Map<string, _> {
-	const map = new Map();
-	for (const [k, v] of Object.entries(json)) {
-		map.set(k, v)
+	return new Map(Object.entries(json));
+}
+
+export function json_from_map(map: Map<_, _>): JSON {
+	return Object.fromEntries(map);
+}
+
+export function char_is_numeric(char: string): boolean {
+	if (char.length !== 1) return false;
+	const cp = char.charCodeAt(0);
+
+	return cp >= 48 && cp <= 57;
+}
+
+export function char_is_alphabetic(char: string): boolean {
+	if (char.length !== 1) return false;
+	const cp = char.charCodeAt(0);
+
+	return (cp >= 65 && cp <= 90) || (cp >= 97 && cp <= 122);
+}
+
+export function char_is_alphanumeric(char: string): boolean {
+	return char_is_alphabetic(char) || char_is_numeric(char);
+}
+
+export function cp_is_numeric(cp: number): boolean {
+	if (cp > 127) return false;
+
+	return cp >= 48 && cp <= 57;
+}
+
+export function cp_is_alphabetic(cp: number): boolean {
+	if (cp > 127) return false;
+
+	return (cp >= 65 && cp <= 90) || (cp >= 97 && cp <= 122);
+}
+
+export function cp_is_alphanumeric(cp: number): boolean {
+	return cp_is_alphabetic(cp) || cp_is_numeric(cp);
+}
+
+export function is_alphanumeric(str: string): boolean {
+	if (str.constructor.name !== "String") return false;
+	const iter = str[Symbol.iterator]();
+	let next = iter.next();
+	while (!next.done && cp_is_alphanumeric(next.value.charCodeAt(0))) {
+		next = iter.next();
 	}
 
-	return map;
+	return next.done ?? false;
+}
+
+export function is_ascii(str: string): boolean {
+	if (str.constructor.name !== "String") return false;
+	const iter = str[Symbol.iterator]();
+	let next = iter.next();
+	while (!next.done && next.value.charCodeAt(0) <= 127) {
+		next = iter.next();
+	}
+
+	return next.done ?? false;
 }
 
 /// takes the provided class(es) and sets them for the components
