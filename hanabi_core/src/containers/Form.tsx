@@ -37,19 +37,16 @@ export function validate_mandatory(fields: HTMLInputElement[]): Error | null {
 	return null;
 }
 
-export function write_field(json: Map<string, string>, field: HTMLInputElement) {
-	json.set(field.name, field.value);
-}
-
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export function prepare_data(fields: HTMLInputElement[]): Map<_, _> {
-	const json = new Map();
-	fields.forEach((field: Element) =>
-		write_field(json, field as HTMLInputElement)
-	);
+	const map = new Map();
+	fields.forEach((field: HTMLInputElement) => {
+		if (field.value.length > 0)
+			map.set(field.name, field.value);
+	});
 
-	return json;
+	return map;
 }
 
 export async function submit(e: SubmitEvent): Promise<Error | { map: Map<_, _>, path: string }> {

@@ -58,7 +58,7 @@
 .SwapButton {
 	background: none;
 	border: none;
-	color: forestgreen;
+	color: #87a187;
 	cursor: pointer;
 
 	&:hover {

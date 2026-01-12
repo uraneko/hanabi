@@ -17,11 +17,11 @@
 
 .TextField[lights-up=true][bad-value=true] {
 	.InputLegend {
-		color: crimson;
+		color: #b71233;
 	}
 
 	& {
-		border-bottom-color: crimson;
+		border-bottom-color: #b71233;
 	}
 }
 
@@ -34,32 +34,32 @@
 		/* animation: 400ms legend-ascent linear normal; */
 		transform: translateY(0px);
 		transition: transform 100ms ease-out, font-size 100ms ease-out;
-		color: forestgreen;
+		color: #87a187;
 		font-size: 9pt;
 	}
 
 	& {
-		border-bottom-color: forestgreen;
+		border-bottom-color: #87a187;
 	}
 }
 
 TextField[bad-value=true] {
 	.InputLegend {
-		color: crimson !important;
+		color: #b71233 !important;
 	}
 
 	& {
-		border-bottom-color: crimson !important;
+		border-bottom-color: #b71233 !important;
 	}
 }
 
 .TextField[blank-mandatory=true] {
 	.InputLegend {
-		color: crimson !important;
+		color: #b71233 !important;
 	}
 
 	& {
-		border-bottom-color: crimson !important;
+		border-bottom-color: #b71233 !important;
 	}
 }
 

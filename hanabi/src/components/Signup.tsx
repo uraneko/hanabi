@@ -21,7 +21,7 @@ function check_password(pswd: string): Error | null {
 		return err;
 	} else if (!is_ascii(pswd)) {
 		err.message = "password contains non ascii chars";
-		err.cause = "NonAsciiChars";
+		err.cause = "NonAsciiDetected";
 		console.error(err);
 
 		return err;
@@ -59,6 +59,8 @@ async function register(e: SubmitEvent) {
 	if (err1 !== null) return err;
 
 	const data = JSON.stringify(json_from_map(map));
+	console.log(data);
+
 	const res = await fetch(path, {
 		method: "PUT",
 		credentials: "include",

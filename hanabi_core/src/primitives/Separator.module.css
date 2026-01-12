@@ -8,7 +8,7 @@
 	width: -moz-available;
 
 	&[active=true] {
-		border-bottom: 1px solid forestgreen;
+		border-bottom: 1px solid #87a187;
 	}
 
 }

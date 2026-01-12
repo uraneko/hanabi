@@ -2,6 +2,7 @@ import { type Component, Suspense, createEffect, createResource, createSignal } 
 import { type _ } from '../misc';
 import styles from './TextField.module.css';
 
+// TODO #567356 second cha color 
 // checks field value correctness with server
 async function value_is_free(value: string) {
 	return value !== "???";
@@ -69,4 +70,4 @@ export const TextField: Component<{ legend: string, name: string, type: string, 
 const required = " (this field is mandatory)";
 const taken = " (this value is already taken)";
 
-// TODO replace forestgreen with this cha like color: #87a187
+// TODO replace #87a187 with this cha like color: #87a187
