@@ -31,7 +31,7 @@ export const Negotiate = () => {
 // if you dont have a session token in your cookies then "" is returned to indicate the start of an authless session 
 // else your token is checked by the server and the server renews your token, starting a new login user session
 async function negotiate(user: { name: string | undefined }) {
-	await new Promise(_ => setTimeout(_, 500))
+	// await new Promise(_ => setTimeout(_, 500))
 	return { name: user.name ?? "" };
 }
 
