@@ -1,12 +1,26 @@
-import { type Component, createEffect, createSignal } from 'solid-js';
+import { type Component, Suspense, createEffect, createResource, createSignal } from 'solid-js';
 import { type _ } from '../misc';
 import styles from './TextField.module.css';
 
 // checks field value correctness with server
-const server_validate = (value: string) => value === "???";
+async function value_is_free(value: string) {
+	return value !== "???";
+};
 
 export const TextField: Component<{ legend: string, name: string, type: string, mandatory?: boolean }> = (props: _) => {
 	const [state, re_state] = createSignal({ lights_up: false, blank_mandatory: false, bad_value: false });
+	const [value, re_value] = createSignal(null as _);
+	const [is_free] = createResource(value, value_is_free, { initialValue: true });
+
+	const change_signal = (e: Event) => re_state((state: _) => {
+		const et = e.target as HTMLInputElement;
+		if (et.value === value() || et.value.length === 0) return state;
+
+		re_value(et.value);
+		const is_empty = value().length === 0;
+
+		return { lights_up: !is_empty, blank_mandatory: mandatory() && is_empty, bad_value: !is_empty && !is_free() };
+	});
 	// on focus
 	const focus_signal = () => re_state((state: _) => {
 		return { lights_up: true, blank_mandatory: false, bad_value: false };
@@ -14,9 +28,10 @@ export const TextField: Component<{ legend: string, name: string, type: string, 
 	// on blur/unfocus
 	const blur_signal = (e: Event) => re_state((state: _) => {
 		let et = e.target as HTMLInputElement;
-		const is_empty = et.value === "";
+		re_value(et.value)
+		const is_empty = value().length === 0;
 
-		return { lights_up: !is_empty, blank_mandatory: mandatory() && is_empty, bad_value: !is_empty && server_validate(et.value) };
+		return { lights_up: !is_empty, blank_mandatory: mandatory() && is_empty, bad_value: !is_empty && !is_free() };
 	});
 	// on click
 	const click_signal = (e: Event) => re_state((state: _) => {
@@ -45,6 +60,7 @@ export const TextField: Component<{ legend: string, name: string, type: string, 
 			<input type={type()}
 				on:focus={focus_signal}
 				on:blur={blur_signal}
+				on:change={change_signal}
 				class={`${styles.InputField}${mandatory() ? " mandatory" : ""}`}
 				name={name()} />
 		</div>

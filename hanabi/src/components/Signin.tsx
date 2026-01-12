@@ -20,6 +20,7 @@ async function login(e: SubmitEvent) {
 		},
 		body: data,
 	});
+	history.pushState("", "/");
 }
 
 export const Signin: Component<{ swap_call: _ }> = (props: _) => {
