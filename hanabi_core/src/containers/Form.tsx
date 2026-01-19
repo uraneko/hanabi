@@ -37,13 +37,23 @@ export function validate_mandatory(fields: HTMLInputElement[]): Error | null {
 	return null;
 }
 
-export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+export function convert(ty: string, value: string) {
+	if (ty === "bool") {
+		return ["true", "yes", "1", "on"].includes(value);
+	} else if (["int", "uint", "float"].includes(ty)) {
+		return Number(value)
+	}
+
+	return value
+}
 
 export function prepare_data(fields: HTMLInputElement[]): Map<_, _> {
 	const map = new Map();
 	fields.forEach((field: HTMLInputElement) => {
-		if (field.value.length > 0)
-			map.set(field.name, field.value);
+		if (field.value.length > 0) {
+			const ty = field.getAttribute("data-type") ?? "str";
+			map.set(field.name, convert(ty, field.value));
+		}
 	});
 
 	return map;

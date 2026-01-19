@@ -8,6 +8,8 @@ import icecreamSVG from "../../../assets/icons/icecream.svg?raw";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import glassesSVG from "../../../assets/icons/glasses.svg?raw";
 
+function clear_user_data(data: Object): Object { return data; }
+
 export const UserMenu = () => {
 	const { user, re_user } = user_ctx();
 	// user configs
@@ -16,9 +18,27 @@ export const UserMenu = () => {
 	// profile 
 	const glasses = parse_svg(glassesSVG);
 
-	const clear_user = () => re_user((_user: _) => {
-		return { name: "" };
-	});
+	const clear_user = async () => {
+		const res = await fetch("/auth/remembrance", {
+			method: "DELETE",
+			credentials: "include",
+			headers: {
+				"authorization": `Bearer<${user().access_token!}>`,
+			}
+		});
+		if (res.status === 403) return;
+		// BUG a failed logout still changes the page since the logout button is an anchor and 
+		// the redirection is independent from the logout callback
+
+		re_user((user: _) => {
+			return {
+				name: "",
+				email: undefined,
+				access_token: undefined,
+				data: clear_user_data(user.data)
+			};
+		})
+	};
 
 
 	return (

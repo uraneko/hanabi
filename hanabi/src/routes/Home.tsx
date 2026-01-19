@@ -1,7 +1,6 @@
 import { type Component, createResource, createSignal, For, Switch, Match } from 'solid-js';
 import { parse_svg, _ } from "core";
-import { is_login_session, is_authless_session } from '../App';
-import { user_ctx } from 'core/context';
+import { is_logged_in, is_authless, user_ctx } from 'core/context';
 import { WildText } from 'core/primitives';
 import styles from './Home.module.css';
 
@@ -18,6 +17,7 @@ export const Home: Component = () => {
 	);
 };
 
+// TODO
 async function get_apps_meta() {
 	// fetch what apps the user has installed
 	return [
@@ -47,7 +47,7 @@ export const Apps = () => {
 
 	return (
 		<Switch>
-			<Match when={is_login_session(user())}>
+			<Match when={is_logged_in(user())}>
 				<div class={styles.Apps}>
 					<For each={apps()}>
 						{(app: _) => <App icon={app.icon} depict={app.depict} name={app.name} accent={app.accent} rtt={rtt()} re_rtt={re_rtt} />}

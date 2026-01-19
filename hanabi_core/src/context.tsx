@@ -1,3 +1,3 @@
-import { user_context, user_ctx } from './context/user';
+import { user_ctx, is_non_init, is_authless, is_logged_in, } from './context/user';
 
-export { user_context, user_ctx };
+export { user_ctx, is_non_init, is_authless, is_logged_in, };

@@ -32,7 +32,7 @@ export const CheckBox: Component<{ name?: string, legend?: string }> = (props_: 
 	return (
 		<div class={styles.CheckBox} on:click={toggle_mark}>
 			<Show when={name() !== undefined}>
-				<input type="hidden" class={styles.Postman} name={name()} value={s()} />
+				<input data-type="bool" type="hidden" class={styles.Postman} name={name()} value={s()} />
 			</Show>
 			<div
 				class={styles.Box}

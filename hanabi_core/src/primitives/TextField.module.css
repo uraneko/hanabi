@@ -17,11 +17,11 @@
 
 .TextField[lights-up=true][bad-value=true] {
 	.InputLegend {
-		color: #b71233;
+		color: #AB1243;
 	}
 
 	& {
-		border-bottom-color: #b71233;
+		border-bottom-color: #AB1243;
 	}
 }
 
@@ -45,21 +45,21 @@
 
 TextField[bad-value=true] {
 	.InputLegend {
-		color: #b71233 !important;
+		color: #AB1243 !important;
 	}
 
 	& {
-		border-bottom-color: #b71233 !important;
+		border-bottom-color: #AB1243 !important;
 	}
 }
 
 .TextField[blank-mandatory=true] {
 	.InputLegend {
-		color: #b71233 !important;
+		color: #AB1243 !important;
 	}
 
 	& {
-		border-bottom-color: #b71233 !important;
+		border-bottom-color: #AB1243 !important;
 	}
 }
 

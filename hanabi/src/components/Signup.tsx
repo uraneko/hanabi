@@ -36,7 +36,7 @@ function check_password(pswd: string): Error | null {
 	return null;
 }
 
-function verify_password(pswd: string, verify: string): Error | null {
+function match_password(pswd: string, verify: string): Error | null {
 	if (pswd !== verify) {
 		const err = new Error("password verification mismatch");
 		console.error(err);
@@ -53,7 +53,7 @@ async function register(e: SubmitEvent) {
 	const { map, path } = err as _;
 
 	const pswd = map.get("user_pswd");
-	let err1 = verify_password(pswd, map.get("verify_pswd"));
+	let err1 = match_password(pswd, map.get("verify_pswd"));
 	if (err1 !== null) return err;
 	err1 = check_password(pswd);
 	if (err1 !== null) return err;
@@ -70,7 +70,6 @@ async function register(e: SubmitEvent) {
 		},
 		body: data,
 	});
-	history.pushState("", "/");
 }
 
 // <input type="hidden" name="method_override" value="put" />
@@ -78,7 +77,7 @@ export const Signup: Component<{ swap_call: _ }> = (props: _) => {
 	const call = () => props.swap_call;
 	return (
 		<Form
-			action="/auth"
+			action="/auth/remembrance"
 			method="post"
 			target="_blank"
 			submit={register}
