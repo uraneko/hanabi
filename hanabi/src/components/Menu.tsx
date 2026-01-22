@@ -45,14 +45,14 @@ export const Menu = () => {
 	return (
 		<div class={styles.Menu} >
 			<ButtonItem call={colorscheme} icon={colors} text="colors" />
-			<ContentItem class={styles.ContentItem} content={<Settings />} icon={rocket} text="settings" />
+			<ContentItem class={styles.ContentItem} content={<Settings />} icon={rocket} text="settings" transient={false} />
 			<Switch>
 				<Match when={is_authless(user())}>
 					<AnchorItem link="/auth" call={login_form} icon={login} text="login" />
 					<AnchorItem link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
 				<Match when={is_logged_in(user())}>
-					<ContentItem class={styles.ContentItem} content={<UserMenu />} icon={home} text={user().name!} />
+					<ContentItem class={styles.ContentItem} content={<UserMenu />} icon={home} text={user().name!} transient={true} />
 				</Match>
 			</Switch>
 		</div>
@@ -94,13 +94,14 @@ export const ButtonItem: Component<{ call: _, text: string, icon?: SVGSVGElement
 	);
 };
 
-export const ContentItem: Component<{ children?: JSX.Element, text: string, icon: SVGSVGElement, content: JSX.Element, class?: string | string[] }> = (props: _) => {
+export const ContentItem: Component<{ children?: JSX.Element, text: string, icon: SVGSVGElement, content: JSX.Element, class?: string | string[], transient: boolean }> = (props: _) => {
 	const { active, up_active } = active_ctx();
 	const icon = () => props.icon;
 	const text = () => props.text;
 	const call = () => props.call;
 	const cls = () => props.class;
 	const content = () => props.content;
+	const transient = () => props.transient;
 
 	const { eph, re_eph } = eph_ctx();
 	const hash = new_hash(eph());
@@ -130,7 +131,7 @@ export const ContentItem: Component<{ children?: JSX.Element, text: string, icon
 					<span>{text()}</span>
 				</Actuator >
 			</div>
-			<Ephemeral hash={hash}>
+			<Ephemeral hash={hash} transient={transient()}>
 				{content()}
 			</Ephemeral>
 		</div>

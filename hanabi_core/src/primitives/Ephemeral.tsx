@@ -3,17 +3,20 @@ import { _, spread_classes } from '../misc';
 import { eph_ctx } from '../context';
 import styles from './Ephemeral.module.css';
 
-export const Ephemeral: Component<{ children: JSX.Element, class?: string | string[], hash: string }>
+export const Ephemeral: Component<{ children: JSX.Element, class?: string | string[], hash: string, transient: boolean }>
 	= (props: _) => {
 		const { eph, re_eph } = eph_ctx();
 		const children = () => props.children;
 		const cls = () => props.class;
 		const hash = () => props.hash;
+		const transient = () => props.transient;
 
 		return (
 			<Show when={eph()[hash()]}>
 				<div
-					class={`${styles.Ephemeral}${spread_classes(cls())}`} ephemeral-hash={hash()}>
+					class={`${styles.Ephemeral}${spread_classes(cls())}`}
+					ephemeral-hash={hash()}
+					ephemeral-transient={transient()}>
 					{children()}
 				</div>
 			</Show >

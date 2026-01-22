@@ -1,4 +1,4 @@
-import { type Component, Show, Switch, Match, createSignal, createContext, useContext, createResource } from 'solid-js';
+import { type Component, DEV, Show, Switch, Match, createSignal, createContext, useContext, createResource } from 'solid-js';
 import { Router, Route } from "@solidjs/router";
 import { Home } from './routes/Home';
 import { Auth } from './routes/Auth';
@@ -75,10 +75,19 @@ export const App: Component = () => {
 			const parent = super_parent_by_class(et, estyles.EphemSwitch);
 			console.log(parent);
 			const hash = ephem.getAttribute("ephemeral-hash")!;
+			const transient = ephem.getAttribute("ephemeral-transient")! === "false"
+				? false : true;
 			if (parent !== null) {
-				if (is_sibling_of(parent!, "ephemeral-hash", hash)) {
-					return ephemeral;
-				}
+				// if (transient) {
+				// 	if (is_sibling_of(parent!, "ephemeral-hash", hash)) {
+				// 		return ephemeral;
+				// 	} else {
+				// 		ephemeral[hash] = false;
+				// 		return structuredClone(ephemeral); 
+				// 	}
+				// } else {
+				return ephemeral;
+				// }
 			}
 			ephemeral[hash] = false;
 		};
@@ -114,6 +123,7 @@ export function active_ctx() {
 }
 
 async function cache_state() {
+	if (DEV !== undefined) return;
 	if (!document.hidden) return;
 
 	const { user, re_user } = user_ctx();
@@ -162,11 +172,22 @@ function is_sibling_of(elem: Element, key: string, val: string): boolean {
 	let next = elem.nextElementSibling;
 	while (next !== null) {
 		if (next.getAttribute(key) === val) {
-			return true
+			return true;
 		}
 	}
 
 	return false;
+}
+
+function sibling_by_attr(elem: Element, key: string, val: string): null | Element {
+	let next = elem.nextElementSibling;
+	while (next !== null) {
+		if (next.getAttribute(key) === val) {
+			return next;
+		}
+	}
+
+	return null;
 }
 
 export { styles };
