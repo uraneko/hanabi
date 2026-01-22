@@ -8,7 +8,7 @@ function generate_value_checker(name: () => string) {
 	return async (value: string) => {
 		if (value.length === 0) return true;
 		if (DEV === undefined) {
-			const res = await fetch(`/auth/field?field=${name()}&value=${value}`);
+			const res = await fetch(`/auth/field?name=${name()}&value=${value}`);
 			const bool = await res.text();
 
 			return bool === "false" ? false : true;

@@ -2,6 +2,7 @@ import { type Component, Show, createSignal } from "solid-js";
 import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
 import { Actuator } from "core/primitives";
 import { user_ctx } from "core/context";
+import { styles as gstyles } from "../App";
 
 import styles from "./Settings.module.css";
 import atSVG from "../../../assets/icons/at.svg?raw";
@@ -15,18 +16,18 @@ export const Settings = () => {
 
 	const [dbl, up_dbl] = dbl_signal();
 	const dbl_clk = dbl_method(up_dbl, 700);
-	const [show, up_show] = createSignal(true);
-	const show_up = (e: Event) => up_show((show: boolean) => {
+	const [expand, re_expand] = createSignal(true);
+	const expansion = (e: Event) => re_expand((expand: boolean) => {
 		dbl_clk(e);
 
-		return dbl().trigger ? !show : show
+		return dbl().trigger ? !expand : expand
 	});
 
 	return (<div class={styles.Settings}>
-		<div class={styles.Headers} on:mousedown={show_up}>
-			<Header text="| account" icon={account} switch={show()} />
-			<Header text="| apps" icon={apps} switch={show()} />
-			<Header text="| colorschemes" icon={scheme} switch={show()} />
+		<div class={styles.Headers} on:mousedown={expansion}>
+			<Header text="| account" icon={account} switch={expand()} />
+			<Header text="| apps" icon={apps} switch={expand()} />
+			<Header text="| colorschemes" icon={scheme} switch={expand()} />
 		</div>
 		<div class={styles.Contents}>
 		</div>

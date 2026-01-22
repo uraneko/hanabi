@@ -87,7 +87,7 @@ export function is_ascii(str: string): boolean {
 /// )};
 /// `
 export function spread_classes(cls?: string | string[]): string {
-	return cls === undefined ? "" : cls!.constructor.name == "String" ? (cls as string) : (cls as string[]).join(" ")
+	return cls === undefined ? "" : cls!.constructor.name == "String" ? " " + (cls as string) : " " + (cls as string[]).join(" ")
 }
 
 export function dbl_signal(): [_, _] {

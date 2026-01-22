@@ -1,7 +1,7 @@
 import { type Component, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
-import { Actuator } from "core/primitives";
+import { Actuator, Ephemeral, new_hash, assign_hash, eph_styles as estyles } from "core/primitives";
 import { _, spread_classes } from "core";
-import { user_ctx, is_logged_in, is_authless } from "core/context";
+import { user_ctx, is_logged_in, is_authless, eph_ctx } from "core/context";
 import styles from './Menu.module.css';
 import { styles as umstyles } from './UserMenu';
 import { form_ctx } from '../routes/Auth';
@@ -102,10 +102,14 @@ export const ContentItem: Component<{ children?: JSX.Element, text: string, icon
 	const cls = () => props.class;
 	const content = () => props.content;
 
-	const [show, re_show] = createSignal(false);
-	const update = (e: Event) => re_show((show: boolean) => {
-		// e.stopImmediatePropagation();
-		return !show
+	const { eph, re_eph } = eph_ctx();
+	const hash = new_hash(eph());
+	re_eph(assign_hash(eph(), hash));
+
+	const update = (e: Event) => re_eph((eph: _) => {
+		eph[hash] = !eph[hash];
+
+		return structuredClone(eph);
 	});
 
 	// const activity = (e: Event) => re_show((show: boolean) => {
@@ -120,15 +124,15 @@ export const ContentItem: Component<{ children?: JSX.Element, text: string, icon
 
 	return (
 		<div class={styles.ContentItem} >
-			<div class={`${styles.Entry} ${spread_classes(cls())}`} onmousedown={update}>
+			<div class={`${styles.Entry}${spread_classes(cls())} ${estyles.EphemSwitch}`} onmousedown={update}>
 				<Actuator call={call()} class={styles.Path}>
 					{icon()}
 					<span>{text()}</span>
 				</Actuator >
 			</div>
-			<Show when={show()}>
+			<Ephemeral hash={hash}>
 				{content()}
-			</Show>
+			</Ephemeral>
 		</div>
 	);
 }
