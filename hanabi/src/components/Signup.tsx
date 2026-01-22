@@ -1,4 +1,4 @@
-import { type Component } from 'solid-js';
+import { type Component, DEV } from 'solid-js';
 import {
 	TextLine, Separator, PasswordField, CheckBox, Actuator, TextField,
 } from "core/primitives";
@@ -48,6 +48,8 @@ function match_password(pswd: string, verify: string): Error | null {
 }
 
 async function register(e: SubmitEvent) {
+	if (DEV !== undefined) return;
+
 	const err = await submit(e);
 	if (err.constructor.name === "Error") return err;
 	const { map, path } = err as _;
@@ -70,6 +72,7 @@ async function register(e: SubmitEvent) {
 		},
 		body: data,
 	});
+	if (!res.ok) return;
 }
 
 // <input type="hidden" name="method_override" value="put" />

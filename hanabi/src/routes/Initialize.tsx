@@ -33,34 +33,33 @@ export const Negotiate = () => {
 // else your token is checked by the server and the server renews your token, starting a new login user session
 async function negotiate(user: _) {
 	if (user.name !== undefined) return user;
+	if (DEV !== undefined) return {
+		name: user.name ?? "",
+		email: user.email,
+		access_token: user.access_token,
+		data: user.data,
+	};
 
-	if (DEV === undefined) {
-		const res = await fetch("/auth/remembrance", {
-			method: "POST",
-			credentials: "include",
-		});
-		if (res.headers.get("content-length") === "0") return {
-			name: user.name ?? "",
-			email: user.email,
-			access_token: user.access_token,
-			data: user.data,
-		};
+	const res = await fetch("/auth/remembrance", {
+		method: "POST",
+		credentials: "include",
+	});
+	if (!res.ok) return user;
 
-		const user_state = await res.json();
+	if (res.headers.get("content-length") === "0") return {
+		name: user.name ?? "",
+		email: user.email,
+		access_token: user.access_token,
+		data: user.data,
+	};
 
-		return {
-			name: user_state.name,
-			email: user_state.email,
-			access_token: user_state.access_token,
-			data: user.data,
-		}
-	} else {
-		return {
-			name: user.name ?? "",
-			email: user.email,
-			access_token: user.access_token,
-			data: user.data,
-		}
+	const user_state = await res.json();
+
+	return {
+		name: user_state.name,
+		email: user_state.email,
+		access_token: user_state.access_token,
+		data: user.data,
 	}
 }
 

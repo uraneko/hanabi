@@ -1,4 +1,4 @@
-import { type Component } from "solid-js";
+import { type Component, DEV } from "solid-js";
 import { _, spread_classes, parse_svg } from "core";
 import { Actuator } from "core/primitives";
 import { user_ctx } from "core/context";
@@ -18,17 +18,19 @@ export const UserMenu = () => {
 	// profile 
 	const glasses = parse_svg(glassesSVG);
 
+	// BUG a failed logout still changes the page since the logout button is an anchor and 
+	// the redirection is independent from the logout callback
 	const clear_user = async () => {
-		const res = await fetch("/auth/remembrance", {
-			method: "DELETE",
-			credentials: "include",
-			headers: {
-				"authorization": `Bearer<${user().access_token!}>`,
-			}
-		});
-		if (res.status === 403) return;
-		// BUG a failed logout still changes the page since the logout button is an anchor and 
-		// the redirection is independent from the logout callback
+		if (DEV === undefined) {
+			const res = await fetch("/auth/remembrance", {
+				method: "DELETE",
+				credentials: "include",
+				headers: {
+					"authorization": `Bearer<${user().access_token!}>`,
+				}
+			});
+			if (!res.ok) return;
+		}
 
 		re_user((user: _) => {
 			return {
@@ -37,7 +39,7 @@ export const UserMenu = () => {
 				access_token: undefined,
 				data: clear_user_data(user.data)
 			};
-		})
+		});
 	};
 
 

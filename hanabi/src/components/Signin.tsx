@@ -8,38 +8,7 @@ import { type _, json_from_map } from "core";
 
 async function login(e: SubmitEvent) {
 	const { user, re_user } = user_ctx();
-	if (DEV === undefined) {
-		const err = await submit(e);
-		if (err.constructor.name === "Error") return err;
-		const { map, path } = err as _;
-
-		const data = JSON.stringify(json_from_map(map));
-		const res = await fetch(path, {
-			method: "PATCH",
-			credentials: "include",
-			headers: {
-				"content-type": "application/json",
-				"content-length": `${data.length}`,
-			},
-			body: data,
-		});
-		const user_state = await res.json();
-		user_state.data = structuredClone(user().data);
-
-		re_user(user_state);
-
-		const clear_access = () =>
-			re_user((user: _) => {
-				return {
-					name: user.name,
-					email: user.email,
-					data: user.data,
-					access_token: undefined,
-				}
-			});
-		await new Promise(_ => setTimeout(clear_access, 1200 * 1000));
-
-	} else {
+	if (DEV !== undefined) {
 		e.preventDefault();
 		re_user({
 			name: "some name",
@@ -48,6 +17,40 @@ async function login(e: SubmitEvent) {
 			data: {},
 		});
 	}
+
+
+	const err = await submit(e);
+	if (err.constructor.name === "Error") return err;
+	const { map, path } = err as _;
+
+	const data = JSON.stringify(json_from_map(map));
+	const res = await fetch(path, {
+		method: "PATCH",
+		credentials: "include",
+		headers: {
+			"content-type": "application/json",
+			"content-length": `${data.length}`,
+		},
+		body: data,
+	});
+	if (!res.ok) return;
+	const user_state = await res.json();
+	user_state.data = structuredClone(user().data);
+
+	re_user(user_state);
+
+	const clear_access = () =>
+		re_user((user: _) => {
+			return {
+				name: user.name,
+				email: user.email,
+				data: user.data,
+				access_token: undefined,
+			}
+		});
+	await new Promise(_ => setTimeout(clear_access, 1200 * 1000));
+
+
 
 }
 

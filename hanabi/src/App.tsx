@@ -135,7 +135,8 @@ async function cache_state() {
 		keepalive: true,
 		body: state,
 	});
-	console.log(res);
+
+	if (!res.ok) return;
 }
 window.addEventListener("visibilitychange", cache_state);
 
