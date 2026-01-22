@@ -1,0 +1,25 @@
+.WildText {
+	background: aliceblue;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	grid-row: 4/7;
+	grid-column: 2/9;
+
+	border-radius: 6px;
+	border: none;
+	box-shadow: 9px 11px 0 #25272833;
+
+	/* & [class*="Separator"] { */
+	/* 	transform: rotate(134deg); */
+	/* 	position: fixed; */
+	/* } */
+}
+
+.WildContent {
+	color: #485d6c;
+	font-size: 16pt;
+	font-family: carlito;
+
+}

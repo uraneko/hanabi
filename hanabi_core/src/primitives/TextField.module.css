@@ -1,0 +1,86 @@
+.TextField {
+	/* border: 1px solid #6c8e99; */
+	/* border: 1px solid #595858; */
+
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+
+	color: #595858;
+	border: none;
+	border-bottom: 0.1em solid #59585858;
+	width: 18em;
+	height: 2em;
+
+	margin-bottom: 1.2em;
+}
+
+.TextField[lights-up=true][bad-value=true] {
+	.InputLegend {
+		color: #AB1243;
+	}
+
+	& {
+		border-bottom-color: #AB1243;
+	}
+}
+
+.TextField[lights-up=true] {
+	/*  .InputField { */
+	/* 	display: flex; */
+	/* } */
+
+	.InputLegend {
+		/* animation: 400ms legend-ascent linear normal; */
+		transform: translateY(0px);
+		transition: transform 100ms ease-out, font-size 100ms ease-out;
+		color: #87a187;
+		font-size: 9pt;
+	}
+
+	& {
+		border-bottom-color: #87a187;
+	}
+}
+
+TextField[bad-value=true] {
+	.InputLegend {
+		color: #AB1243 !important;
+	}
+
+	& {
+		border-bottom-color: #AB1243 !important;
+	}
+}
+
+.TextField[blank-mandatory=true] {
+	.InputLegend {
+		color: #AB1243 !important;
+	}
+
+	& {
+		border-bottom-color: #AB1243 !important;
+	}
+}
+
+
+.InputField {
+	background: transparent;
+	border: none;
+	color: #595858;
+	width: -moz-available;
+	padding: 0;
+}
+
+.InputLegend {
+	font-size: 10.4pt;
+	font-style: italic;
+	color: #595858d8;
+	text-align: start;
+	padding: 0;
+	transform: translateY(16px);
+	transition: transform 100ms ease-out, font-size 100ms ease-out;
+	cursor: default;
+	cursor: text;
+	user-select: none;
+}

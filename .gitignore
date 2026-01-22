@@ -12,6 +12,9 @@ app.config.timestamp_*.js
 
 # dependencies
 /node_modules
+**/node_modules
+
+hanabi_drive
 
 # IDEs and editors
 /.idea

@@ -1,0 +1,83 @@
+.Home {
+	grid-row: 2/9;
+	grid-column: 1/10;
+}
+
+.Apps {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	height: max-content;
+}
+
+.App {
+	cursor: pointer;
+
+	align-self: start;
+	background: aliceblue;
+	box-shadow: 9px 11px 0 #25272833;
+
+	padding: 2em;
+	margin: 1em;
+	border-radius: 6px;
+	font-family: carlito;
+
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: start;
+
+	color: #485d6c;
+	fill: #485d6c;
+	stroke: #485d6c;
+	transform: none;
+	transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out;
+
+	& svg {
+		width: 4em;
+		padding: 10px;
+	}
+
+	&:hover {
+		transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out;
+		fill: var(--accent);
+		color: var(--accent);
+		stroke: var(--accent);
+
+		&.LeftRtt {
+			transform: rotate3D(0, 0, -1, 5deg);
+		}
+
+		&.RightRtt {
+			transform: rotate3D(0, 0, 1, 5deg);
+		}
+	}
+}
+
+.AppText {
+	display: flex;
+	flex-direction: column;
+	padding-top: 1em;
+}
+
+.AppTitle {
+	align-self: end;
+	font-size: 18pt;
+}
+
+.AppDepict {
+	font-size: 14pt;
+}
+
+.Greetings {
+	display: flex;
+	flex-direction: column;
+	width: max-content;
+	padding: 2em 4em;
+	color: #485d6c;
+	font-family: carlito;
+	font-weight: bold;
+	font-size: 24pt;
+	margin-left: 40%;
+	margin-top: 15%;
+}

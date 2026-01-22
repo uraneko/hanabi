@@ -1,0 +1,63 @@
+.ContextMenu {
+	display: flex;
+	flex-direction: column;
+
+	position: absolute;
+	background: #485D6C;
+	color: aliceblue;
+	border-radius: 3px;
+	border: none;
+
+	justify-content: center;
+	align-items: center;
+	padding: 8px;
+
+	width: 134px;
+	height: 164px;
+
+	white-space: nowrap;
+}
+
+.ContextMenu[hide="true"] {
+	display: none;
+}
+
+.Download {}
+
+.Upload {}
+
+.WindowMenu {
+	display: flex;
+	flex-direction: column;
+
+	background: #485D6C;
+	color: aliceblue;
+	/* border-radius: 3px; */
+	/* border: none; */
+
+	justify-content: start;
+	align-items: start;
+	width: 100%;
+	height: 100%;
+
+	/* width: 134px; */
+	/* height: max-content; */
+
+	&>button {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		text-align: start;
+		width: 100%;
+		height: 100%;
+		padding: 2px 1px;
+
+		background: none;
+		border: none;
+		color: aliceblue;
+
+		&:hover {
+			background: #89a6b236;
+			padding: 2px;
+		}
+	}
+}

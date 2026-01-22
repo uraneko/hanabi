@@ -1,0 +1,22 @@
+.Actuator {
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:not(:hover) {
+		text-decoration: none;
+	}
+}
+
+.Button {
+	background: none;
+	border: none;
+	color: #87a187;
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+	}
+}

@@ -1,0 +1,58 @@
+.UserMenu {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	margin-top: 3em;
+	/* aliceblue with some opacity mitigation */
+	background-color: #f0f8ff35;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 0.7em 0.3em;
+	/* justify-self: end; */
+
+	border-radius: 2px;
+
+}
+
+.Entry {
+	border: none;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	text-decoration: none;
+	color: #485d6c;
+	cursor: pointer;
+
+	padding: 0.5em;
+	border-radius: 6px;
+
+	font-size: 12pt;
+	font-family: carlito;
+	font-weight: bold;
+	transition: background 178ms ease-in, backdrop-filter 178ms ease-out;
+
+	&:hover {
+		background: #a0c65578;
+		/* background: #f0f8ff35; */
+		/* backdrop-filter: blur(2.3px); */
+		transition: background 178ms ease-in, backdrop-filter 178ms ease-out;
+	}
+
+	border-radius: 1px;
+	margin: 4px;
+
+	svg {
+		fill: #485d6c;
+		width: 1.2em;
+		margin-right: 3px;
+		transition: fill 178ms ease-out;
+	}
+}
+
+.Sep {
+	height: 1px;
+	background: #485d6c;
+	;
+	opacity: 0.5;
+}
