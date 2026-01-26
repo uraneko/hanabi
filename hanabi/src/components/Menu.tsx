@@ -1,5 +1,6 @@
 import { type Component, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
-import { Actuator, Ephemeral, new_hash, assign_hash, eph_styles as estyles } from "core/primitives";
+import { Actuator, } from "core/primitives";
+import { Ephemeral, new_hash, assign_hash, eph_styles as estyles } from 'core/wrappers';
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless, eph_ctx } from "core/context";
 import styles from './Menu.module.css';
@@ -8,6 +9,8 @@ import { form_ctx } from '../routes/Auth';
 import { UserMenu } from './UserMenu';
 import { Settings } from './Settings';
 import { active_ctx } from '../App';
+
+// alt red color #A95525
 
 import { parse_svg } from "core";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
@@ -45,14 +48,26 @@ export const Menu = () => {
 	return (
 		<div class={styles.Menu} >
 			<ButtonItem call={colorscheme} icon={colors} text="colors" />
-			<ContentItem class={styles.ContentItem} content={<Settings />} icon={rocket} text="settings" transient={false} />
+			<ContentItem
+				class={styles.ContentItem}
+				content={<Settings />}
+				icon={rocket}
+				text="settings"
+				show={false}
+				events={"keypress"} />
 			<Switch>
 				<Match when={is_authless(user())}>
 					<AnchorItem link="/auth" call={login_form} icon={login} text="login" />
 					<AnchorItem link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
 				<Match when={is_logged_in(user())}>
-					<ContentItem class={styles.ContentItem} content={<UserMenu />} icon={home} text={user().name!} transient={true} />
+					<ContentItem
+						class={styles.ContentItem}
+						content={<UserMenu />}
+						icon={home}
+						text={user().name!}
+						show={false}
+						events={["click", "mouseover"]} />
 				</Match>
 			</Switch>
 		</div>
@@ -94,21 +109,31 @@ export const ButtonItem: Component<{ call: _, text: string, icon?: SVGSVGElement
 	);
 };
 
-export const ContentItem: Component<{ children?: JSX.Element, text: string, icon: SVGSVGElement, content: JSX.Element, class?: string | string[], transient: boolean }> = (props: _) => {
-	const { active, up_active } = active_ctx();
+export const ContentItem: Component<{
+	children?: JSX.Element,
+	text: string,
+	icon: SVGSVGElement,
+	content: JSX.Element,
+	class?: string | string[],
+	events?: string | string[],
+	show: boolean,
+}> = (props: _) => {
 	const icon = () => props.icon;
 	const text = () => props.text;
 	const call = () => props.call;
 	const cls = () => props.class;
 	const content = () => props.content;
-	const transient = () => props.transient;
+	const show = () => props.show;
+	const events = () => props.events === undefined ? [] :
+		props.events.constructor.name === "String" ? [props.events] : props.events;
 
 	const { eph, re_eph } = eph_ctx();
+
 	const hash = new_hash(eph());
-	re_eph(assign_hash(eph(), hash));
+	re_eph(assign_hash(eph(), hash, events(), show()));
 
 	const update = (e: Event) => re_eph((eph: _) => {
-		eph[hash] = !eph[hash];
+		eph[hash].show = !eph[hash].show;
 
 		return structuredClone(eph);
 	});
@@ -125,13 +150,13 @@ export const ContentItem: Component<{ children?: JSX.Element, text: string, icon
 
 	return (
 		<div class={styles.ContentItem} >
-			<div class={`${styles.Entry}${spread_classes(cls())} ${estyles.EphemSwitch}`} onmousedown={update}>
+			<div class={`${styles.Entry}${spread_classes(cls())} ${estyles.Ephemeral}`} onmousedown={update} ephem-hash={hash}>
 				<Actuator call={call()} class={styles.Path}>
 					{icon()}
 					<span>{text()}</span>
 				</Actuator >
 			</div>
-			<Ephemeral hash={hash} transient={transient()}>
+			<Ephemeral events={events()} show={show()} hash={hash}>
 				{content()}
 			</Ephemeral>
 		</div>

@@ -1,3 +1,5 @@
-import { InteractiveArea } from './wrappers/InteractiveArea';
+import { InteractiveArea, } from './wrappers/InteractiveArea';
+import { ColorScheme } from './wrappers/ColorScheme';
+import { Ephemeral, new_hash, assign_hash, styles as eph_styles } from './wrappers/Ephemeral';
 
-export { InteractiveArea }
+export { InteractiveArea, ColorScheme, Ephemeral, new_hash, assign_hash, eph_styles }

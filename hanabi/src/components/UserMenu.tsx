@@ -61,8 +61,4 @@ export const UserMenu = () => {
 	);
 };
 
-export const Sep = () => {
-	return (<span class={styles.Sep}></span>);
-}
-
 export { styles };

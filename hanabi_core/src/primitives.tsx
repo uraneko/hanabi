@@ -8,10 +8,8 @@ import { TextLine } from './primitives/TextLine';
 import { Actuator } from './primitives/Actuator';
 import { Separator } from './primitives/Separator';
 import { WildText } from './primitives/WildText';
-import { Ephemeral, new_hash, assign_hash, styles as eph_styles } from './primitives/Ephemeral';
 
 export {
-	Ephemeral, eph_styles, new_hash, assign_hash,
 	WildText,
 	Separator,
 	TextLine,
