@@ -35,13 +35,14 @@ export const ColorPalette = (props: { width?: number, height?: number }) => {
 			}}>
 			color palette
 		</canvas> as HTMLCanvasElement;
-	createEffect(() => {
-		draw_palette(palette, width(), height(), color());
-	});
+	draw_palette(palette, width(), height(), color());
 	palette.addEventListener("click", (e: MouseEvent) => re_color((color: _) => {
 		const rgb = update_rgb(e);
 
-		return [rgb[0], rgb[1], rgb[2], color[3]];
+		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
+		draw_opacity_slider(opacity_slider, width(), height(), clr);
+
+		return clr;
 	}));
 
 	const color_slider = <canvas
@@ -58,7 +59,11 @@ export const ColorPalette = (props: { width?: number, height?: number }) => {
 	color_slider.addEventListener("click", (e: MouseEvent) => re_color((color: _) => {
 		const rgb = update_rgb(e);
 
-		return [rgb[0], rgb[1], rgb[2], color[3]];
+		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
+		draw_palette(palette, width(), height(), clr);
+		draw_opacity_slider(opacity_slider, width(), height(), clr);
+
+		return clr;
 	}));
 
 	const opacity_slider = <canvas
@@ -71,9 +76,7 @@ export const ColorPalette = (props: { width?: number, height?: number }) => {
 		}}>
 		opacity slider
 	</canvas> as HTMLCanvasElement;
-	createEffect(() => {
-		draw_opacity_slider(opacity_slider, width(), height(), color());
-	});
+	draw_opacity_slider(opacity_slider, width(), height(), color());
 	opacity_slider.addEventListener("click", (e: MouseEvent) => re_color((color: _) => {
 		const alpha = update_alpha(e);
 
@@ -118,6 +121,7 @@ function update_alpha(e: MouseEvent) {
 
 function draw_palette(canvas: HTMLCanvasElement, width: number, height: number, rgb: number[]) {
 	const ctx = canvas.getContext("2d")!;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	// const dpi = window.devicePixelRatio;
 	// ctx.scale(dpi, dpi);
 
@@ -150,6 +154,7 @@ function dcp(x: number, y: number, rgb: number[]) {
 
 function draw_color_slider(canvas: HTMLCanvasElement, width: number, height: number) {
 	const ctx = canvas.getContext("2d")!;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	// const dpi = window.devicePixelRatio;
 	// ctx.scale(dpi, dpi);
 
@@ -187,8 +192,14 @@ function dcs(coef: number, x: number): string {
 	return "unreachable";
 }
 
-function draw_opacity_slider(canvas: HTMLCanvasElement, width: number, height: number, rgba: number[]) {
+function draw_opacity_slider(
+	canvas: HTMLCanvasElement,
+	width: number,
+	height: number,
+	rgba: number[]
+) {
 	const ctx = canvas.getContext("2d")!;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	// const dpi = window.devicePixelRatio;
 	// ctx.scale(dpi, dpi);
 

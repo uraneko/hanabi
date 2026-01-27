@@ -6,7 +6,7 @@
 
 	&>canvas {
 		margin: 0.2em 0;
-		border: 1px solid black;
+		/* border: 1px solid black; */
 		image-rendering: pixelated;
 		cursor: cell;
 	}
