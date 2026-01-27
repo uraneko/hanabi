@@ -8,8 +8,10 @@ import { TextLine } from './primitives/TextLine';
 import { Actuator } from './primitives/Actuator';
 import { Separator } from './primitives/Separator';
 import { WildText } from './primitives/WildText';
+import { ColorPalette } from './primitives/ColorPalette';
 
 export {
+	ColorPalette,
 	WildText,
 	Separator,
 	TextLine,

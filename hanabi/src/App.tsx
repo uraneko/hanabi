@@ -132,10 +132,8 @@ function disable_ephemerals(eph: _, re_eph: _) {
 
 	const hover_off = (e: Event) => re_eph((ephemeral: _) => {
 		const et = e.target as Element;
-		console.log(et);
 		let parent = super_parent_by_class(et, estyles.Ephemeral) ??
 			super_uncle_by_class(et, estyles.Ephemeral);
-		console.log(parent);
 
 		const neighbors = new Array(...document.body.querySelectorAll('.' + estyles.Ephemeral));
 		neighbors

@@ -1,6 +1,6 @@
 import { type Component, Show, createSignal } from "solid-js";
 import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
-import { Actuator } from "core/primitives";
+import { Actuator, ColorPalette } from "core/primitives";
 import { user_ctx } from "core/context";
 import { styles as gstyles } from "../App";
 
@@ -30,6 +30,7 @@ export const Settings = () => {
 			<Header text="| colorschemes" icon={scheme} switch={expand()} />
 		</div>
 		<div class={styles.Contents}>
+			<ColorPalette />
 		</div>
 	</div>);
 };

@@ -8,7 +8,7 @@ export const Ephemeral: Component<{
 	events?: string | string[],
 	show: boolean,
 	hash: string,
-}> = (props: _) => {
+}> = (props: _): JSX.Element => {
 	const { eph, re_eph } = eph_ctx();
 	const children = () => props.children;
 	const show = () => props.show;
