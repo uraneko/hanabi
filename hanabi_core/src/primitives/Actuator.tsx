@@ -1,26 +1,41 @@
-import { Component, JSX } from 'solid-js';
+import { Component, Switch, Match, JSX } from 'solid-js';
 import styles from './Actuator.module.css';
 import { _, spread_classes } from '../misc';
 
-export const Actuator: Component<{ children: JSX.Element, type?: string, class?: string | string[], link?: _, call?: _ }> = (props: _) => {
+export const Actuator: Component<{
+	children: JSX.Element,
+	type?: string,
+	class?: string | string[],
+	link?: _,
+	call?: _,
+	extra?: Object,
+}> = (props: _) => {
 	const children = () => props.children;
 	const link = () => props.link;
 	const cls = () => props.class;
 	const call = () => props.call;
+	const extra = () => props.extra ?? {};
+	const actuator = new_actuator(children(), cls(), call(), link());
+	assign_attrs(actuator as _, extra());
 
-	if (link() === undefined) {
-		return (
-			<button class={`${styles.Button} ${spread_classes(cls())}`} on:click={call()} >
-				{children()}
-			</button >
-		);
-	} else {
-		return (
-			<a class={`${styles.Actuator} ${spread_classes(cls())}`}
-				href={link()} on:click={call()}>
-				{children()}
-			</a >
-		);
-	}
+	return actuator;
 };
 
+function new_actuator(
+	children: JSX.Element,
+	cls?: string | string[],
+	call?: _,
+	link?: string,
+): JSX.Element {
+	return link === undefined ?
+		<button class={`${styles.Button} ${spread_classes(cls)}`}
+			on:mousedown={call}>{children}</button> :
+		<a class={`${styles.Actuator} ${spread_classes(cls)}`}
+			href={link} on:mousedown={call}>{children}</a>
+}
+
+function assign_attrs(comp: Element, attrs: Object) {
+	for (const [key, val] of Object.entries(attrs)) {
+		comp.setAttribute(key, val);
+	}
+}

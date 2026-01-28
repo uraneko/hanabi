@@ -1,5 +1,5 @@
 .WildText {
-	background: aliceblue;
+	background: var(--white);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -18,7 +18,7 @@
 }
 
 .WildContent {
-	color: #485d6c;
+	color: var(--blue);
 	font-size: 16pt;
 	font-family: carlito;
 

@@ -11,7 +11,7 @@
 	flex-direction: column;
 
 
-	background: aliceblue;
+	background: var(--white);
 	color: #595858;
 	border-radius: 6px;
 	/* border: 1px solid #6c8e99; */
@@ -29,8 +29,8 @@
 }
 
 .SubmitButton {
-	background: #485d6c;
-	color: aliceblue;
+	background: var(--blue);
+	color: var(--white);
 	cursor: pointer;
 	width: -moz-available;
 	align-self: center;

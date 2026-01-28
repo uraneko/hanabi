@@ -42,7 +42,6 @@ export const UserMenu = () => {
 		});
 	};
 
-
 	return (
 		<div class={styles.UserMenu}>
 			<Actuator class={styles.Entry} >

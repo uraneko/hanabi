@@ -98,10 +98,9 @@ export function active_ctx() {
 function disable_ephemerals(eph: _, re_eph: _) {
 	const click_off = (e: Event) => re_eph((ephemeral: _) => {
 		const et = e.target as Element;
-		let parent = super_parent_by_class(et, estyles.Ephemeral) ??
-			super_uncle_by_class(et, estyles.Ephemeral);
+		let parent = super_uncle_by_class(et, estyles.Ephemeral);
 
-		const neighbors = new Array(...document.body.querySelectorAll('.' + estyles.Ephemeral));
+		const neighbors = new Array(...document.body.querySelectorAll('[ephem-hash]'));
 		neighbors
 			.filter((nei: Element) => parent == null ? true :
 				nei.parentElement! !== parent!.parentElement!)
@@ -113,11 +112,11 @@ function disable_ephemerals(eph: _, re_eph: _) {
 
 		return structuredClone(ephemeral);
 	});
-	document.body.addEventListener("click", click_off);
+	document.body.addEventListener("mouseup", click_off);
 
 	const press_off = (e: KeyboardEvent) => re_eph((ephemeral: _) => {
 		if (e.key !== "z" || e.ctrlKey || e.shiftKey) { return ephemeral; }
-		const ephemes = new Array(...document.body.querySelectorAll('.' + estyles.Ephemeral));
+		const ephemes = new Array(...document.body.querySelectorAll('[ephem-hash]'));
 		ephemes
 			.map((ephem: Element) => ephem.getAttribute("ephem-hash")!)
 			.forEach((hash: string) => {
@@ -132,10 +131,10 @@ function disable_ephemerals(eph: _, re_eph: _) {
 
 	const hover_off = (e: Event) => re_eph((ephemeral: _) => {
 		const et = e.target as Element;
-		let parent = super_parent_by_class(et, estyles.Ephemeral) ??
-			super_uncle_by_class(et, estyles.Ephemeral);
+		// nice color #450000
+		let parent = super_uncle_by_class(et, estyles.Ephemeral);
 
-		const neighbors = new Array(...document.body.querySelectorAll('.' + estyles.Ephemeral));
+		const neighbors = new Array(...document.body.querySelectorAll('[ephem-hash]'));
 		neighbors
 			.filter((nei: Element) => parent == null ? true :
 				nei.parentElement! !== parent!.parentElement!)

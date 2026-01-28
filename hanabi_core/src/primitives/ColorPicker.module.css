@@ -1,0 +1,67 @@
+.Picker {
+	width: max-content;
+}
+
+.PickerButton {
+	& svg {
+		width: 1em;
+		cursor: pointer;
+	}
+}
+
+.ColorPicker {
+	filter: brightness(0.9);
+	background: var(--white);
+	z-index: 9;
+	box-shadow: 0 0 10px rgba(180, 180, 180, 1);
+	border-radius: 3px;
+
+	padding: 1em;
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	width: max-content;
+	align-items: center;
+
+	&>canvas {
+		margin: 0.2em 0;
+		/* border: 1px solid black; */
+		image-rendering: pixelated;
+		cursor: cell;
+	}
+}
+
+.ColorCode {
+	/* border: 1px solid black; */
+	width: 200px;
+	height: 10px;
+	font-size: 8px;
+	cursor: pointer;
+	margin: 0.8em 0;
+
+	border: none;
+	border-radius: 10px 0;
+	text-align: center;
+	font-size: 7pt;
+}
+
+[color-value] {
+	.PickerButton>svg+& {
+		color: attr(color-value);
+		fill: attr(color-value);
+		stroke: attr(color-value);
+	}
+}
+
+.Picker {
+	border: none;
+	border-radius: 1px;
+}
+
+.ColorSlider {
+	border-radius: 10px 0;
+}
+
+.OpacitySlider {
+	border-radius: 10px 0;
+}

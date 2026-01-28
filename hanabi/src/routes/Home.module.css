@@ -15,7 +15,7 @@
 	cursor: pointer;
 
 	align-self: start;
-	background: aliceblue;
+	background: var(--white);
 	box-shadow: 9px 11px 0 #25272833;
 
 	padding: 2em;
@@ -27,9 +27,9 @@
 	flex-direction: row-reverse;
 	justify-content: start;
 
-	color: #485d6c;
-	fill: #485d6c;
-	stroke: #485d6c;
+	color: var(--blue);
+	fill: var(--blue);
+	stroke: var(--blue);
 	transform: none;
 	transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out;
 
@@ -74,7 +74,7 @@
 	flex-direction: column;
 	width: max-content;
 	padding: 2em 4em;
-	color: #485d6c;
+	color: var(--blue);
 	font-family: carlito;
 	font-weight: bold;
 	font-size: 24pt;

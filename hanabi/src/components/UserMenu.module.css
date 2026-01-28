@@ -21,7 +21,7 @@
 	justify-content: center;
 
 	text-decoration: none;
-	color: #485d6c;
+	color: var(--blue);
 	cursor: pointer;
 
 	padding: 0.5em;
@@ -43,7 +43,7 @@
 	margin: 4px;
 
 	svg {
-		fill: #485d6c;
+		fill: var(--blue);
 		width: 1.2em;
 		margin-right: 3px;
 		transition: fill 178ms ease-out;
@@ -52,7 +52,7 @@
 
 .Sep {
 	height: 1px;
-	background: #485d6c;
+	background: var(--blue);
 	;
 	opacity: 0.5;
 }

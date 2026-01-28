@@ -51,4 +51,18 @@ export function assign_hash(
 	return eph;
 }
 
+export function setup(events: string[], show: boolean): [string, _] {
+	const { eph, re_eph } = eph_ctx();
+	const hash = new_hash(eph());
+	re_eph(assign_hash(eph(), hash, events, show));
+
+	const flip = () => re_eph((eph: _) => {
+		eph[hash].show = !eph[hash].show;
+
+		return structuredClone(eph);
+	});
+
+	return [hash, flip];
+}
+
 export { styles };

@@ -1,6 +1,6 @@
 import { type Component, Show, createSignal } from "solid-js";
 import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
-import { Actuator, ColorPalette } from "core/primitives";
+import { Actuator, ColorPicker } from "core/primitives";
 import { user_ctx } from "core/context";
 import { styles as gstyles } from "../App";
 
@@ -30,7 +30,7 @@ export const Settings = () => {
 			<Header text="| colorschemes" icon={scheme} switch={expand()} />
 		</div>
 		<div class={styles.Contents}>
-			<ColorPalette />
+			<ColorItem name="red" />
 		</div>
 	</div>);
 };
@@ -48,4 +48,15 @@ export const Header: Component<{ text: string, icon: SVGSVGElement, switch: bool
 			</span>
 		</Show>
 	</div >);
+}
+
+export const ColorItem: Component<{ name: string, }> = (props: _) => {
+	const name = () => props.name;
+
+	return (<div>
+		<ColorPicker events="click" html={document.documentElement} prop="--blue" />
+		<ColorPicker events="click" html={document.documentElement} prop="--grad-start" />
+		<ColorPicker events="click" html={document.documentElement} prop="--grad-end" />
+		<ColorPicker events="click" html={document.documentElement} prop="--white" />
+	</div>);
 };

@@ -7,7 +7,7 @@ const defaultProps = {
 	height: 0.6,
 	state: false,
 	tick: "",
-	accent: "#485d6c",
+	accent: "var(--blue)",
 
 };
 

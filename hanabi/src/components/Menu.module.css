@@ -30,7 +30,7 @@
 	text-decoration: none;
 
 	/* background: #485d6c; */
-	color: #485d6c;
+	color: var(--blue);
 	font-weight: bold;
 	font-size: 14pt;
 
@@ -43,7 +43,7 @@
 	transition: background 178ms ease-out, color 178ms ease-out;
 
 	svg {
-		fill: #485d6c;
+		fill: var(--blue);
 		width: 1.2em;
 		margin-right: 3px;
 		transition: fill 178ms ease-out;
@@ -51,12 +51,12 @@
 
 	&:hover {
 		filter: opacity(0.8);
-		background: #485d6c;
-		color: aliceblue;
+		background: var(--blue);
+		color: var(--white);
 		transition: background 178ms ease-out, color 178ms ease-out;
 
 		& svg {
-			fill: aliceblue;
+			fill: var(--white);
 			transition: fill 178ms ease-out;
 		}
 	}

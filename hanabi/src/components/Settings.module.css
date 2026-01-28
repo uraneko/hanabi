@@ -19,7 +19,7 @@
 	/* left: 50%; */
 	/* transform: translate(-50%, -50%); */
 
-	/* background: aliceblue; */
+	/* background: var(--white); */
 	z-index: 9;
 }
 
@@ -58,7 +58,7 @@
 	justify-content: start;
 
 	text-decoration: none;
-	color: #485d6c;
+	color: var(--blue);
 	cursor: pointer;
 	user-select: none;
 
@@ -78,7 +78,7 @@
 	border-radius: 1px;
 
 	svg {
-		fill: #485d6c;
+		fill: var(--blue);
 		width: 1.2em;
 		margin-right: 3px;
 		transition: fill 178ms ease-out;
@@ -91,7 +91,7 @@
 
 	width: -moz-available;
 
-	background: aliceblue;
+	background: var(--white);
 	padding: 2em;
 
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

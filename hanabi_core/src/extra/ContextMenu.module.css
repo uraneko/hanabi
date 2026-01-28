@@ -4,7 +4,7 @@
 
 	position: absolute;
 	background: #485D6C;
-	color: aliceblue;
+	color: var(--white);
 	border-radius: 3px;
 	border: none;
 
@@ -31,7 +31,7 @@
 	flex-direction: column;
 
 	background: #485D6C;
-	color: aliceblue;
+	color: var(--white);
 	/* border-radius: 3px; */
 	/* border: none; */
 
@@ -53,7 +53,7 @@
 
 		background: none;
 		border: none;
-		color: aliceblue;
+		color: var(--white);
 
 		&:hover {
 			background: #89a6b236;
