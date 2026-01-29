@@ -4,12 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"build:main": "cd hanabi && pnpm build",
-		"build:core": "cd hanabi_core && pnpm build",
-		"build:server": "pnpm build:main && cp hanabi/build -r ../../rust/hanabi/",
-		"dev": "pnpm build:server && cd ../../rust/hanabi && cargo run",
-		"hmr": "chokidar hanabi/src/* hanabi/src/**/* hanabi_cre/src/* hanabi_core/src/**/* -c 'nu -c \"do --ignore-errors { ps | where name == hanabi | last | kill $in.pid }\"; pnpm dev' --verbose"
+		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
 	"author": "",
@@ -17,16 +12,21 @@
 	"packageManager": "pnpm@10.25.0",
 	"dependencies": {
 		"@solidjs/router": "^0.15.4",
-		"chokidar-cli": "^3.0.0",
 		"esbuild": "^0.27.2",
 		"esbuild-plugin-solid": "^0.6.0",
 		"esbuild-solid": "^0.0.1",
 		"solid-js": "^1.9.10"
 	},
 	"devDependencies": {
+		"browserlist": "^1.0.2",
+		"lightningcss": "^1.31.1",
 		"typescript": "^5.9.3",
-		"vite": "^7.3.0",
 		"vite-plugin-solid": "^2.11.10",
 		"vitest": "^4.0.16"
+	},
+	"pnpm": {
+		"overrides": {
+			"vite": "npm:rolldown-vite@7.3.1"
+		}
 	}
 }
