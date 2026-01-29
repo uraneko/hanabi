@@ -89,7 +89,9 @@
 	border-top-right-radius: 6px;
 	border-bottom-right-radius: 6px;
 
-	width: -moz-available;
+	/* width: -moz-available; */
+	/* width: -webkit-fill-available; */
+	width: stretch;
 
 	background: var(--white);
 	padding: 2em;

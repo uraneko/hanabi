@@ -1,6 +1,6 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
 import { Actuator, } from "core/primitives";
-import { Ephemeral, new_hash, assign_hash, setup_ephem, eph_styles as estyles } from 'core/wrappers';
+import { sync_ls, Ephemeral, new_hash, assign_hash, setup_ephem, eph_styles as estyles } from 'core/wrappers';
 import { colors_ctx } from "core/context";
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless, eph_ctx } from "core/context";
@@ -176,6 +176,7 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		const scheme = et.textContent!;
 		const clrs = colors()[scheme];
 		if (clrs === undefined) return;
+		sync_ls(scheme);
 		Object.entries(clrs).forEach(([k, v]: _) =>
 			document.documentElement.style.setProperty("--" + k, v));
 	};

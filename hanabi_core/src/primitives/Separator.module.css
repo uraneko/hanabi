@@ -5,7 +5,9 @@
 	margin-bottom: 12px;
 	padding-top: 1px;
 
-	width: -moz-available;
+	/* width: -moz-available; */
+	/* width: -webkit-fill-available; */
+	width: stretch;
 
 	&[active=true] {
 		border-bottom: 1px solid #87a187;

@@ -68,7 +68,9 @@ TextField[bad-value=true] {
 	background: transparent;
 	border: none;
 	color: #595858;
-	width: -moz-available;
+	/* width: -moz-available; */
+	/* width: -webkit-fill-available; */
+	width: stretch;
 	padding: 0;
 }
 

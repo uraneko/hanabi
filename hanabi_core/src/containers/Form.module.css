@@ -32,7 +32,9 @@
 	background: var(--blue);
 	color: var(--white);
 	cursor: pointer;
-	width: -moz-available;
+	width: stretch;
+	/* width: -moz-available; */
+	/* width: -webkit-fill-available; */
 	align-self: center;
 	border: none;
 	padding: 0.3em;

@@ -1,7 +1,7 @@
 import { createContext, useContext, createSignal } from 'solid-js';
 import { _ } from "../misc";
 
-const [colors, re_colors] = createSignal(new Object());
+const [colors, re_colors] = createSignal(new Object() as Record<string, string>);
 
 const colors_context = createContext({ colors, re_colors });
 export function colors_ctx() {
