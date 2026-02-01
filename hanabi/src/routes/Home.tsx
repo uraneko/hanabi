@@ -23,7 +23,7 @@ async function get_apps_meta() {
 	return [
 		{
 			name: "calendar", icon: parse_svg(eventsSVG), accent: "#00a86b",
-			depict: "manage your schedule and affairs [not yet avalable]"
+			depict: "manage your schedule and affairs [not yet available]"
 		},
 		{
 			// "#9aca43" 
@@ -32,11 +32,11 @@ async function get_apps_meta() {
 		},
 		{
 			name: "comms", icon: parse_svg(chatSVG), accent: "#1475dc",
-			depict: "talk with people in text, audio or video format [not yet avalable]"
+			depict: "talk with people in text, audio or video format [not yet available]"
 		},
 		{
-			name: "vms", icon: parse_svg(canvasSVG), accent: "#ce1f57",
-			depict: "manage your virtual machines [not yet avalable]"
+			name: "machines", icon: parse_svg(canvasSVG), accent: "#ce1f57",
+			depict: "manage your virtual machines [not yet available]"
 		}];
 }
 

@@ -11,6 +11,28 @@
 	height: max-content;
 }
 
+@keyframes shakin\' {
+	0% {
+		transform: translateX(0);
+	}
+
+	25% {
+		transform: translateX(-5px);
+	}
+
+	50% {
+		transform: translateX(5px);
+	}
+
+	75% {
+		transform: translateX(-5px);
+	}
+
+	100% {
+		transform: translateX();
+	}
+}
+
 .App {
 	cursor: pointer;
 
@@ -39,18 +61,21 @@
 	}
 
 	&:hover {
-		transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out;
+		/* transition: color 178ms ease-out, fill 178ms ease-out, stroke 178ms ease-out, transform 178ms ease-out; */
 		fill: var(--accent);
 		color: var(--accent);
 		stroke: var(--accent);
 
-		&.LeftRtt {
-			transform: rotate3D(0, 0, -1, 5deg);
-		}
+		/* &.LeftRtt { */
+		/* 	transform: rotate3D(0, 0, -1, 5deg); */
+		/* } */
+		/**/
+		/* &.RightRtt { */
+		/* 	transform: rotate3D(0, 0, 1, 5deg); */
+		/* } */
 
-		&.RightRtt {
-			transform: rotate3D(0, 0, 1, 5deg);
-		}
+
+		animation: shakin\' 200ms auto;
 	}
 }
 
