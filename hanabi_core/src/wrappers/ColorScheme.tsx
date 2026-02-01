@@ -8,6 +8,9 @@ export const ColorScheme: Component<{ children: JSX.Element, scheme?: string }> 
 	const { colors, re_colors } = colors_ctx();
 	const scheme = () => props.scheme ?? read_ls() ?? Object.keys(colors())[0];
 
+	// BUG this applies the colorscheme before the dom tree is fully loaded
+	// non roor color variables wont take effect since they use querySelector
+	// TODO just make colorscheme a function then call it once App is loaded 
 	if (scheme_exists(colors(), scheme())) {
 		sync_scheme(colors()[scheme()]);
 		sync_ls(scheme());

@@ -1,14 +1,11 @@
-import { type Component, createSignal } from 'solid-js';
-import { parse_svg } from '../misc';
+import { DEV, type Component, createSignal } from 'solid-js';
+import { Logo } from './Logo';
 import styles from './Splash.module.css';
-import svg from "../../../assets/icons/hanabi.svg?raw";
 
 export const Splash: Component = () => {
-	const logo = parse_svg(svg);
-
 	return (
 		<div class={styles.Splash}>
-			{logo}
+			<Logo width={340} height={160} />
 		</div>
 	)
 }
