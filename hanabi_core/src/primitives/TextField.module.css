@@ -66,12 +66,15 @@ TextField[bad-value=true] {
 
 .InputField {
 	background: transparent;
-	border: none;
+	border: 0;
 	color: #595858;
 	/* width: -moz-available; */
 	/* width: -webkit-fill-available; */
 	width: stretch;
-	padding: 0;
+
+	@supports (-moz-appearance:none) {
+		padding: 0;
+	}
 }
 
 .InputLegend {
@@ -82,7 +85,8 @@ TextField[bad-value=true] {
 	padding: 0;
 	transform: translateY(16px);
 	transition: transform 100ms ease-out, font-size 100ms ease-out;
-	cursor: default;
 	cursor: text;
 	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }

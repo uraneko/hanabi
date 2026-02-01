@@ -39,8 +39,8 @@ export const CheckBox: Component<{ name?: string, legend?: string }> = (props_: 
 				style={{
 					border: `0.11em solid ${accent()}`,
 					background: "transparent",
-					width: `${w() + 0.19}em`,
-					height: `${h() + 0.19}em`
+					width: `${w() + 0.19}rem`,
+					height: `${h() + 0.19}rem`
 				}}
 				box-state={s()}
 			>
@@ -48,8 +48,8 @@ export const CheckBox: Component<{ name?: string, legend?: string }> = (props_: 
 					class={styles.Content}
 					style={{
 						background: accent(),
-						width: `${w()}em`,
-						height: `${h()}em`
+						width: `${w()}rem`,
+						height: `${h()}rem`
 					}}
 				>
 					<Show when={tick() !== ""} >

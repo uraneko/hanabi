@@ -36,8 +36,8 @@
 	&[box-state="false"] {
 		&:not(:has(.TickMark)) {
 			.Content {
-				width: 1px !important;
-				height: 1px !important;
+				width: 2px !important;
+				height: 2px !important;
 				border-radius: 50%;
 			}
 		}
@@ -57,7 +57,7 @@
 
 
 .Content {
-	padding: 1px;
+	/* padding: 1px; */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
