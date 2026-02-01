@@ -20,3 +20,8 @@
 	/* this has a stronger start color */
 	/* background: linear-gradient(328deg, rgb(171, 192, 177) 0%, rgb(245, 244, 225) 100%); */
 }
+
+.Logo {
+	padding-top: 6px;
+	position: fixed;
+}

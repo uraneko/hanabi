@@ -1,6 +1,6 @@
 import { Component, JSX, Show } from 'solid-js';
 import { _, spread_classes } from '../misc';
-import { eph_ctx } from '../context';
+import { eph_ctx, content_ctx } from '../context';
 import styles from './Ephemeral.module.css';
 
 export const Ephemeral: Component<{
@@ -52,12 +52,14 @@ export function assign_hash(
 }
 
 export function setup(events: string[], show: boolean): [string, _] {
+	const { content, re_content } = content_ctx();
 	const { eph, re_eph } = eph_ctx();
 	const hash = new_hash(eph());
 	re_eph(assign_hash(eph(), hash, events, show));
 
 	const flip = () => re_eph((eph: _) => {
 		eph[hash].show = !eph[hash].show;
+		re_content(!content());
 
 		return structuredClone(eph);
 	});

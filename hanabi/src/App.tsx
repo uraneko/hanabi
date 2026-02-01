@@ -10,17 +10,6 @@ import { user_ctx, is_non_init, is_authless, is_logged_in, eph_ctx } from 'core/
 import { _ } from "core";
 import styles from './App.module.css';
 
-// TODO - user authentication mechanism
-// - user logs-in 
-// - server sets an access token http only cookie
-// - server also sets a refresh token in the user state of the app (js in memory)
-// - said refresh token is also stored in backend db (in hashed format)
-// - every 20 mins access token expires and refresh token is sent in Authorization header to generate new access token
-// - when user closes their session, refresh token is stored in a cookie
-// - when user opens a new session, refresh token cookie (if it exists) is sent to the server
-// - server matches refresh token with db entries, if valid (exists in db and is not expired) then removes refresh token from cookies + sets access token in cookies + returns user state in body
-// - client sets user state (including refresh token) in js memory
-
 function parent_contains_class(element: HTMLElement | null, substring: string): boolean | undefined {
 	if (element === null) return undefined;
 	const parent = element.parentElement;

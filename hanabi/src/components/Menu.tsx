@@ -1,7 +1,8 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
 import { Actuator, } from "core/primitives";
+// TODO sync_scheme should also come from the wrapper comp module, instead of the context module
 import { sync_ls, Ephemeral, new_hash, assign_hash, setup_ephem, eph_styles as estyles } from 'core/wrappers';
-import { colors_ctx } from "core/context";
+import { colors_ctx, sync_scheme } from "core/context";
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless, eph_ctx } from "core/context";
 import styles from './Menu.module.css';
@@ -52,19 +53,19 @@ export const Menu = () => {
 				icon={colors}
 				text="colors"
 				content={<ColorSchemeDropDown />} />
-			<ContentItem
-				class={styles.ContentItem}
-				content={<Settings />}
-				icon={rocket}
-				text="settings"
-				show={false}
-				events="keypress" />
 			<Switch>
 				<Match when={is_authless(user())}>
 					<AnchorItem link="/auth" call={login_form} icon={login} text="login" />
 					<AnchorItem link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
 				<Match when={is_logged_in(user())}>
+					<ContentItem
+						class={styles.ContentItem}
+						content={<Settings />}
+						icon={rocket}
+						text="settings"
+						show={false}
+						events="keypress" />
 					<ContentItem
 						class={styles.ContentItem}
 						content={<UserMenu />}
@@ -177,8 +178,7 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		const clrs = colors()[scheme];
 		if (clrs === undefined) return;
 		sync_ls(scheme);
-		Object.entries(clrs).forEach(([k, v]: _) =>
-			document.documentElement.style.setProperty("--" + k, v));
+		sync_scheme(clrs);
 	};
 
 	return (<Actuator call={change_scheme} class={umstyles.Entry}>

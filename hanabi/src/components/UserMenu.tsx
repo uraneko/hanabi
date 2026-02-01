@@ -7,6 +7,7 @@ import styles from "./UserMenu.module.css";
 import icecreamSVG from "../../../assets/icons/icecream.svg?raw";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import glassesSVG from "../../../assets/icons/glasses.svg?raw";
+import peopleSVG from "../../../assets/icons/people.svg?raw";
 
 function clear_user_data(data: Object): Object { return data; }
 
@@ -14,13 +15,14 @@ export const UserMenu = () => {
 	const { user, re_user } = user_ctx();
 	// user configs
 	const icecream = parse_svg(icecreamSVG);
-	const logout = parse_svg(logoutSVG);
+	const logout_ = parse_svg(logoutSVG);
 	// profile 
 	const glasses = parse_svg(glassesSVG);
+	const people = parse_svg(peopleSVG);
 
 	// BUG a failed logout still changes the page since the logout button is an anchor and 
 	// the redirection is independent from the logout callback
-	const clear_user = async () => {
+	const logout = async () => {
 		if (DEV === undefined) {
 			const res = await fetch("/auth/remembrance", {
 				method: "DELETE",
@@ -48,12 +50,16 @@ export const UserMenu = () => {
 				{glasses}
 				<span>| profile</span>
 			</Actuator>
+			<Actuator class={styles.Entry} >
+				{people}
+				<span>| people</span>
+			</Actuator>
 			<Actuator class={styles.Entry}>
 				{icecream}
 				<span>| configs</span>
 			</Actuator>
-			<Actuator link="/" class={styles.Entry} call={clear_user}>
-				{logout}
+			<Actuator link="/" class={styles.Entry} call={logout}>
+				{logout_}
 				<span>| logout</span>
 			</Actuator>
 		</div>
