@@ -1,0 +1,5 @@
+.Dialog {
+	position: fixed;
+
+	z-index: 9;
+}

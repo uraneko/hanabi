@@ -3,6 +3,7 @@ import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
 import { Actuator, ColorPicker } from "core/primitives";
 import { user_ctx, content_ctx } from "core/context";
 import { styles as gstyles } from "../App";
+import { Dialog } from 'core/containers';
 
 import styles from "./Settings.module.css";
 import atSVG from "../../../assets/icons/at.svg?raw";
@@ -23,16 +24,18 @@ export const Settings = () => {
 		return dbl().trigger ? !expand : expand
 	});
 
-	return (<div class={styles.Settings}>
-		<div class={styles.Headers} on:mousedown={expansion}>
-			<Header text="| account" icon={account} switch={expand()} />
-			<Header text="| apps" icon={apps} switch={expand()} />
-			<Header text="| colorschemes" icon={scheme} switch={expand()} />
-		</div>
-		<div class={styles.Contents}>
-			<ColorItem name="red" />
-		</div>
-	</div>);
+	return (
+		<Dialog class={styles.Settings} width={54} height={56} top={50} left={50} center>
+			<div class={styles.Headers} on:mousedown={expansion}>
+				<Header text="| account" icon={account} switch={expand()} />
+				<Header text="| apps" icon={apps} switch={expand()} />
+				<Header text="| colorschemes" icon={scheme} switch={expand()} />
+			</div>
+			<div class={styles.Contents}>
+				<ColorItem name="red" />
+			</div>
+		</Dialog >
+	);
 };
 
 export const Header: Component<{ text: string, icon: SVGSVGElement, switch: boolean }> = (props: _) => {
