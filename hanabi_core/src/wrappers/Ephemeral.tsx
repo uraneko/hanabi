@@ -59,7 +59,11 @@ export function setup(events: string[], show: boolean): [string, _] {
 
 	const flip = () => re_eph((eph: _) => {
 		eph[hash].show = !eph[hash].show;
-		re_content(!content());
+		console.log(eph);
+		re_content(
+			!Object.values(eph)
+				.map((val: _) => val.show ?? false)
+				.some((show: boolean) => show));
 
 		return structuredClone(eph);
 	});
