@@ -169,7 +169,7 @@ function apply_scheme(scheme: {
 					indexes.includes(val_idx.idx))
 			.map(([prop, val_idx]: _) => [prop, val_idx.value] as [string, string]);
 		apply_selector_rules(selec, props);
-	})
+	});
 }
 
 function apply_selector_rules(

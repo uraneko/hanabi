@@ -21,14 +21,14 @@ function verdant() {
 		"grad-rotate": "328deg",
 	}).prefix(true);
 	const logo_rules = color_rules().selectors("svg.hanabi_svg").props({
-		"logo-h": "#000000",
-		"logo-a0": "#000000",
-		"logo-n": "#000000",
-		"logo-a1": "#000000",
-		"logo-b": "#000000",
-		"logo-I": "#000000",
-		"logo-dot": "#000000",
-		"logo-ra": "#649279",
+		"h": "#000000",
+		"a0": "#000000",
+		"n": "#000000",
+		"a1": "#000000",
+		"b": "#000000",
+		"i": "#000000",
+		"dot": "#000000",
+		"ra": "#649279",
 	}).prefix(true);
 
 	return colorscheme()
@@ -57,74 +57,72 @@ function black_star() {
 	const logo_rules = color_rules()
 		.props({
 			// selector:css-prop -> prop-val,
-			"logo-h": "rgb(151, 164, 194)",
-			"logo-a0": "rgb(151, 164, 194)",
-			"logo-n": "rgb(151, 164, 194)",
-			"logo-a1": "rgb(151, 164, 194)",
-			"logo-b": "rgb(151, 164, 194)",
-			"logo-I": "rgb(151, 164, 194)",
-			"logo-dot": "rgb(151, 164, 194)",
-			// "logo-ra": "#876756",
-			"logo-ra": "#2573c7",
+			"h": "rgb(151, 164, 194)",
+			"a0": "rgb(151, 164, 194)",
+			"n": "rgb(151, 164, 194)",
+			"a1": "rgb(151, 164, 194)",
+			"b": "rgb(151, 164, 194)",
+			"i": "rgb(151, 164, 194)",
+			"dot": "rgb(151, 164, 194)",
+			// "ra": "#876756",
+			"ra": "#2573c7",
 		}).selectors("svg.hanabi_svg")
 		.prefix(true);
 
 	return colorscheme().extend(root_rules).extend(logo_rules).make();
 }
 
-export const verdant_ = {
-	// blue alt #450000
-	red: "#A95525", green: "#87a187", blue: "#485d6c",
-	black: "black", white: "#f0f8ff",
-	// opaque: #C4DA9F
-	abstract: "#f0f8ff35", opaque: "#a0c65578",
-	"grad-start": "rgb(204, 217, 208)",
-	"grad-end": "rgb(245, 244, 225)",
-	"grad-rotate": "328deg",
-	"svg.hanabi_svg:logo-h": "#000000",
-	"svg.hanabi_svg:logo-a0": "#000000",
-	"svg.hanabi_svg:logo-n": "#000000",
-	"svg.hanabi_svg:logo-a1": "#000000",
-	"svg.hanabi_svg:logo-b": "#000000",
-	"svg.hanabi_svg:logo-I": "#000000",
-	"svg.hanabi_svg:logo-dot": "#000000",
-	"svg.hanabi_svg:logo-ra": "#649279",
-};
-
-export const black_star_ = {
-	opaque: "#303553",
-	abstract: "rgba(73, 126, 172, 0.21)",
-	black: "#e3e2e4",
-	white: "#1f212e",
-	// blue: "rgb(151, 164, 194)",
-	// blue: "rgb(183, 162, 147)",
-	// blue: "#738897",
-	// coffee-ish #a07634
-	// blue: "#485d6c"
-	blue: "#778c9b", green: "#87a187", red: "#A95525",
-	// "grad-start": "#01012afc", 
-	// "grad-start": "#43001e"
-	"grad-start": "#330017",
-	"grad-end": "#000000",
-	"grad-rotate": "341deg",
-	// selector:css-prop -> prop-val,
-	"svg.hanabi_svg:logo-h": "rgb(151, 164, 194)",
-	"svg.hanabi_svg:logo-a0": "rgb(151, 164, 194)",
-	"svg.hanabi_svg:logo-n": "rgb(151, 164, 194)",
-	"svg.hanabi_svg:logo-a1": "rgb(151, 164, 194)",
-	"svg.hanabi_svg:logo-b": "rgb(151, 164, 194)",
-	"svg.hanabi_svg:logo-I": "rgb(151, 164, 194)",
-	"svg.hanabi_svg:logo-dot": "rgb(151, 164, 194)",
-	// "svg.hanabi_svg:logo-ra": "#876756",
-	"svg.hanabi_svg:logo-ra": "#2573c7",
-};
-// TODO rename primitives to particles
+// export const verdant_ = {
+// 	// blue alt #450000
+// 	red: "#A95525", green: "#87a187", blue: "#485d6c",
+// 	black: "black", white: "#f0f8ff",
+// 	// opaque: #C4DA9F
+// 	abstract: "#f0f8ff35", opaque: "#a0c65578",
+// 	"grad-start": "rgb(204, 217, 208)",
+// 	"grad-end": "rgb(245, 244, 225)",
+// 	"grad-rotate": "328deg",
+// 	"svg.hanabi_svg:h": "#000000",
+// 	"svg.hanabi_svg:a0": "#000000",
+// 	"svg.hanabi_svg:n": "#000000",
+// 	"svg.hanabi_svg:a1": "#000000",
+// 	"svg.hanabi_svg:b": "#000000",
+// 	"svg.hanabi_svg:I": "#000000",
+// 	"svg.hanabi_svg:dot": "#000000",
+// 	"svg.hanabi_svg:ra": "#649279",
+// };
+//
+// export const black_star_ = {
+// 	opaque: "#303553",
+// 	abstract: "rgba(73, 126, 172, 0.21)",
+// 	black: "#e3e2e4",
+// 	white: "#1f212e",
+// 	// blue: "rgb(151, 164, 194)",
+// 	// blue: "rgb(183, 162, 147)",
+// 	// blue: "#738897",
+// 	// coffee-ish #a07634
+// 	// blue: "#485d6c"
+// 	blue: "#778c9b", green: "#87a187", red: "#A95525",
+// 	// "grad-start": "#01012afc", 
+// 	// "grad-start": "#43001e"
+// 	"grad-start": "#330017",
+// 	"grad-end": "#000000",
+// 	"grad-rotate": "341deg",
+// 	// selector:css-prop -> prop-val,
+// 	"svg.hanabi_svg:h": "rgb(151, 164, 194)",
+// 	"svg.hanabi_svg:a0": "rgb(151, 164, 194)",
+// 	"svg.hanabi_svg:n": "rgb(151, 164, 194)",
+// 	"svg.hanabi_svg:a1": "rgb(151, 164, 194)",
+// 	"svg.hanabi_svg:b": "rgb(151, 164, 194)",
+// 	"svg.hanabi_svg:I": "rgb(151, 164, 194)",
+// 	"svg.hanabi_svg:dot": "rgb(151, 164, 194)",
+// 	// "svg.hanabi_svg:ra": "#876756",
+// 	ra: #46394E
+// 	"svg.hanabi_svg:ra": "#2573c7",
+// };
 
 const { colors, re_colors } = colors_ctx();
 colorschemes({ colors, re_colors }).name("verdant").register(verdant());
 colorschemes({ colors, re_colors }).name("black-star").register(black_star());
-console.log(colors());
-colorschemes({ colors, re_colors }).refresh("black-star");
 
 export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 	const children = () => props.children;
@@ -133,19 +131,9 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 		<ColorScheme>
 			<div class={styles.Page}>
 				<Actuator link="/" class={styles.Logo}>
-					<Icon
+					<Logo
 						width={140}
 						height={60}
-						icon={hanabiSVG}
-						styles={{
-							"logo-dot": "rgb(151, 164, 194)",
-							"logo-ra": "#2573c7",
-						}}
-						overrides={{
-							"#path1/#path2/#path3/#path4/#path5/#path6/#path7":
-								[{ prop: "stroke", custom: "logo-dot" }],
-							"#path8": [{ prop: "fill", custom: "logo-ra" }]
-						}}
 					/>
 				</Actuator>
 				<Menu />
@@ -156,3 +144,17 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 		</ColorScheme >
 	);
 };
+
+let nodes = 0;
+const watchguard = new MutationObserver(() => {
+	// new Promise(_ => setTimeout(_, 100));
+	if (nodes === 1) {
+		colorschemes().refresh("black-star");
+		watchguard.disconnect();
+
+		return;
+	}
+	nodes += 1;
+});
+
+watchguard.observe(document.body, { childList: true, subtree: true });

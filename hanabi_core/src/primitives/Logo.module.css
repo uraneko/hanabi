@@ -1,33 +1,33 @@
-.Logo {
-	& path#path1 {
-		stroke: var(--h);
+.Logo>svg[class='hanabi_svg'] {
+	path[id='path1'] {
+		stroke: var(--h) !important;
 	}
 
-	& path#path2 {
-		stroke: var(--a0);
+	path[id='path2'] {
+		stroke: var(--a0) !important;
 	}
 
-	& path#path3 {
-		stroke: var(--n);
+	path[id='path3'] {
+		stroke: var(--n) !important;
 	}
 
-	& path#path4 {
-		stroke: var(--a1);
+	path[id='path4'] {
+		stroke: var(--a1) !important;
 	}
 
-	& path#path5 {
-		stroke: var(--b);
+	path[id='path5'] {
+		stroke: var(--b) !important;
 	}
 
-	& path#path6 {
-		stroke: var(--i);
+	path[id='path6'] {
+		stroke: var(--i) !important;
 	}
 
-	& path#path7 {
-		stroke: var(--dot);
+	path[id='path7'] {
+		stroke: var(--dot) !important;
 	}
 
-	& path#path8 {
-		fill: var(--ra);
+	path[id='path8'] {
+		fill: var(--ra) !important;
 	}
 }

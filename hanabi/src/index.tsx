@@ -12,4 +12,3 @@ if (import.meta.env.DEV && !(document.body instanceof HTMLBodyElement)) {
 
 render(() => <App />, document.body);
 
-
