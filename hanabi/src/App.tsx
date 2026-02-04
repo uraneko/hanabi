@@ -5,8 +5,7 @@ import { Auth } from './routes/Auth';
 import { Initialize } from './routes/Initialize';
 import { Page } from './components/Page';
 import { Splash } from 'core/primitives';
-import { eph_styles as estyles } from 'core/wrappers';
-import { user_ctx, is_non_init, is_authless, is_logged_in, eph_ctx } from 'core/context';
+import { user_ctx, is_non_init, is_authless, is_logged_in } from 'core/context';
 import { _ } from "core";
 import styles from './App.module.css';
 
@@ -43,24 +42,19 @@ function dev_ssn_rtt(user: _, e: Event) {
 		name: user.name == "" ? "scarecrow" : "",
 		email: undefined,
 		access_token: undefined,
-		data: new Object({}),
 	};
 }
 
 export const App: Component = () => {
 	const { user, re_user } = user_ctx();
-	const { active, up_active } = active_ctx();
 
 	// log-in/out on the frontend state for development ease
 	const session_rotation = (e: MouseEvent) =>
 		re_user((user: _) => dev_ssn_rtt(user, e));
 
-	const { eph, re_eph } = eph_ctx();
-	disable_ephemerals(eph, re_eph);
-
 	return (
-		<div class={styles.App} /* on:click={() => console.log(user())} */>
-			< Switch >
+		<div class={styles.App}>
+			<Switch>
 				<Match when={is_non_init(user())}>
 					<Initialize />
 				</Match>
@@ -78,64 +72,7 @@ export const App: Component = () => {
 	);
 };
 
-const [active, up_active] = createSignal(document.body as Element);
-export const active_context = createContext({ active, up_active });
-export function active_ctx() {
-	return useContext(active_context)
-}
-
-function disable_ephemerals(eph: _, re_eph: _) {
-	const click_off = (e: Event) => re_eph((ephemeral: _) => {
-		const et = e.target as Element;
-		let parent = super_uncle_by_class(et, estyles.Ephemeral);
-
-		const neighbors = new Array(...document.body.querySelectorAll('[ephem-hash]'));
-		neighbors
-			.filter((nei: Element) => parent == null ? true :
-				nei.parentElement! !== parent!.parentElement!)
-			.map((ephem: Element) => ephem.getAttribute("ephem-hash")!)
-			.filter((hash: string) => ephemeral[hash].events.includes(e.type))
-			.forEach((hash: string) => {
-				ephemeral[hash].show = false;
-			});
-
-		return structuredClone(ephemeral);
-	});
-	document.body.addEventListener("mouseup", click_off);
-
-	const press_off = (e: KeyboardEvent) => re_eph((ephemeral: _) => {
-		if (e.key !== "z" || e.ctrlKey || e.shiftKey) { return ephemeral; }
-		const ephemes = new Array(...document.body.querySelectorAll('[ephem-hash]'));
-		ephemes
-			.map((ephem: Element) => ephem.getAttribute("ephem-hash")!)
-			.forEach((hash: string) => {
-				if (ephemeral[hash].events.includes(e.type)) {
-					ephemeral[hash].show = false;
-				}
-			});
-
-		return structuredClone(ephemeral);
-	});
-	document.body.addEventListener("keypress", press_off);
-
-	const hover_off = (e: Event) => re_eph((ephemeral: _) => {
-		const et = e.target as Element;
-		// nice color #450000
-		let parent = super_uncle_by_class(et, estyles.Ephemeral);
-
-		const neighbors = new Array(...document.body.querySelectorAll('[ephem-hash]'));
-		neighbors
-			.filter((nei: Element) => parent == null ? true :
-				nei.parentElement! !== parent!.parentElement!)
-			.map((ephem: Element) => ephem.getAttribute("ephem-hash")!)
-			.filter((hash: string) => ephemeral[hash].events.includes(e.type))
-			.forEach((hash: string) => increment_hoverable(hash, ephemeral));
-
-		return structuredClone(ephemeral);
-	});
-	document.body.addEventListener("mouseover", hover_off);
-
-}
+// rgb(61, 65, 66): black-star box shadow
 
 async function cache_state() {
 	if (DEV !== undefined) return;
@@ -165,32 +102,7 @@ async function cache_state() {
 }
 window.addEventListener("visibilitychange", cache_state);
 
-function shutdown_ephems(ephemeral: _, event_type: string) {
-	document.body.querySelectorAll('.' + estyles.Ephemeral).forEach((ephem: Element) => {
-		const hash = ephem.getAttribute("ephem-hash")!;
-		if (ephemeral[hash].events.includes(event_type)) {
-			ephemeral[hash].show = false;
-		}
-	});
-}
 
-function increment_hoverable(hash: string, ephemeral: _) {
-	const ephem = ephemeral[hash];
-	console.log(ephem.show, ephem.data);
-	let data = ephem.data;
-	if (data === undefined) {
-		data = { hover_countdown: 0 };
-	} else if (data.hover_countdown === undefined) {
-		data.hover_countdown = 0;
-	} else if (data.hover_countdown < 4) {
-		data.hover_countdown += 1;
-	} else {
-		data.hover_countdown = 0;
-		ephem.show = false;
-	}
-	ephem.data = data;
-	ephemeral[hash] = ephem;
-}
 
 function super_parent_by_class(elem: Element, cls: string): Element | null {
 	const parents = new Array(...document.querySelectorAll('.' + cls));

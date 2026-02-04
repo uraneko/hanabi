@@ -1,7 +1,6 @@
 import { Component, createEffect, createSignal, Show } from "solid-js";
-import { Ephemeral, new_hash, assign_hash, eph_styles as estyles, setup_ephem } from '../wrappers';
+import { Dialog } from "../containers";
 import { _, parse_svg, spread_classes } from "../misc";
-import { eph_ctx } from "../context";
 import { Actuator } from './Actuator';
 import styles from './ColorPicker.module.css';
 import cpSVG from '../../../assets/icons/clr-pkr.svg?raw';
@@ -9,30 +8,31 @@ import cpSVG from '../../../assets/icons/clr-pkr.svg?raw';
 export const ColorPicker = (props: {
 	width?: number,
 	height?: number,
-	events?: string | string[],
-	show?: boolean,
-	html: HTMLElement,
+	html?: HTMLElement,
 	prop: string,
 }) => {
 	const icon = parse_svg(cpSVG);
 	const width = () => props.width ?? 200;
 	const height = () => props.height ?? 200;
 
-	const show = () => props.show ?? false;
-	const events = () => props.events === undefined ? [] :
-		props.events.constructor.name === "String" ? [props.events] : props.events as _;
-	const [hash, flip] = setup_ephem(events(), show());
+	// const events = () => props.events === undefined ? [] :
+	// 	props.events.constructor.name === "String" ? [props.events] : props.events as _;
 
-	const html = () => props.html;
+	const html = () => props.html ?? document.documentElement;
 	const prop = () => props.prop;
+	const [show, re_show] = createSignal(false);
+	const flip = () => re_show((show: boolean) => !show);
+
 	return (
 		<div class={styles.Picker} >
-			<Actuator class={styles.PickerButton} call={flip} extra={{ "ephem-hash": hash }}>
+			<Actuator class={styles.PickerButton} call={flip}>
 				{icon}
 			</Actuator>
-			<Ephemeral events={events()} show={show()} hash={hash}>
-				<Picker width={width()} height={height()} html={html()} prop={prop()} />
-			</Ephemeral>
+			<Show when={show()}>
+				<Dialog>
+					<Picker width={width()} height={height()} html={html()} prop={prop()} />
+				</Dialog>
+			</Show>
 		</div >
 	);
 };

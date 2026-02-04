@@ -37,7 +37,6 @@ async function negotiate(user: _) {
 		name: user.name ?? "",
 		email: user.email,
 		access_token: user.access_token,
-		data: user.data,
 	};
 
 	const res = await fetch("/auth/remembrance", {
@@ -50,7 +49,6 @@ async function negotiate(user: _) {
 		name: user.name ?? "",
 		email: user.email,
 		access_token: user.access_token,
-		data: user.data,
 	};
 
 	const user_state = await res.json();
@@ -59,7 +57,6 @@ async function negotiate(user: _) {
 		name: user_state.name,
 		email: user_state.email,
 		access_token: user_state.access_token,
-		data: user.data,
 	}
 }
 

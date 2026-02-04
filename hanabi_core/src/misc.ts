@@ -105,3 +105,7 @@ export function dbl_method(up_dbl: _, millis: number): _ {
 			{ time: time, trigger: false };
 	});
 }
+
+export function constr(t: _): string {
+	return t.constructor.name;
+}

@@ -4,7 +4,7 @@ import { is_logged_in, is_authless, user_ctx } from 'core/context';
 import { WildText } from 'core/primitives';
 import styles from './Home.module.css';
 
-import chatSVG from "../../../assets/icons/chat.svg?raw"
+import radioSVG from "../../../assets/icons/radio.svg?raw"
 import driveSVG from "../../../assets/icons/drive.svg?raw"
 import eventsSVG from "../../../assets/icons/events.svg?raw"
 import canvasSVG from "../../../assets/icons/canvas.svg?raw"
@@ -31,7 +31,7 @@ async function get_apps_meta() {
 			depict: "store, share and backup your files [pre-alpha release]"
 		},
 		{
-			name: "comms", icon: parse_svg(chatSVG), accent: "#1475dc",
+			name: "comms", icon: parse_svg(radioSVG), accent: "#1475dc",
 			depict: "talk with people in text, audio or video format [not yet available]"
 		},
 		{

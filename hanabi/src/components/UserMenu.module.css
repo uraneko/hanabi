@@ -1,7 +1,6 @@
 .UserMenu {
 	display: flex;
 	flex-direction: column;
-	position: fixed;
 	margin-top: 3em;
 	/* aliceblue with some opacity mitigation */
 	background-color: var(--abstract);
@@ -10,7 +9,6 @@
 	/* justify-self: end; */
 
 	border-radius: 2px;
-
 }
 
 .Entry {
@@ -53,6 +51,5 @@
 .Sep {
 	height: 1px;
 	background: var(--blue);
-	;
 	opacity: 0.5;
 }

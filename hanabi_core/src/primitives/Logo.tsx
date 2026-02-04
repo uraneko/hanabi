@@ -3,17 +3,6 @@ import { _, parse_svg } from "../misc";
 // import styles from './Logo.module.css';
 import logo from "../../../assets/icons/hanabi.svg?raw";
 
-export const SVG: Component<{
-	icon: SVGSVGElement,
-	width?: number,
-	height?: number,
-	vars?: Record<string, { var: string, val?: string }>
-}> = (props: _) => {
-	const icon = () => props.icon;
-
-	return icon();
-};
-
 export const Logo: Component<{ override_colors?: boolean, width?: number, height?: number }> = (props: _) => {
 	const use_css_vars = () => props.override_colors ?? true;
 	const width = () => props.width ?? 140;

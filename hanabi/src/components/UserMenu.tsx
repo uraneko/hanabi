@@ -2,14 +2,13 @@ import { type Component, DEV } from "solid-js";
 import { _, spread_classes, parse_svg } from "core";
 import { Actuator } from "core/primitives";
 import { user_ctx } from "core/context";
+import { Dialog } from 'core/containers';
 
 import styles from "./UserMenu.module.css";
 import icecreamSVG from "../../../assets/icons/icecream.svg?raw";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import glassesSVG from "../../../assets/icons/glasses.svg?raw";
 import peopleSVG from "../../../assets/icons/people.svg?raw";
-
-function clear_user_data(data: Object): Object { return data; }
 
 export const UserMenu = () => {
 	const { user, re_user } = user_ctx();
@@ -39,13 +38,12 @@ export const UserMenu = () => {
 				name: "",
 				email: undefined,
 				access_token: undefined,
-				data: clear_user_data(user.data)
 			};
 		});
 	};
 
 	return (
-		<div class={styles.UserMenu}>
+		<Dialog class={styles.UserMenu} >
 			<Actuator class={styles.Entry} >
 				{glasses}
 				<span>| profile</span>
@@ -62,7 +60,7 @@ export const UserMenu = () => {
 				{logout_}
 				<span>| logout</span>
 			</Actuator>
-		</div>
+		</Dialog>
 	);
 };
 

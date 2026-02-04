@@ -9,11 +9,13 @@ import styles from "./Settings.module.css";
 import atSVG from "../../../assets/icons/at.svg?raw";
 import puzzleSVG from "../../../assets/icons/puzzle.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
+import sharedSVG from "../../../assets/icons/shared.svg?raw";
 
 export const Settings = () => {
 	const account = parse_svg(atSVG);
 	const apps = parse_svg(puzzleSVG);
 	const scheme = parse_svg(colorsSVG);
+	const shared = parse_svg(sharedSVG);
 
 	const [dbl, up_dbl] = dbl_signal();
 	const dbl_clk = dbl_method(up_dbl, 700);
@@ -25,10 +27,11 @@ export const Settings = () => {
 	});
 
 	return (
-		<Dialog class={styles.Settings} width={54} height={56} top={50} left={50} center>
+		<Dialog class={styles.Settings} width={54} height={56} top={50} left={50} center overtakes>
 			<div class={styles.Headers} on:mousedown={expansion}>
 				<Header text="| account" icon={account} switch={expand()} />
-				<Header text="| apps" icon={apps} switch={expand()} />
+				<Header text="| relations" icon={shared} switch={expand()} />
+				<Header text="| applications" icon={apps} switch={expand()} />
 				<Header text="| colorschemes" icon={scheme} switch={expand()} />
 			</div>
 			<div class={styles.Contents}>
@@ -57,9 +60,9 @@ export const ColorItem: Component<{ name: string, }> = (props: _) => {
 	const name = () => "--" + props.name;
 
 	return (<div>
-		<ColorPicker events="click" html={document.documentElement} prop="--blue" />
-		<ColorPicker events="click" html={document.documentElement} prop="--grad-start" />
-		<ColorPicker events="click" html={document.documentElement} prop="--grad-end" />
-		<ColorPicker events="click" html={document.documentElement} prop="--white" />
+		<ColorPicker prop="--blue" />
+		<ColorPicker prop="--grad-start" />
+		<ColorPicker prop="--grad-end" />
+		<ColorPicker prop="--white" />
 	</div>);
 };

@@ -14,7 +14,6 @@ async function login(e: SubmitEvent) {
 			name: "some name",
 			email: "some@email",
 			access_token: "34hereqwqjrerEWRYTQQ#$%$^&^YTGR",
-			data: {},
 		});
 	}
 
@@ -35,7 +34,6 @@ async function login(e: SubmitEvent) {
 	});
 	if (!res.ok) return;
 	const user_state = await res.json();
-	user_state.data = structuredClone(user().data);
 
 	re_user(user_state);
 
@@ -44,7 +42,6 @@ async function login(e: SubmitEvent) {
 			return {
 				name: user.name,
 				email: user.email,
-				data: user.data,
 				access_token: undefined,
 			}
 		});

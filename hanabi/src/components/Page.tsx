@@ -1,10 +1,11 @@
 import { type Component, createSignal, createResource, JSX } from 'solid-js';
-import { Logo, Actuator } from "core/primitives";
-import { content_ctx, MainContent, colors_ctx, register_schemes } from "core/context";
-import { ColorScheme } from 'core/wrappers';
+import { Logo, Actuator, Icon } from "core/primitives";
+import { content_ctx, MainContent, configs_ctx, colors_ctx, register_schemes } from "core/context";
+import { ColorScheme, color_rules, colorschemes } from 'core/wrappers';
 import { Menu } from "../components/Menu";
 import { _ } from "core";
 import styles from './Page.module.css';
+import hanabiSVG from "../../../assets/icons/hanabi.svg?raw";
 
 export const verdant = {
 	// blue alt #450000
@@ -15,14 +16,14 @@ export const verdant = {
 	"grad-start": "rgb(204, 217, 208)",
 	"grad-end": "rgb(245, 244, 225)",
 	"grad-rotate": "328deg",
-	"svg.hanabi\\.svg:logo-h": "#000000",
-	"svg.hanabi\\.svg:logo-a0": "#000000",
-	"svg.hanabi\\.svg:logo-n": "#000000",
-	"svg.hanabi\\.svg:logo-a1": "#000000",
-	"svg.hanabi\\.svg:logo-b": "#000000",
-	"svg.hanabi\\.svg:logo-I": "#000000",
-	"svg.hanabi\\.svg:logo-dot": "#000000",
-	"svg.hanabi\\.svg:logo-ra": "#649279",
+	"svg.hanabi_svg:logo-h": "#000000",
+	"svg.hanabi_svg:logo-a0": "#000000",
+	"svg.hanabi_svg:logo-n": "#000000",
+	"svg.hanabi_svg:logo-a1": "#000000",
+	"svg.hanabi_svg:logo-b": "#000000",
+	"svg.hanabi_svg:logo-I": "#000000",
+	"svg.hanabi_svg:logo-dot": "#000000",
+	"svg.hanabi_svg:logo-ra": "#649279",
 };
 
 export const black_star = {
@@ -37,20 +38,22 @@ export const black_star = {
 	// blue: "#485d6c"
 	blue: "#778c9b", green: "#87a187", red: "#A95525",
 	// "grad-start": "#01012afc", 
-	"grad-start": "#43001e", "grad-end": "#000000",
-	"grad-rotate": "328deg",
+	// "grad-start": "#43001e"
+	"grad-start": "#330017",
+	"grad-end": "#000000",
+	"grad-rotate": "341deg",
 	// selector:css-prop -> prop-val,
-	"svg.hanabi\\.svg:logo-h": "rgb(151, 164, 194)",
-	"svg.hanabi\\.svg:logo-a0": "rgb(151, 164, 194)",
-	"svg.hanabi\\.svg:logo-n": "rgb(151, 164, 194)",
-	"svg.hanabi\\.svg:logo-a1": "rgb(151, 164, 194)",
-	"svg.hanabi\\.svg:logo-b": "rgb(151, 164, 194)",
-	"svg.hanabi\\.svg:logo-I": "rgb(151, 164, 194)",
-	"svg.hanabi\\.svg:logo-dot": "rgb(151, 164, 194)",
-	// "svg.hanabi\\.svg:logo-ra": "#876756",
-	"svg.hanabi\\.svg:logo-ra": "#2573c7",
-
+	"svg.hanabi_svg:logo-h": "rgb(151, 164, 194)",
+	"svg.hanabi_svg:logo-a0": "rgb(151, 164, 194)",
+	"svg.hanabi_svg:logo-n": "rgb(151, 164, 194)",
+	"svg.hanabi_svg:logo-a1": "rgb(151, 164, 194)",
+	"svg.hanabi_svg:logo-b": "rgb(151, 164, 194)",
+	"svg.hanabi_svg:logo-I": "rgb(151, 164, 194)",
+	"svg.hanabi_svg:logo-dot": "rgb(151, 164, 194)",
+	// "svg.hanabi_svg:logo-ra": "#876756",
+	"svg.hanabi_svg:logo-ra": "#2573c7",
 };
+// TODO rename primitives to particles
 
 const { colors, re_colors } = colors_ctx();
 register_schemes(
@@ -58,8 +61,7 @@ register_schemes(
 	{ name: "verdant", scheme: verdant },
 	{ name: "black-star", scheme: black_star }
 );
-
-import { Home } from '../routes/Home';
+const { configs, re_configs } = configs_ctx();
 
 export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 	const children = () => props.children;
@@ -68,7 +70,20 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 		<ColorScheme>
 			<div class={styles.Page}>
 				<Actuator link="/" class={styles.Logo}>
-					<Logo />
+					<Icon
+						width={140}
+						height={60}
+						icon={hanabiSVG}
+						styles={{
+							"logo-dot": "rgb(151, 164, 194)",
+							"logo-ra": "#2573c7",
+						}}
+						overrides={{
+							"#path1/#path2/#path3/#path4/#path5/#path6/#path7":
+								[{ prop: "stroke", custom: "logo-dot" }],
+							"#path8": [{ prop: "fill", custom: "logo-ra" }]
+						}}
+					/>
 				</Actuator>
 				<Menu />
 				<MainContent>

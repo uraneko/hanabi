@@ -5,8 +5,6 @@ const [user, re_user] = createSignal({
 	name: undefined as string | undefined,
 	email: undefined as string | undefined,
 	access_token: undefined as string | undefined,
-	data: new Object() as _,
-	configs: new Object() as _,
 });
 
 const user_context = createContext({ user, re_user });

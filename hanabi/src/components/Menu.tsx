@@ -1,10 +1,11 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
 import { Actuator, } from "core/primitives";
 // TODO sync_scheme should also come from the wrapper comp module, instead of the context module
-import { sync_ls, Ephemeral, new_hash, assign_hash, setup_ephem, eph_styles as estyles } from 'core/wrappers';
-import { colors_ctx, sync_scheme } from "core/context";
+import { sync_ls } from 'core/wrappers';
+import { colors_ctx, content_ctx, configs_ctx, sync_scheme } from "core/context";
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless, eph_ctx } from "core/context";
+import { Dialog } from 'core/containers';
 import styles from './Menu.module.css';
 import { styles as umstyles } from './UserMenu';
 import { form_ctx } from '../routes/Auth';
@@ -52,7 +53,7 @@ export const Menu = () => {
 				class={styles.ContentItem}
 				icon={colors}
 				text="colors"
-				content={<ColorSchemeDropDown />} />
+				dialog={<ColorSchemeDropDown />} />
 			<Switch>
 				<Match when={is_authless(user())}>
 					<AnchorItem link="/auth" call={login_form} icon={login} text="login" />
@@ -61,14 +62,14 @@ export const Menu = () => {
 				<Match when={is_logged_in(user())}>
 					<ContentItem
 						class={styles.ContentItem}
-						content={<Settings />}
+						dialog={<Settings />}
 						icon={rocket}
 						text="settings"
 						show={false}
 						events="keypress" />
 					<ContentItem
 						class={styles.ContentItem}
-						content={<UserMenu />}
+						dialog={<UserMenu />}
 						icon={home}
 						text={user().name!}
 						show={false}
@@ -119,10 +120,9 @@ export const ButtonItem: Component<{
 };
 
 export const ContentItem: Component<{
-	children?: JSX.Element,
 	text: string,
 	icon: SVGSVGElement,
-	content: JSX.Element,
+	dialog: JSX.Element,
 	class?: string | string[],
 	events?: string | string[],
 	show?: boolean,
@@ -131,40 +131,58 @@ export const ContentItem: Component<{
 	const text = () => props.text;
 	const call = () => props.call;
 	const cls = () => props.class;
-	const content = () => props.content;
-	const show = () => props.show ?? false;
+	const dialog = () => props.dialog;
 	const events = () => props.events === undefined ? [] :
 		props.events.constructor.name === "String" ? [props.events] : props.events;
 
-	const [hash, flip] = setup_ephem(events(), show());
+	const [show, re_show] = createSignal(false);
+	const { content, re_content } = content_ctx();
+	const flip = () => re_show((show: boolean) => !show);
+
+	// const [hash, flip] = setup_ephem(events(), show());
 	return (
 		<div class={styles.ContentItem}>
 			<div
 				class={`${styles.Entry}${spread_classes(cls())}`}
 				on:mousedown={flip}
-				ephem-hash={hash}
 			>
 				<Actuator call={call()} class={styles.Path}>
 					{icon()}
 					<span>{text()}</span>
 				</Actuator >
 			</div>
-			<Ephemeral events={events()} show={show()} hash={hash}>
-				{content()}
-			</Ephemeral>
+			<Show when={show()}>
+				{dialog()}
+			</Show>
 		</div>
 	);
 }
+
+const { content, re_content } = content_ctx();
+const watchguard = new MutationObserver(() => {
+	if (document.querySelectorAll("[overtakes-content='true']").length === 0) {
+		re_content(true);
+	} else {
+		re_content(false)
+	}
+});
+
+watchguard.observe(document.body, {
+	subtree: true,
+	childList: true,
+	attributeFilter: ["overtakes-content"],
+	attributeOldValue: true,
+});
 
 export const ColorSchemeDropDown = () => {
 	const { colors, re_colors } = colors_ctx();
 	const schemes = Object.keys(colors())
 
-	return (<div class={umstyles.UserMenu}>
+	return (<Dialog class={umstyles.UserMenu}>
 		<For each={schemes} >
 			{(scheme: string) => <ColorSchemeTitle title={scheme} />}
 		</For>
-	</div>);
+	</Dialog>);
 };
 
 export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
@@ -179,6 +197,12 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		if (clrs === undefined) return;
 		sync_ls(scheme);
 		sync_scheme(clrs);
+		const { configs, re_configs } = configs_ctx();
+		re_configs((configs: _) => {
+			configs.colorschemes.current = scheme;
+
+			return structuredClone(configs);
+		});
 	};
 
 	return (<Actuator call={change_scheme} class={umstyles.Entry}>
