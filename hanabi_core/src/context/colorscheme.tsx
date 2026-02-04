@@ -147,6 +147,12 @@ export function colorschemes(ctx?: { colors: _, re_colors: _ }) {
 
 				return structuredClone(colors);
 			});
+		},
+		clear: function () {
+			this.name_ = null;
+			this.overwrite_ = false;
+
+			return this;
 		}
 	};
 }
@@ -187,9 +193,13 @@ export function colorscheme(selectors?: _, props?: _) {
 		},
 		/// adds color rule(s) to the scheme
 		extend: function (rules: _) {
-			const len = Object.keys(this.props).length;
-			const props = Object.entries(rules.props_).map(([prop, val]: _) =>
-				property_rule(this.props, prop, val, rules.prefix_, len));
+			let len = Object.keys(this.props).length;
+			const props = Object.entries(rules.props_).map(([prop, val]: _) => {
+				const [p, n] = property_rule(this.props, prop, val, rules.prefix_, len);
+				len = n as number;
+
+				return p;
+			});
 			let indexes = props.map(([prop, val_idx]: _) => val_idx.idx);
 			indexes = indexes.length === 1 ? indexes[0] : indexes;
 			let selecs = rules.selectors_.length === 0 ? [":root"] : rules.selectors_;
@@ -202,7 +212,7 @@ export function colorscheme(selectors?: _, props?: _) {
 				}
 			}
 			props.forEach(([prop, val_idx]: _) => {
-				if (this.props[prop] === val_idx) {
+				if (this.props[prop] === undefined) {
 					this.props[prop] = val_idx;
 				}
 			});
@@ -215,6 +225,12 @@ export function colorscheme(selectors?: _, props?: _) {
 		reduce: function () {
 			Reflect.deleteProperty(this, "prop");
 		},
+		clear: function () {
+			this.selectors = new Object();
+			this.props = new Object();
+
+			return this;
+		}
 	}
 }
 
@@ -228,13 +244,13 @@ function property_rule(
 	prop = prefix ? "--" + prop : prop;
 	const old_prop = props[prop];
 	if (old_prop !== undefined && old_prop.value === value) {
-		return old_prop;
+		return [old_prop, len];
 	}
 
 	const rule = [prop, { value: value, idx: len }];
 	len += 1;
 
-	return rule;
+	return [rule, len];
 }
 
 export function color_rules() {
@@ -260,6 +276,11 @@ export function color_rules() {
 
 			return this;
 		},
+		clear: function () {
+			this.prefix_ = false;
+			this.props_ = new Object() as _;
+			this.selectors_ = new Array();
+		}
 	};
 }
 

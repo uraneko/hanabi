@@ -9,7 +9,7 @@ import { _ } from "core";
 import styles from './Page.module.css';
 import hanabiSVG from "../../../assets/icons/hanabi.svg?raw";
 
-function verdant(ctx?: _) {
+function verdant() {
 	const root_rules = color_rules().props({
 		// blue alt #450000
 		red: "#A95525", green: "#87a187", blue: "#485d6c",
@@ -21,20 +21,23 @@ function verdant(ctx?: _) {
 		"grad-rotate": "328deg",
 	}).prefix(true);
 	const logo_rules = color_rules().selectors("svg.hanabi_svg").props({
-		":logo-h": "#000000",
-		"svg.hanabi_svg:logo-a0": "#000000",
-		"svg.hanabi_svg:logo-n": "#000000",
-		"svg.hanabi_svg:logo-a1": "#000000",
-		"svg.hanabi_svg:logo-b": "#000000",
-		"svg.hanabi_svg:logo-I": "#000000",
-		"svg.hanabi_svg:logo-dot": "#000000",
-		"svg.hanabi_svg:logo-ra": "#649279",
+		"logo-h": "#000000",
+		"logo-a0": "#000000",
+		"logo-n": "#000000",
+		"logo-a1": "#000000",
+		"logo-b": "#000000",
+		"logo-I": "#000000",
+		"logo-dot": "#000000",
+		"logo-ra": "#649279",
 	}).prefix(true);
 
-	return colorscheme().extend(root_rules).extend(logo_rules).make();
+	return colorscheme()
+		.extend(root_rules)
+		.extend(logo_rules)
+		.make();
 }
 
-function black_star(ctx?: _) {
+function black_star() {
 	const root_rules = color_rules().props({
 		opaque: "#303553",
 		abstract: "rgba(73, 126, 172, 0.21)",
@@ -47,23 +50,24 @@ function black_star(ctx?: _) {
 		// blue: "#485d6c"
 		blue: "#778c9b", green: "#87a187", red: "#A95525",
 		// "grad-start": "#01012afc", 
-		// "grad-start": "#43001e"
-		"grad-start": "#330017",
+		"grad-start": "#43001e",
 		"grad-end": "#000000",
 		"grad-rotate": "341deg",
 	}).prefix(true);
-	const logo_rules = color_rules().props({
-		// selector:css-prop -> prop-val,
-		"svg.hanabi_svg:logo-h": "rgb(151, 164, 194)",
-		"svg.hanabi_svg:logo-a0": "rgb(151, 164, 194)",
-		"svg.hanabi_svg:logo-n": "rgb(151, 164, 194)",
-		"svg.hanabi_svg:logo-a1": "rgb(151, 164, 194)",
-		"svg.hanabi_svg:logo-b": "rgb(151, 164, 194)",
-		"svg.hanabi_svg:logo-I": "rgb(151, 164, 194)",
-		"svg.hanabi_svg:logo-dot": "rgb(151, 164, 194)",
-		// "svg.hanabi_svg:logo-ra": "#876756",
-		"svg.hanabi_svg:logo-ra": "#2573c7",
-	}).prefix(true);
+	const logo_rules = color_rules()
+		.props({
+			// selector:css-prop -> prop-val,
+			"logo-h": "rgb(151, 164, 194)",
+			"logo-a0": "rgb(151, 164, 194)",
+			"logo-n": "rgb(151, 164, 194)",
+			"logo-a1": "rgb(151, 164, 194)",
+			"logo-b": "rgb(151, 164, 194)",
+			"logo-I": "rgb(151, 164, 194)",
+			"logo-dot": "rgb(151, 164, 194)",
+			// "logo-ra": "#876756",
+			"logo-ra": "#2573c7",
+		}).selectors("svg.hanabi_svg")
+		.prefix(true);
 
 	return colorscheme().extend(root_rules).extend(logo_rules).make();
 }
@@ -120,6 +124,7 @@ const { colors, re_colors } = colors_ctx();
 colorschemes({ colors, re_colors }).name("verdant").register(verdant());
 colorschemes({ colors, re_colors }).name("black-star").register(black_star());
 console.log(colors());
+colorschemes({ colors, re_colors }).refresh("black-star");
 
 export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 	const children = () => props.children;

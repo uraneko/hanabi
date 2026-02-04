@@ -2,7 +2,7 @@ import { type Component, For, createSignal, createResource, createEffect, Switch
 import { Actuator, } from "core/primitives";
 // TODO sync_scheme should also come from the wrapper comp module, instead of the context module
 import { sync_ls } from 'core/wrappers';
-import { colors_ctx, content_ctx, configs_ctx } from "core/context";
+import { colors_ctx, colorschemes, content_ctx, configs_ctx } from "core/context";
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless } from "core/context";
 import { Dialog } from 'core/containers';
@@ -196,6 +196,7 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		const clrs = colors()[scheme];
 		if (clrs === undefined) return;
 		sync_ls(scheme);
+		colorschemes().refresh(scheme);
 		// sync_scheme(clrs);
 		const { configs, re_configs } = configs_ctx();
 		re_configs((configs: _) => {
