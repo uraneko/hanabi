@@ -1,0 +1,33 @@
+.Logo {
+	& path#path1 {
+		stroke: var(--h);
+	}
+
+	& path#path2 {
+		stroke: var(--a0);
+	}
+
+	& path#path3 {
+		stroke: var(--n);
+	}
+
+	& path#path4 {
+		stroke: var(--a1);
+	}
+
+	& path#path5 {
+		stroke: var(--b);
+	}
+
+	& path#path6 {
+		stroke: var(--i);
+	}
+
+	& path#path7 {
+		stroke: var(--dot);
+	}
+
+	& path#path8 {
+		fill: var(--ra);
+	}
+}
