@@ -1,5 +1,7 @@
 .Icon {
-	color: var(--icon);
-	fill: var(--icon);
-	stroke: var(--icon);
+	svg {
+		/* color: var(--blue); */
+		/* fill: var(--blue); */
+		/* stroke: var(--blue); */
+	}
 }

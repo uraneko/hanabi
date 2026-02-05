@@ -3,23 +3,23 @@ import { _, parse_svg } from '../misc';
 import styles from "./Icon.module.css";
 
 export const Icon: Component<{
-	icon: string,
+	svg: string,
 	width: number,
 	height: number,
 }> = (props: _) => {
-	let icon: _ = () => props.icon;
+	let svg: _ = () => props.svg;
 	const width = () => props.width;
 	const height = () => props.height;
 
-	icon = parse_svg(icon());
-	const stl = icon.style;
+	svg = parse_svg(svg());
+	const stl = svg.style;
 
 	stl.setProperty("width", width() + "px");
 	stl.setProperty("height", height() + "px");
 
 	return (
 		<span class={styles.Icon}>
-			{icon()}
+			{svg()}
 		</span>
 	)
 };

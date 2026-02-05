@@ -1,7 +1,6 @@
 import { CheckBox } from './primitives/CheckBox';
 import { Logo } from './primitives/Logo';
 import { Icon } from './primitives/Icon';
-import { Item } from './primitives/Item';
 import { Splash } from './primitives/Splash';
 import { PasswordField } from './primitives/PasswordField';
 import { TextField } from './primitives/TextField';
@@ -20,7 +19,6 @@ export {
 	Actuator,
 	CheckBox,
 	Logo,
-	Item,
 	Splash,
 	PasswordField,
 	TextField,

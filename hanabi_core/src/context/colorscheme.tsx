@@ -9,94 +9,25 @@ export function colors_ctx() {
 	return useContext(colors_context)
 }
 
-export function register_scheme(name: string, scheme: Object, re_colors: _) {
-	re_colors((colors: _) => {
-		colors[name] = scheme;
-
-		return structuredClone(colors);
-	});
-}
-
-export function register_schemes(re_colors: _, ...schemes: { name: string, scheme: Object }[]) {
-	re_colors((colors: _) => {
-		schemes.forEach((scheme: _) =>
-			colors[scheme.name] = scheme.scheme
-		);
-
-		return structuredClone(colors);
-	});
-}
-
-export function sync_scheme(colors: Object) {
-	// console.log(colors);
-	const root_colors = Object.entries(colors)
-		.filter(([k, v]: _) => !k.includes(':'));
-	// console.log(root_colors);
-
-	const styles = document.documentElement.style;
-	root_colors
-		.forEach(([k, v]: _) =>
-			styles.setProperty("--" + k, v));
-	if (root_colors.length === Object.keys(colors).length) return;
-
-	const targets = new Object() as Record<string, { prop: string, val: string }[]>;
-	Object.entries(colors)
-		.filter(([k, v]: _) => k.includes(':'))
-		.map(([k, v]) => {
-			const split = k.split(':');
-
-			return { selector: split[0], prop: split[1], value: v };
-		}).forEach((target: _) => {
-			if (targets[target.selector] === undefined) {
-				targets[target.selector] = [{ prop: target.prop, val: target.value }];
-			} else {
-				targets[target.selector].push({ prop: target.prop, val: target.value });
-			}
-		});
-	// console.log(targets);
-	Object.entries(targets).forEach(([selector, properties]: _) => {
-		const els = document.querySelectorAll(selector);
-		// console.log(els,
-		// 	document.querySelectorAll("svg.hanabi\\.svg")
-		// );
-		if (els.length === 0) return;
-
-		properties.forEach((prop: _) =>
-			els.forEach((el: _) =>
-				el.style.setProperty("--" + prop.prop, prop.val))
-		);
-	});
-}
-
-export function extend_scheme() { }
-
-export function reduce_scheme() { }
-
 type ColorScheme = { selectors: Record<string, number | number[]>, props: Record<string, { value: string, idx: number }> };
-
-// Selectors(s0, s1, s2): { p1: v1, p2: v2, ...}
-export function selectors_rule() { }
-
-// Props(p0: v0): [ s0, s1, ...]
-export function props_rules() { }
 
 export function colorschemes(ctx?: { colors: _, re_colors: _ }) {
 	return {
 		ctx: ctx ?? colors_ctx(),
 		overwrite_: false,
 		name_: null as string | null,
-		name:
-			function (name: string) {
-				this.name_ = name;
+		name
+			(name: string) {
+			this.name_ = name;
 
-				return this;
-			},
-		overwrite: function (overwrite: boolean) {
+			return this;
+		},
+		overwrite(overwrite: boolean) {
 			this.overwrite_ = overwrite;
 
 			return this;
 		},
-		register: function (scheme: {
+		register(scheme: {
 			selectors: Record<string, number | number[]>,
 			props: Record<string, { value: string, idx: number }>
 		}) {
@@ -127,20 +58,23 @@ export function colorschemes(ctx?: { colors: _, re_colors: _ }) {
 			});
 		},
 		/// checks if schemes contains a scheme by the passed name
-		contains: function (name: string): boolean {
+		contains(name: string): boolean {
 			return this.ctx.colors()[name] !== undefined;
 		},
 		/// gets a colorscheme from the schemes table 
-		load: function (name: string) {
+		load(name: string) {
 			if (!this.contains(name)) return null;
 
 			const scheme = this.ctx.colors()[name];
 
 			return colorscheme(scheme.selectors, scheme.props);
 		},
+		load_all() {
+			return Object.entries(this.ctx.colors());
+		},
 		/// takes a scheme name and value, updates the colorschemes scheme entry to the value 
 		/// iff it already exists
-		update: function (name: string, scheme: _) {
+		update(name: string, scheme: _) {
 			if (!this.contains(name)) throw new Error("no such colorscheme");
 			this.ctx.re_colors((colors: _) => {
 				colors[name] = scheme;
@@ -148,12 +82,16 @@ export function colorschemes(ctx?: { colors: _, re_colors: _ }) {
 				return structuredClone(colors);
 			});
 		},
-		clear: function () {
+		update_iter(...schemes: [_, _][]) {
+			schemes
+				.forEach(([name, scheme]: _) => this.update(name, scheme));
+		},
+		clear() {
 			this.name_ = null;
 			this.overwrite_ = false;
 
 			return this;
-		}
+		},
 	};
 }
 
@@ -188,11 +126,11 @@ export function colorscheme(selectors?: _, props?: _) {
 		selectors: selectors ?? new Object() as Record<string, number | number[]>,
 		props: props ?? new Object() as Record<string, { value: string, idx: number }>,
 		/// returns a colorscheme object, with/o the methods
-		make: function () {
+		make() {
 			return { selectors: this.selectors, props: this.props };
 		},
 		/// adds color rule(s) to the scheme
-		extend: function (rules: _) {
+		extend(rules: _) {
 			let len = Object.keys(this.props).length;
 			const props = Object.entries(rules.props_).map(([prop, val]: _) => {
 				const [p, n] = property_rule(this.props, prop, val, rules.prefix_, len);
@@ -220,12 +158,12 @@ export function colorscheme(selectors?: _, props?: _) {
 			return this;
 		},
 		/// changes existing color rule(s) in the scheme
-		mutate: function () { },
+		mutate() { },
 		/// removes (a) color rule(s) from the scheme
-		reduce: function () {
+		reduce() {
 			Reflect.deleteProperty(this, "prop");
 		},
-		clear: function () {
+		clear() {
 			this.selectors = new Object();
 			this.props = new Object();
 
@@ -259,24 +197,24 @@ export function color_rules() {
 		props_: new Object() as Record<string, string>,
 		/// i belive setting the default to true is unexpected and non-intuitive
 		prefix_: false,
-		selectors: function (...selectors: string[]) {
+		selectors(...selectors: string[]) {
 			this.selectors_ = selectors;
 
 			return this;
 		},
-		selectors_mut: function () { return this.selectors_; },
-		props: function (props: Record<string, string>) {
+		selectors_mut() { return this.selectors_; },
+		props(props: Record<string, string>) {
 			this.props_ = props;
 
 			return this;
 		},
-		props_mut: function () { return this.props_; },
-		prefix: function (prefix: boolean) {
+		props_mut() { return this.props_; },
+		prefix(prefix: boolean) {
 			this.prefix_ = prefix;
 
 			return this;
 		},
-		clear: function () {
+		clear() {
 			this.prefix_ = false;
 			this.props_ = new Object() as _;
 			this.selectors_ = new Array();

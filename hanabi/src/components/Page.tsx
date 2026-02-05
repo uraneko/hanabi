@@ -42,6 +42,7 @@ function black_star() {
 		opaque: "#303553",
 		abstract: "rgba(73, 126, 172, 0.21)",
 		black: "#e3e2e4",
+		// #131c5c
 		white: "#1f212e",
 		// blue: "rgb(151, 164, 194)",
 		// blue: "rgb(183, 162, 147)",
@@ -148,9 +149,9 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 let nodes = 0;
 const watchguard = new MutationObserver(() => {
 	// new Promise(_ => setTimeout(_, 100));
-	if (nodes === 1) {
-		colorschemes().refresh("black-star");
-		watchguard.disconnect();
+	if (nodes > 0) {
+		colorschemes().refresh("verdant");
+		// watchguard.disconnect();
 
 		return;
 	}
