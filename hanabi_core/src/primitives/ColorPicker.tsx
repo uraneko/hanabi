@@ -3,22 +3,30 @@ import { Dialog } from "../containers";
 import { _, parse_svg, spread_classes } from "../misc";
 import { Actuator } from './Actuator';
 import styles from './ColorPicker.module.css';
-import cpSVG from '../../../assets/icons/clr-pkr.svg?raw';
+import cpSVG from '../../../assets/icons/palette.svg?raw';
+import spiral from '../../../assets/spiral.svg?raw';
+
 
 export const ColorPicker = (props: {
 	width?: number,
 	height?: number,
-	html?: HTMLElement,
+	node?: HTMLElement,
 	prop: string,
 }) => {
 	const icon = parse_svg(cpSVG);
 	const width = () => props.width ?? 200;
 	const height = () => props.height ?? 200;
 
+	const val = () => prop_val(props.node ?? document.documentElement, props.prop);
+	const clr = new Color(val()).to_rgba();
+	const [color, re_color] = createSignal(
+		clr
+	);
+
 	// const events = () => props.events === undefined ? [] :
 	// 	props.events.constructor.name === "String" ? [props.events] : props.events as _;
 
-	const html = () => props.html ?? document.documentElement;
+	const node = () => props.node ?? document.documentElement;
 	const prop = () => props.prop;
 	const [show, re_show] = createSignal(false);
 	const flip = () => re_show((show: boolean) => !show);
@@ -26,57 +34,53 @@ export const ColorPicker = (props: {
 	return (
 		<div class={styles.Picker} >
 			<Actuator class={styles.PickerButton} call={flip}>
-				{icon}
+				<span class={styles.PickerValue} style={{ background: `${to_hex(color())}` }}></span>
 			</Actuator>
+
 			<Show when={show()}>
 				<Dialog>
-					<Picker width={width()} height={height()} html={html()} prop={prop()} />
+					<Picker
+						width={width()}
+						height={height()}
+						node={node()}
+						prop={prop()}
+						val={val()}
+						color={color()}
+						re_color={re_color}
+					/>
 				</Dialog>
 			</Show>
 		</div >
 	);
 };
 
-// #e2e4ef
-export const Picker = (props: {
+export const ColorBoard: Component<{
+	color: number[],
 	width?: number,
-	height?: number
-	html: HTMLElement,
-	prop: string,
-}) => {
+	height?: number,
+}> = (props: _) => {
 	const width = () => props.width ?? 200;
 	const height = () => props.height ?? 200;
-	const html = () => props.html;
-	const prop = () => props.prop;
-	const val = () => prop_val(html(), props.prop);
-	const clr = new Color(val()).to_rgba();
-	console.log(';;', clr);
-	const [color, re_color] = createSignal(
-		clr
-	);
+	const color = () => props.color;
 
-	const palette =
-		<canvas
-			class={styles.Picker}
-			width={width()}
-			height={height()}
-			style={{
-				width: `${width()}px`,
-				height: `${height()}px`,
-			}}>
-			color palette
-		</canvas> as HTMLCanvasElement;
-	draw_palette(palette, width(), height(), color());
-	const picker_event = (e: MouseEvent) => re_color((color: _) => {
-		const rgb = update_rgb(e);
+	const board = <canvas
+		class={styles.Picker}
+		width={width()}
+		height={height()}
+		style={{
+			width: `${width()}px`,
+			height: `${height()}px`,
+		}}>
+		color board
+	</canvas> as HTMLCanvasElement;
+	draw_board(board, width(), height(), color());
 
-		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
-		draw_opacity_slider(opacity_slider, width(), height(), clr);
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+	return board;
+};
 
-		return clr;
-	});
-	palette.addEventListener("click", picker_event);
+export const ColorSlider: Component<{ width?: number, height?: number }> = (props: _) => {
+	const width = () => props.width ?? 200;
+	const height = () => props.height ?? 200;
 
 	const color_slider = <canvas
 		class={styles.ColorSlider}
@@ -89,20 +93,21 @@ export const Picker = (props: {
 		color slider
 	</canvas> as HTMLCanvasElement;
 	draw_color_slider(color_slider, width(), height());
-	const color_event = (e: MouseEvent) => re_color((color: _) => {
-		const rgb = update_rgb(e);
 
-		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
-		draw_palette(palette, width(), height(), clr);
-		draw_opacity_slider(opacity_slider, width(), height(), clr);
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+	return color_slider;
+};
 
-		return clr;
-	});
-	color_slider.addEventListener("click", color_event);
+export const AlphaSlider: Component<{
+	color: number[],
+	width?: number,
+	height?: number
+}> = (props: _) => {
+	const width = () => props.width ?? 200;
+	const height = () => props.height ?? 200;
+	const color = () => props.color;
 
-	const opacity_slider = <canvas
-		class={styles.OpacitySlider}
+	const alpha_slider = <canvas
+		class={styles.AlphaSlider}
 		width={width()}
 		height={height() / 20}
 		style={{
@@ -111,15 +116,78 @@ export const Picker = (props: {
 		}}>
 		opacity slider
 	</canvas> as HTMLCanvasElement;
-	draw_opacity_slider(opacity_slider, width(), height(), color());
-	const alpha_event = (e: MouseEvent) => re_color((color: _) => {
-		const alpha = update_alpha(e);
-		const clr = [color[0], color[1], color[2], alpha];
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+	draw_alpha_slider(alpha_slider, width(), height(), color());
+
+	return alpha_slider;
+};
+
+// #e2e4ef
+export const Picker = (props: {
+	width?: number,
+	height?: number
+	node: HTMLElement,
+	prop: string,
+	val: string,
+	color: _,
+	re_color: _,
+}) => {
+	const width = () => props.width ?? 200;
+	const height = () => props.height ?? 200;
+	const node = () => props.node;
+	const prop = () => props.prop;
+	const val = () => props.val;
+	const color = () => props.color;
+	const re_color = props.re_color;
+	// const clr = new Color(val()).to_rgba();
+	// const [color, re_color] = createSignal(
+	// 	clr
+	// );
+
+	// @ts-ignore
+	const board = (<ColorBoard
+		color={color()}
+		width={width()}
+		height={height()}
+	/>)() as HTMLCanvasElement;
+	const picker_event = (e: MouseEvent) => re_color((color: _) => {
+		const rgb = update_rgb(e);
+
+		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
+		draw_alpha_slider(alpha_slider, width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
 
 		return clr;
 	});
-	opacity_slider.addEventListener("click", alpha_event);
+	board.addEventListener("click", picker_event);
+
+	// @ts-ignore
+	const color_slider = (<ColorSlider width={width()} height={height()} />)() as HTMLCanvasElement;
+	const color_event = (e: MouseEvent) => re_color((color: _) => {
+		const rgb = update_rgb(e);
+
+		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
+		draw_board(board, width(), height(), clr);
+		draw_alpha_slider(alpha_slider, width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
+
+		return clr;
+	});
+	color_slider.addEventListener("click", color_event);
+
+	// @ts-ignore
+	const alpha_slider = (<AlphaSlider
+		color={color()}
+		width={width()}
+		height={height()}
+	/>)() as HTMLCanvasElement;
+	const alpha_event = (e: MouseEvent) => re_color((color: _) => {
+		const alpha = update_alpha(e);
+		const clr = [color[0], color[1], color[2], alpha];
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
+
+		return clr;
+	});
+	alpha_slider.addEventListener("click", alpha_event);
 
 	const [grab, re_grab] = createSignal(false);
 	const flip_grab = (e: MouseEvent) => re_grab((grab: boolean) => {
@@ -128,7 +196,7 @@ export const Picker = (props: {
 	const disable_grab = (e: MouseEvent) => re_grab((grab: boolean) => {
 		return false;
 	});
-	[palette, color_slider, opacity_slider].forEach((canvas: _) => {
+	[board, color_slider, alpha_slider].forEach((canvas: _) => {
 		canvas.addEventListener("mousedown", flip_grab);
 		canvas.addEventListener("mouseup", flip_grab);
 		canvas.addEventListener("mouseleave", disable_grab);
@@ -139,21 +207,21 @@ export const Picker = (props: {
 		const rgb = update_rgb(e);
 
 		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
-		draw_opacity_slider(opacity_slider, width(), height(), clr);
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+		draw_alpha_slider(alpha_slider, width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
 
 		return clr;
 	});
-	palette.addEventListener("mousemove", mouse_picker);
+	board.addEventListener("mousemove", mouse_picker);
 
 	const mouse_color = (e: MouseEvent) => re_color((color: _) => {
 		if (!grab()) return color;
 		const rgb = update_rgb(e);
 
 		const clr = [rgb[0], rgb[1], rgb[2], color[3]];
-		draw_palette(palette, width(), height(), clr);
-		draw_opacity_slider(opacity_slider, width(), height(), clr);
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+		draw_board(board, width(), height(), clr);
+		draw_alpha_slider(alpha_slider, width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
 
 		return clr;
 
@@ -164,11 +232,15 @@ export const Picker = (props: {
 		if (!grab()) return color;
 		const alpha = update_alpha(e);
 		const clr = [color[0], color[1], color[2], alpha];
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
 
 		return clr;
 	});
-	opacity_slider.addEventListener("mousemove", mouse_alpha);
+	alpha_slider.addEventListener("mousemove", mouse_alpha);
+	// const s = parse_svg(spiral);
+	// s.id = "spiral";
+	// s.style.width = "0";
+	// alpha_slider.append(s);
 
 	const change = (e: Event) => re_color((color: _) => {
 		const et = e.target as HTMLInputElement;
@@ -176,19 +248,19 @@ export const Picker = (props: {
 		if (Number.isNaN(Number(prefix + val.slice(1)))) return color;
 
 
-		const clr = to_rgba(prop_val(html(), val));
-		draw_palette(palette, width(), height(), clr);
-		draw_opacity_slider(opacity_slider, width(), height(), clr);
-		update_property(html() as HTMLElement, prop(), to_hex(clr));
+		const clr = to_rgba(prop_val(node(), val));
+		draw_board(board, width(), height(), clr);
+		draw_alpha_slider(alpha_slider, width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
 
 		return clr;
 	});
 
 	return (
 		<div class={styles.ColorPicker} color-value={to_hex(color())}>
-			{palette}
+			{board}
 			{color_slider}
-			{opacity_slider}
+			{alpha_slider}
 			<input type="text"
 				class={styles.ColorCode}
 				on:click={write_hex_to_cb}
@@ -228,7 +300,7 @@ function update_alpha(e: MouseEvent) {
 	return data[3];
 }
 
-function draw_palette(canvas: HTMLCanvasElement, width: number, height: number, rgb: number[]) {
+function draw_board(canvas: HTMLCanvasElement, width: number, height: number, rgb: number[]) {
 	const ctx = canvas.getContext("2d")!;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	// const dpi = window.devicePixelRatio;
@@ -239,22 +311,25 @@ function draw_palette(canvas: HTMLCanvasElement, width: number, height: number, 
 
 	for (let y = 0; y <= height; y++) {
 		for (let x = 0; x <= width; x++) {
-			ctx.fillStyle = dcp(x * cx, y * cy, rgb);
+			ctx.fillStyle = dcb(x * cx, y * cy, rgb);
 			ctx.fillRect(x, y, 1, 1);
 		}
 	}
 }
 
+const w = 255;
 function pixel_color(color: number, x: number, y: number) {
-	let c = 255;
-	c += color;
-	c -= x;
-	c -= y;
+	const xw = x;
+	const yw = y;
+	const ci = w - color;
+	const cci = ci / w;
+	const xci = cci * xw;
+	const pi_chan = w - xci - yw
 
-	return c;
+	return pi_chan;
 }
 
-function dcp(x: number, y: number, rgb: number[]) {
+function dcb(x: number, y: number, rgb: number[]) {
 	const red = pixel_color(rgb[0], x, y);
 	const green = pixel_color(rgb[1], x, y);
 	const blue = pixel_color(rgb[2], x, y);
@@ -267,7 +342,6 @@ function draw_color_slider(canvas: HTMLCanvasElement, width: number, height: num
 	// const dpi = window.devicePixelRatio;
 	// ctx.scale(dpi, dpi);
 
-	// red - yellow - green - blue - purple - pink - red
 	const part = width / 5;
 	const cp = 255 / part;
 	const c = 255 / width;
@@ -301,7 +375,7 @@ function dcs(coef: number, x: number): string {
 	return "unreachable";
 }
 
-function draw_opacity_slider(
+function draw_alpha_slider(
 	canvas: HTMLCanvasElement,
 	width: number,
 	height: number,
@@ -316,13 +390,13 @@ function draw_opacity_slider(
 
 	for (let y = 0; y <= height / 20; y++) {
 		for (let x = 0; x <= width; x++) {
-			ctx.fillStyle = dos(x * c, rgba);
+			ctx.fillStyle = das(x * c, rgba);
 			ctx.fillRect(x, y, 1, 1);
 		}
 	}
 }
 
-function dos(x: number, rgba: number[]): string {
+function das(x: number, rgba: number[]): string {
 	return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${x / 255})`;
 }
 
@@ -333,10 +407,10 @@ async function write_hex_to_cb(e: Event) {
 	await navigator.clipboard.writeText(hex);
 }
 
-function update_property(html?: HTMLElement, prop?: string, color?: string) {
-	console.log('(>_<)', html, prop);
-	if (html === undefined || prop === undefined || color === undefined) return;
-	html.style.setProperty(prop, color);
+function update_property(node?: HTMLElement, prop?: string, color?: string) {
+	console.log('(>_<)', node, prop);
+	if (node === undefined || prop === undefined || color === undefined) return;
+	node.style.setProperty(prop, color);
 }
 
 function to_hex(color: number[]) {
@@ -376,8 +450,8 @@ function invert(rgba: number[]): number[] {
 	return [255 - rgba[0], 255 - rgba[1], 255 - rgba[2], rgba[3]];
 }
 
-function prop_val(html: HTMLElement, prop: string): string {
-	return prop.startsWith("--") ? html.style.getPropertyValue(prop) : prop;
+function prop_val(node: HTMLElement, prop: string): string {
+	return prop.startsWith("--") ? node.style.getPropertyValue(prop) : prop;
 }
 
 function is_u8(num: number): boolean {

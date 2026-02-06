@@ -12,6 +12,12 @@ import hanabiSVG from "../../../assets/icons/hanabi.svg?raw";
 function verdant() {
 	const root_rules = color_rules().props({
 		// blue alt #450000
+		// blue alt #5f8099
+		// blue alt #005c43
+		// blue alt #6c2d47f7
+		// blue alt #9D957E
+		// blue alt #585F74
+		// #c5b88e
 		red: "#A95525", green: "#87a187", blue: "#485d6c",
 		black: "black", white: "#f0f8ff",
 		// opaque: #C4DA9F
@@ -47,6 +53,7 @@ function black_star() {
 		// blue: "rgb(151, 164, 194)",
 		// blue: "rgb(183, 162, 147)",
 		// blue: "#738897",
+		// blue #bbbbb3
 		// coffee-ish #a07634
 		// blue: "#485d6c"
 		blue: "#778c9b", green: "#87a187", red: "#A95525",
@@ -129,29 +136,28 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 	const children = () => props.children;
 
 	return (
-		<ColorScheme>
-			<div class={styles.Page}>
-				<Actuator link="/" class={styles.Logo}>
-					<Logo
-						width={140}
-						height={60}
-					/>
-				</Actuator>
-				<Menu />
-				<MainContent>
-					{children()}
-				</MainContent>
-			</div>
-		</ColorScheme >
+		<div class={styles.Page}>
+			<Actuator link="/" class={styles.Logo}>
+				<Logo
+					width={140}
+					height={60}
+				/>
+			</Actuator>
+			<Menu />
+			<MainContent>
+				{children()}
+			</MainContent>
+		</div>
 	);
 };
 
 let nodes = 0;
 const watchguard = new MutationObserver(() => {
 	// new Promise(_ => setTimeout(_, 100));
-	if (nodes > 0) {
+	if (nodes === 1) {
+		// console.log(colors()["verdant"]);
 		colorschemes().refresh("verdant");
-		// watchguard.disconnect();
+		watchguard.disconnect();
 
 		return;
 	}

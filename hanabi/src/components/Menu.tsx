@@ -1,7 +1,6 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
 import { Actuator, } from "core/primitives";
 // TODO sync_scheme should also come from the wrapper comp module, instead of the context module
-import { sync_ls } from 'core/wrappers';
 import { colors_ctx, colorschemes, content_ctx, configs_ctx } from "core/context";
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless } from "core/context";
@@ -19,8 +18,8 @@ import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import loginSVG from "../../../assets/icons/login2.svg?raw";
 import registerSVG from "../../../assets/icons/register2.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
-import rocketSVG from "../../../assets/icons/rocket.svg?raw";
 import homeSVG from "../../../assets/icons/home.svg?raw";
+import icecreamSVG from "../../../assets/icons/icecream.svg?raw";
 
 export const Menu = () => {
 	const { user, re_user } = user_ctx();
@@ -30,9 +29,8 @@ export const Menu = () => {
 	const logout = parse_svg(logoutSVG);
 	const register = parse_svg(registerSVG);
 	const colors = parse_svg(colorsSVG);
-	const rocket = parse_svg(rocketSVG);
 	const home = parse_svg(homeSVG);
-
+	const configs = parse_svg(icecreamSVG);
 
 	// const colorscheme = () => {
 	// 	const style = document.body.style;
@@ -63,7 +61,7 @@ export const Menu = () => {
 					<ContentItem
 						class={styles.ContentItem}
 						dialog={<Settings />}
-						icon={rocket}
+						icon={configs}
 						text="settings"
 						show={false}
 						events="keypress" />
@@ -191,13 +189,10 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 
 
 	const change_scheme = (e: Event) => {
-		const et = e.target as Element;
+		const et = e.currentTarget as Element;
+		const btn = et.firstElementChild;
 		const scheme = et.textContent!;
-		const clrs = colors()[scheme];
-		if (clrs === undefined) return;
-		sync_ls(scheme);
 		colorschemes().refresh(scheme);
-		// sync_scheme(clrs);
 		const { configs, re_configs } = configs_ctx();
 		re_configs((configs: _) => {
 			configs.colorschemes.current = scheme;
@@ -206,7 +201,7 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		});
 	};
 
-	return (<Actuator call={change_scheme} class={umstyles.Entry}>
+	return (<Actuator call={change_scheme} class={umstyles.Entry} style={{ "justify-content": "center" }}>
 		<span>{title()}</span>
 	</ Actuator>);
 };

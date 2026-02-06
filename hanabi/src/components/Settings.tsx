@@ -10,12 +10,14 @@ import atSVG from "../../../assets/icons/at.svg?raw";
 import puzzleSVG from "../../../assets/icons/puzzle.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
 import sharedSVG from "../../../assets/icons/shared.svg?raw";
+import diceSVG from "../../../assets/icons/dice.svg?raw";
 
 export const Settings = () => {
 	const account = parse_svg(atSVG);
 	const apps = parse_svg(puzzleSVG);
 	const scheme = parse_svg(colorsSVG);
-	const shared = parse_svg(sharedSVG);
+	const relations = parse_svg(sharedSVG);
+	const main = parse_svg(diceSVG);
 
 	const [dbl, up_dbl] = dbl_signal();
 	const dbl_clk = dbl_method(up_dbl, 700);
@@ -29,8 +31,9 @@ export const Settings = () => {
 	return (
 		<Dialog class={styles.Settings} width={54} height={56} top={50} left={50} center overtakes>
 			<div class={styles.Headers} on:mousedown={expansion}>
+				<Header text="| main" icon={main} switch={expand()} />
 				<Header text="| account" icon={account} switch={expand()} />
-				<Header text="| relations" icon={shared} switch={expand()} />
+				<Header text="| relations" icon={relations} switch={expand()} />
 				<Header text="| applications" icon={apps} switch={expand()} />
 				<Header text="| colorschemes" icon={scheme} switch={expand()} />
 			</div>

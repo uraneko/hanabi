@@ -6,6 +6,15 @@
 	& svg {
 		width: 1em;
 		cursor: pointer;
+		fill: var(--blue);
+	}
+
+	& .PickerValue {
+		width: 50px;
+		height: 20px;
+		border-radius: 2px;
+		display: flex;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	}
 }
 
@@ -62,6 +71,6 @@
 	border-radius: 10px 0;
 }
 
-.OpacitySlider {
+.AlphaSlider {
 	border-radius: 10px 0;
 }

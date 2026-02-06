@@ -8,15 +8,19 @@ export const Actuator: Component<{
 	class?: string | string[],
 	link?: _,
 	call?: _,
-	extra?: Object,
+	style?: Object,
+	attrs?: Object,
 }> = (props: _) => {
 	const children = () => props.children;
 	const link = () => props.link;
 	const cls = () => props.class;
 	const call = () => props.call;
-	const extra = () => props.extra ?? {};
+	const attrs = () => props.attrs;
+	const styles = () => props.style;
+
 	const actuator = new_actuator(children(), cls(), call(), link());
-	assign_attrs(actuator as _, extra());
+	assign_attrs(actuator as _, attrs());
+	assign_styles(actuator as _, styles());
 
 	return actuator;
 };
@@ -34,8 +38,19 @@ function new_actuator(
 			href={link} on:mousedown={call}>{children}</a>
 }
 
-function assign_attrs(comp: Element, attrs: Object) {
+function assign_attrs(comp: Element, attrs?: Object) {
+	if (attrs === undefined) return;
+
 	for (const [key, val] of Object.entries(attrs)) {
 		comp.setAttribute(key, val);
+	}
+}
+
+function assign_styles(comp: HTMLElement, styles?: Object) {
+	if (styles === undefined) return;
+
+	const stl = comp.style;
+	for (const [key, val] of Object.entries(styles)) {
+		stl.setProperty(key, val);
 	}
 }

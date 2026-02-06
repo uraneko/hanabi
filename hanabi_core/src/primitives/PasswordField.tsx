@@ -38,6 +38,7 @@ export const PasswordField: Component<{ type?: "password" | "text", name?: strin
 	);
 };
 
+// maybe use these and ditch svgs altogether (-.-) / (o,o)
 
 // new Promise(_ => setTimeout(() => {
 // 	const rule =

@@ -5,15 +5,15 @@ import { user_ctx } from "core/context";
 import { Dialog } from 'core/containers';
 
 import styles from "./UserMenu.module.css";
-import icecreamSVG from "../../../assets/icons/icecream.svg?raw";
 import logoutSVG from "../../../assets/icons/logout2.svg?raw";
 import glassesSVG from "../../../assets/icons/glasses.svg?raw";
 import peopleSVG from "../../../assets/icons/people.svg?raw";
+import rocketSVG from "../../../assets/icons/rocket.svg?raw";
 
 export const UserMenu = () => {
 	const { user, re_user } = user_ctx();
 	// user configs
-	const icecream = parse_svg(icecreamSVG);
+	const apps = parse_svg(rocketSVG);
 	const logout_ = parse_svg(logoutSVG);
 	// profile 
 	const glasses = parse_svg(glassesSVG);
@@ -53,8 +53,8 @@ export const UserMenu = () => {
 				<span>| people</span>
 			</Actuator>
 			<Actuator class={styles.Entry}>
-				{icecream}
-				<span>| configs</span>
+				{apps}
+				<span>| apps</span>
 			</Actuator>
 			<Actuator link="/" class={styles.Entry} call={logout}>
 				{logout_}
