@@ -1,5 +1,5 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
-import { Actuator, } from "core/primitives";
+import { Catalyst, } from "core/primitives";
 // TODO sync_scheme should also come from the wrapper comp module, instead of the context module
 import { colors_ctx, colorschemes, content_ctx, configs_ctx } from "core/context";
 import { _, spread_classes } from "core";
@@ -86,12 +86,12 @@ export const AnchorItem: Component<{ link: string, text: string, icon: SVGSVGEle
 
 	return (
 		<div class={styles.Entry}>
-			<Actuator link={link()} call={call()} class={styles.Path}>
+			<Catalyst link={link()} call={call()} class={styles.Path}>
 				<Show when={icon() !== undefined}>
 					{icon()}
 				</Show>
 				<span>{text()}</span>
-			</Actuator>
+			</Catalyst>
 		</div >
 	);
 };
@@ -107,12 +107,12 @@ export const ButtonItem: Component<{
 
 	return (
 		<div class={styles.Entry}>
-			<Actuator call={call()} class={styles.Path}>
+			<Catalyst call={call()} class={styles.Path}>
 				<Show when={icon() !== undefined}>
 					{icon()}
 				</Show>
 				<span>{text()}</span>
-			</Actuator >
+			</Catalyst >
 		</div>
 	);
 };
@@ -144,10 +144,10 @@ export const ContentItem: Component<{
 				class={`${styles.Entry}${spread_classes(cls())}`}
 				on:mousedown={flip}
 			>
-				<Actuator call={call()} class={styles.Path}>
+				<Catalyst call={call()} class={styles.Path}>
 					{icon()}
 					<span>{text()}</span>
-				</Actuator >
+				</Catalyst >
 			</div>
 			<Show when={show()}>
 				{dialog()}
@@ -201,9 +201,9 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		});
 	};
 
-	return (<Actuator call={change_scheme} class={umstyles.Entry} style={{ "justify-content": "center" }}>
+	return (<Catalyst call={change_scheme} class={umstyles.Entry} style={{ "justify-content": "center" }}>
 		<span>{title()}</span>
-	</ Actuator>);
+	</ Catalyst>);
 };
 
 

@@ -1,6 +1,6 @@
 import { type Component, DEV } from 'solid-js';
 import {
-	TextLine, Separator, PasswordField, CheckBox, Actuator, TextField,
+	TextLine, Separator, PasswordField, CheckBox, Catalyst, TextField,
 } from "core/primitives";
 import { Form, form_styles as fstyles, submit } from "core/containers";
 import { type _, json_from_map, is_alphanumeric, is_ascii } from "core";
@@ -91,15 +91,15 @@ export const Signup: Component<{ swap_call: _ }> = (props: _) => {
 			<PasswordField name="user_pswd" mandatory />
 			<PasswordField name="verify_pswd" legend="Verify Password" mandatory />
 			<CheckBox name="auto_login" legend="&nbsp;auto login" />
-			<Actuator class={fstyles.SubmitButton}>Register</Actuator>
+			<Catalyst class={fstyles.SubmitButton}>Register</Catalyst>
 			<Separator />
 			<TextLine>
 				<span class={fstyles.Note} >
 					Already have an account?
 				</span>
-				<Actuator class={fstyles.SwapButton} call={call()}>
+				<Catalyst class={fstyles.SwapButton} call={call()}>
 					<span>Login.</span>
-				</Actuator>
+				</Catalyst>
 			</TextLine>
 		</Form >
 	);

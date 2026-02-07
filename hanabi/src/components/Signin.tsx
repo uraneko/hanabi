@@ -1,6 +1,6 @@
 import { type Component, DEV } from 'solid-js';
 import {
-	TextLine, Separator, PasswordField, CheckBox, Actuator, TextField,
+	TextLine, Separator, PasswordField, CheckBox, Catalyst, TextField,
 } from "core/primitives";
 import { user_ctx } from "core/context";
 import { Form, form_styles as fstyles, submit } from "core/containers";
@@ -65,15 +65,15 @@ export const Signin: Component<{ swap_call: _ }> = (props: _) => {
 			<TextField type="text" name="user_name" legend="User Name or Email" mandatory />
 			<PasswordField name="user_pswd" mandatory />
 			<CheckBox name="persist_session" legend="&nbsp;persist session" />
-			<Actuator type="submit" class={fstyles.SubmitButton}>Login</Actuator>
+			<Catalyst type="submit" class={fstyles.SubmitButton}>Login</Catalyst>
 			<Separator />
 			<TextLine>
 				<span class={fstyles.Note}>
 					New to hanabi?
 				</span>
-				<Actuator class={fstyles.SwapButton} call={call()}>
+				<Catalyst class={fstyles.SwapButton} call={call()}>
 					<span>Register.</span>
-				</Actuator>
+				</Catalyst>
 			</TextLine >
 		</Form>
 	);

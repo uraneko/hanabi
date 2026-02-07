@@ -1,7 +1,7 @@
 import { Component, createEffect, createSignal, Show } from "solid-js";
 import { Dialog } from "../containers";
 import { _, parse_svg, spread_classes } from "../misc";
-import { Actuator } from './Actuator';
+import { Catalyst } from './Catalyst';
 import styles from './ColorPicker.module.css';
 import cpSVG from '../../../assets/icons/palette.svg?raw';
 import spiral from '../../../assets/spiral.svg?raw';
@@ -37,9 +37,9 @@ export const ColorPicker = (props: {
 
 	return (
 		<div class={styles.Picker} >
-			<Actuator class={styles.PickerButton} call={flip}>
+			<Catalyst class={styles.PickerButton} call={flip}>
 				<span class={styles.PickerValue} style={{ background: `${to_hex(color())}` }}></span>
-			</Actuator>
+			</Catalyst>
 
 			<Show when={show()}>
 				<Dialog>
@@ -287,10 +287,10 @@ const ColorTools: Component<{
 	const alpha_slider = () => props.alpha_slider;
 
 	const parser = svg();
-	const copy = parser.style({ fill: "var(--black)" }).parse(copySVG);
-	const wand = parser.style({ color: "var(--black)" }).parse(wandSVG);
+	const copy = parser.style({ fill: "var(--white)" }).parse(copySVG);
+	const wand = parser.style({ color: "var(--white)" }).parse(wandSVG);
 	const invert = parser.clear()
-		.override({ stroke: "var(--black)" }, "path#path4", "path#path5")
+		.override({ stroke: "var(--white)" }, "path#path4", "path#path5")
 		.style({ scale: "1.7" })
 		.parse(reverseSVG);
 
@@ -307,14 +307,24 @@ const ColorTools: Component<{
 		return clr;
 	});
 
+	const filter_invert = (e: Event) => re_color()((color: _) => {
+		const clr = [255 - color[0], 255 - color[1], 255 - color[2], color[3]];
+		draw_board(board(), width(), height(), clr);
+		draw_alpha_slider(alpha_slider(), width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
+
+		return clr;
+	});
+
 	// style={{ 'background': to_hex(invert(color())), color: to_hex(color()) }}
 	return (<div class={styles.ColorTools}>
 		<input type="text"
 			class={styles.ColorCode}
-			on:click={write_hex_to_cb}
 			on:change={change}
 			value={to_hex(color())} />
-		{invert}{wand}{copy}
+		<Catalyst class={styles.ColorTool} call={filter_invert}>{invert}</Catalyst>
+		<Catalyst class={styles.ColorTool}>{wand}</Catalyst>
+		<Catalyst class={styles.ColorTool} call={write_hex_to_clipboard}>{copy}</Catalyst>
 	</div>);
 };
 
@@ -454,9 +464,11 @@ function das(x: number, rgba: number[]): string {
 	return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${x / 255})`;
 }
 
-async function write_hex_to_cb(e: Event) {
-	const et = e.target as HTMLInputElement;
-	const hex = et.value!;
+async function write_hex_to_clipboard(e: Event) {
+	const et = e.currentTarget as HTMLElement;
+	const target = et.parentElement!.firstElementChild! as HTMLInputElement;
+	const hex = target.value!;
+	console.log("copied color to clipboard");
 
 	await navigator.clipboard.writeText(hex);
 }

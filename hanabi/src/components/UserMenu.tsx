@@ -1,6 +1,6 @@
 import { type Component, DEV } from "solid-js";
 import { _, spread_classes, parse_svg } from "core";
-import { Actuator } from "core/primitives";
+import { Catalyst } from "core/primitives";
 import { user_ctx } from "core/context";
 import { Dialog } from 'core/containers';
 
@@ -44,22 +44,22 @@ export const UserMenu = () => {
 
 	return (
 		<Dialog class={styles.UserMenu} >
-			<Actuator class={styles.Entry} >
+			<Catalyst class={styles.Entry} >
 				{glasses}
 				<span>| profile</span>
-			</Actuator>
-			<Actuator class={styles.Entry} >
+			</Catalyst>
+			<Catalyst class={styles.Entry} >
 				{people}
 				<span>| people</span>
-			</Actuator>
-			<Actuator class={styles.Entry}>
+			</Catalyst>
+			<Catalyst class={styles.Entry}>
 				{apps}
 				<span>| apps</span>
-			</Actuator>
-			<Actuator link="/" class={styles.Entry} call={logout}>
+			</Catalyst>
+			<Catalyst link="/" class={styles.Entry} call={logout}>
 				{logout_}
 				<span>| logout</span>
-			</Actuator>
+			</Catalyst>
 		</Dialog>
 	);
 };

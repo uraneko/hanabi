@@ -5,7 +5,7 @@ import { Splash } from './primitives/Splash';
 import { PasswordField } from './primitives/PasswordField';
 import { TextField } from './primitives/TextField';
 import { TextLine } from './primitives/TextLine';
-import { Actuator } from './primitives/Actuator';
+import { Catalyst } from './primitives/Catalyst';
 import { Separator } from './primitives/Separator';
 import { WildText } from './primitives/WildText';
 import { ColorPicker } from './primitives/ColorPicker';
@@ -16,7 +16,7 @@ export {
 	WildText,
 	Separator,
 	TextLine,
-	Actuator,
+	Catalyst,
 	CheckBox,
 	Logo,
 	Splash,

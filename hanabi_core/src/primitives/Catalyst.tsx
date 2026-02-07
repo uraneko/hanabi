@@ -1,8 +1,8 @@
 import { Component, Switch, Match, JSX } from 'solid-js';
-import styles from './Actuator.module.css';
+import styles from './Catalyst.module.css';
 import { _, spread_classes } from '../misc';
 
-export const Actuator: Component<{
+export const Catalyst: Component<{
 	children: JSX.Element,
 	type?: string,
 	class?: string | string[],
@@ -34,7 +34,7 @@ function new_actuator(
 	return link === undefined ?
 		<button class={`${styles.Button} ${spread_classes(cls)}`}
 			on:mousedown={call}>{children}</button> :
-		<a class={`${styles.Actuator} ${spread_classes(cls)}`}
+		<a class={`${styles.Catalyst} ${spread_classes(cls)}`}
 			href={link} on:mousedown={call}>{children}</a>
 }
 

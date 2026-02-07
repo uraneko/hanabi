@@ -1,5 +1,5 @@
 import { type Component, createSignal, createResource, JSX } from 'solid-js';
-import { Logo, Actuator, Icon } from "core/primitives";
+import { Logo, Catalyst, Icon } from "core/primitives";
 import {
 	content_ctx, MainContent, configs_ctx, colors_ctx, color_rules, colorschemes, colorscheme
 } from "core/context";
@@ -56,6 +56,7 @@ function black_star() {
 		// blue: "rgb(183, 162, 147)",
 		// blue: "#738897",
 		// blue #bbbbb3
+		// whiteish #E5E5E5
 		// blue #9390bf
 		// blue #a68cb5
 		// coffee-ish #a07634
@@ -141,12 +142,12 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 
 	return (
 		<div class={styles.Page}>
-			<Actuator link="/" class={styles.Logo}>
+			<Catalyst link="/" class={styles.Logo}>
 				<Logo
 					width={140}
 					height={60}
 				/>
-			</Actuator>
+			</Catalyst>
 			<Menu />
 			<MainContent>
 				{children()}

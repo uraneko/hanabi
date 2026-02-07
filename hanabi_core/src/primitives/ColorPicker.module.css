@@ -53,20 +53,41 @@
 	flex-direction: row;
 	width: stretch;
 	align-items: center;
+	justify-content: start;
 
-	& svg {
-		width: 12px;
-		height: 12px;
-		/* color: var(--black) !important; */
-		/* fill: var(--black) !important; */
-		/* stroke: var(--black) !important; */
+	& .ColorTool {
+		background: var(--black);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 4.5px;
+
+		& svg {
+			width: 15px;
+			height: 15px;
+		}
+	}
+
+	& :last-child {
+		border-top-right-radius: 1px;
+		border-bottom-right-radius: 1px;
+	}
+
+	&>* {
+		filter: none;
+		transition: filter 200ms ease-out;
+	}
+
+	&>*:hover,
+	& :first-child:focus {
+		filter: brightness(1.5);
+		transition: filter 200ms ease-in;
 	}
 }
 
 .ColorCode {
 	/* border: 1px solid black; */
 	width: 40%;
-	height: 10px;
 	font-size: 8px;
 	cursor: pointer;
 	margin: 0.8em 0;
@@ -75,12 +96,13 @@
 	color: var(--white);
 
 	border: none;
+	border-radius: 0;
 	/* border-radius: 10px 0; */
-	border-radius: 1px;
+	border-bottom-left-radius: 1px;
+	border-top-left-radius: 1px;
 	text-align: center;
-	font-size: 7pt;
+	font-size: 12pt;
 	font-weight: bold;
-	filter: brightness(1.5);
 }
 
 [color-value] {

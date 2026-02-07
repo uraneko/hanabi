@@ -1,6 +1,6 @@
 import { type Component, Show, createSignal } from "solid-js";
 import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
-import { Actuator, ColorPicker } from "core/primitives";
+import { Catalyst, ColorPicker } from "core/primitives";
 import { user_ctx, content_ctx } from "core/context";
 import { styles as gstyles } from "../App";
 import { Dialog } from 'core/containers';
