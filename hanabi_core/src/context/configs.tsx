@@ -2,7 +2,11 @@ import { createContext, useContext, createSignal } from 'solid-js';
 import { _ } from "../misc";
 import { colors_ctx } from './colorscheme';
 
-const [configs, re_configs] = createSignal(default_configs() as Record<_, _>);
+async function load_configs() {
+	return default_configs() as Record<_, _>;
+}
+
+const [configs, re_configs] = createSignal(await load_configs());
 const configs_context = createContext({ configs, re_configs });
 
 export function configs_ctx() {

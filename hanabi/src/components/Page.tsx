@@ -158,15 +158,18 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 
 let nodes = 0;
 const watchguard = new MutationObserver(() => {
+	// console.log(colors());
+	colorschemes().refresh("black-star");
+	watchguard.disconnect();
 	// new Promise(_ => setTimeout(_, 100));
-	if (nodes === 1) {
-		// console.log(colors()["verdant"]);
-		colorschemes().refresh("black-star");
-		watchguard.disconnect();
-
-		return;
-	}
-	nodes += 1;
+	// if (nodes === 1) {
+	// 	// console.log(colors()["verdant"]);
+	// 	colorschemes().refresh("black-star");
+	// 	watchguard.disconnect();
+	//
+	// 	return;
+	// }
+	// nodes += 1;
 });
 
 watchguard.observe(document.body, { childList: true, subtree: true });
