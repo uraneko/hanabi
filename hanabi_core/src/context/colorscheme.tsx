@@ -181,6 +181,7 @@ function property_rule(
 ) {
 	prop = prefix ? "--" + prop : prop;
 	const old_prop = props[prop];
+	// BUG refer to svg api's override method's BUG/FIX doc paragraph
 	if (old_prop !== undefined && old_prop.value === value) {
 		return [old_prop, len];
 	}

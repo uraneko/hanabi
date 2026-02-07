@@ -5,6 +5,10 @@ import { Actuator } from './Actuator';
 import styles from './ColorPicker.module.css';
 import cpSVG from '../../../assets/icons/palette.svg?raw';
 import spiral from '../../../assets/spiral.svg?raw';
+import copySVG from '../../../assets/icons/copy.svg?raw';
+import reverseSVG from '../../../assets/icons/reverse.svg?raw';
+import wandSVG from '../../../assets/icons/wand.svg?raw';
+import { svg } from './Icon';
 
 
 export const ColorPicker = (props: {
@@ -242,37 +246,76 @@ export const Picker = (props: {
 	// s.style.width = "0";
 	// alpha_slider.append(s);
 
-	const change = (e: Event) => re_color((color: _) => {
-		const et = e.target as HTMLInputElement;
-		const val = et.value;
-		if (Number.isNaN(Number(prefix + val.slice(1)))) return color;
-
-
-		const clr = to_rgba(prop_val(node(), val));
-		draw_board(board, width(), height(), clr);
-		draw_alpha_slider(alpha_slider, width(), height(), clr);
-		update_property(node() as HTMLElement, prop(), to_hex(clr));
-
-		return clr;
-	});
-
 	return (
 		<div class={styles.ColorPicker} color-value={to_hex(color())}>
 			{board}
 			{color_slider}
 			{alpha_slider}
-			<input type="text"
-				class={styles.ColorCode}
-				on:click={write_hex_to_cb}
-				on:change={change}
-				value={to_hex(color())}
-				style={{
-					'background': to_hex(invert(color())),
-					'color': to_hex(color())
-				}} />
+			<ColorTools
+				width={width()}
+				height={height()}
+				node={node()}
+				prop={prop()}
+				color={color()}
+				re_color={re_color}
+				board={board}
+				alpha_slider={alpha_slider}
+			/>
 		</div>
 
 	);
+};
+
+const ColorTools: Component<{
+	width: number,
+	height: number,
+	node: HTMLElement,
+	prop: string,
+	color: string,
+	re_color: _,
+	board: _,
+	alpha_slider: _,
+}> = (props: _) => {
+	const width = () => props.width;
+	const height = () => props.height;
+	const node = () => props.node;
+	const prop = () => props.prop;
+
+	const color = () => props.color;
+	const re_color = () => props.re_color;
+	const board = () => props.board;
+	const alpha_slider = () => props.alpha_slider;
+
+	const parser = svg();
+	const copy = parser.style({ fill: "var(--black)" }).parse(copySVG);
+	const wand = parser.style({ color: "var(--black)" }).parse(wandSVG);
+	const invert = parser.clear()
+		.override({ stroke: "var(--black)" }, "path#path4", "path#path5")
+		.style({ scale: "1.7" })
+		.parse(reverseSVG);
+
+	const change = (e: Event) => re_color()((color: _) => {
+		const et = e.target as HTMLInputElement;
+		const val = et.value;
+		if (Number.isNaN(Number(prefix + val.slice(1)))) return color;
+
+		const clr = to_rgba(prop_val(node(), val));
+		draw_board(board(), width(), height(), clr);
+		draw_alpha_slider(alpha_slider(), width(), height(), clr);
+		update_property(node() as HTMLElement, prop(), to_hex(clr));
+
+		return clr;
+	});
+
+	// style={{ 'background': to_hex(invert(color())), color: to_hex(color()) }}
+	return (<div class={styles.ColorTools}>
+		<input type="text"
+			class={styles.ColorCode}
+			on:click={write_hex_to_cb}
+			on:change={change}
+			value={to_hex(color())} />
+		{invert}{wand}{copy}
+	</div>);
 };
 
 function update_rgb(e: MouseEvent) {

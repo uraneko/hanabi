@@ -56,6 +56,8 @@ function black_star() {
 		// blue: "rgb(183, 162, 147)",
 		// blue: "#738897",
 		// blue #bbbbb3
+		// blue #9390bf
+		// blue #a68cb5
 		// coffee-ish #a07634
 		// blue: "#485d6c"
 		blue: "#778c9b", green: "#87a187", red: "#A95525",

@@ -1,6 +1,6 @@
 import { CheckBox } from './primitives/CheckBox';
 import { Logo } from './primitives/Logo';
-import { Icon } from './primitives/Icon';
+import { Icon, svg } from './primitives/Icon';
 import { Splash } from './primitives/Splash';
 import { PasswordField } from './primitives/PasswordField';
 import { TextField } from './primitives/TextField';
@@ -11,7 +11,7 @@ import { WildText } from './primitives/WildText';
 import { ColorPicker } from './primitives/ColorPicker';
 
 export {
-	Icon,
+	Icon, svg,
 	ColorPicker,
 	WildText,
 	Separator,
