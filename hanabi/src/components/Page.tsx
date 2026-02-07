@@ -17,6 +17,8 @@ function verdant() {
 		// blue alt #6c2d47f7
 		// blue alt #9D957E
 		// blue alt #585F74
+		// blue alt #67a5b4
+		// blue alt #6c9081
 		// #c5b88e
 		red: "#A95525", green: "#87a187", blue: "#485d6c",
 		black: "black", white: "#f0f8ff",
@@ -156,7 +158,7 @@ const watchguard = new MutationObserver(() => {
 	// new Promise(_ => setTimeout(_, 100));
 	if (nodes === 1) {
 		// console.log(colors()["verdant"]);
-		colorschemes().refresh("verdant");
+		colorschemes().refresh("black-star");
 		watchguard.disconnect();
 
 		return;

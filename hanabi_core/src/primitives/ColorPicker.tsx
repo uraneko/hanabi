@@ -14,7 +14,7 @@ export const ColorPicker = (props: {
 	prop: string,
 }) => {
 	const icon = parse_svg(cpSVG);
-	const width = () => props.width ?? 200;
+	const width = () => props.width ?? 300;
 	const height = () => props.height ?? 200;
 
 	const val = () => prop_val(props.node ?? document.documentElement, props.prop);
@@ -341,35 +341,46 @@ function draw_color_slider(canvas: HTMLCanvasElement, width: number, height: num
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	// const dpi = window.devicePixelRatio;
 	// ctx.scale(dpi, dpi);
-
-	const part = width / 5;
-	const cp = 255 / part;
-	const c = 255 / width;
+	const cx = 255 / width;
+	// const cp = 6 / 255;
 
 	for (let y = 0; y <= height / 20; y++) {
-		for (let coef = 0; coef <= 4; coef++) {
-			let wi = part + part * coef;
-			for (let x = 0; x <= wi; x++) {
-				ctx.fillStyle = dcs(coef, x * cp * c);
-				ctx.fillRect(part * coef + x, y, 1, 1);
-			}
+		for (let x = 0; x <= width; x++) {
+			ctx.fillStyle = dcs(x * cx);
+			ctx.fillRect(x, y, 1, 1);
 		}
 	}
 }
 
-function dcs(coef: number, x: number): string {
-	if (coef < 0 || coef > 4) return "128 128 128";
+// part width 
+const partw = 255 / 6;
+function align_x_to_part(x: number, part: number) {
+	// coef of part number
+	const cp = part - 1;
+	// coef of width alignment by part position
+	const cwa = partw * cp;
+	// x aligned by both part position and part width
+	const xapw = x - cwa;
+	// x compressed from original full width rgb alignment
+	// to part width alignment
+	const xpc = xapw * 6;
 
-	else if (coef === 0) {
-		return `rgb(255 ${x} 0)`
-	} else if (coef === 1) {
-		return `rgb(${255 - x} 255 0)`
-	} else if (coef === 2) {
-		return `rgb(0 255 ${x})`
-	} else if (coef === 3) {
-		return `rgb(0 ${255 - x} 255)`
-	} else if (coef === 4) {
-		return `rgb(${x} 0 ${255 - x})`
+	return xpc;
+}
+
+function dcs(x: number): string {
+	if (x <= 255 / 6) {
+		return `rgb(255 ${align_x_to_part(x, 1)} 0)`
+	} else if (x <= 255 * (2 / 6)) {
+		return `rgb(${255 - align_x_to_part(x, 2)} 255 0)`;
+	} else if (x <= 255 * (3 / 6)) {
+		return `rgb(0 255 ${align_x_to_part(x, 3)})`;
+	} else if (x <= 255 * (4 / 6)) {
+		return `rgb(0 ${255 - align_x_to_part(x, 4)} 255)`;
+	} else if (x <= 255 * 5 / 6) {
+		return `rgb(${align_x_to_part(x, 5)} 0 255)`;
+	} else if (x <= 255) {
+		return `rgb(255 0 ${255 - align_x_to_part(x, 6)}`
 	}
 
 	return "unreachable";
@@ -408,7 +419,6 @@ async function write_hex_to_cb(e: Event) {
 }
 
 function update_property(node?: HTMLElement, prop?: string, color?: string) {
-	console.log('(>_<)', node, prop);
 	if (node === undefined || prop === undefined || color === undefined) return;
 	node.style.setProperty(prop, color);
 }
