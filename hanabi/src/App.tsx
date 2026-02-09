@@ -4,7 +4,7 @@ import { Home } from './routes/Home';
 import { Auth } from './routes/Auth';
 import { Initialize } from './routes/Initialize';
 import { Page } from './components/Page';
-import { Splash } from 'core/primitives';
+import { Splash, Transient, transient_guard } from 'core/primitives';
 import { user_ctx, is_non_init, is_authless, is_logged_in } from 'core/context';
 import { _ } from "core";
 import styles from './App.module.css';
@@ -45,6 +45,7 @@ function dev_ssn_rtt(user: _, e: Event) {
 	};
 }
 
+transient_guard();
 export const App: Component = () => {
 	const { user, re_user } = user_ctx();
 
@@ -54,6 +55,9 @@ export const App: Component = () => {
 
 	return (
 		<div class={styles.App}>
+			<Transient timer={4000}>
+				<span>im aboutta disappear</span>
+			</Transient>
 			<Switch>
 				<Match when={is_non_init(user())}>
 					<Initialize />

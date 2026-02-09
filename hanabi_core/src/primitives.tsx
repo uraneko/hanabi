@@ -9,8 +9,10 @@ import { Catalyst } from './primitives/Catalyst';
 import { Separator } from './primitives/Separator';
 import { WildText } from './primitives/WildText';
 import { ColorPicker } from './primitives/ColorPicker';
+import { Transient, transient_guard } from './primitives/Transient';
 
 export {
+	Transient, transient_guard,
 	Icon, svg,
 	ColorPicker,
 	WildText,

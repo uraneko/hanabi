@@ -19,7 +19,7 @@ export function default_configs() {
 		relations: {},
 		applications: {},
 		colorschemes: {
-			current: "black-star",
+			current: "verdant",
 		}
 	};
 }
