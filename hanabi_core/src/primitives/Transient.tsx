@@ -7,23 +7,13 @@ export const Transient: Component<{ children: JSX.Element, timer: number }> = (p
 	const timer = () => props.timer;
 
 
-	return (<div class={styles.Transient} timer={timer()} style={{
-		position: "fixed",
-		width: "100px",
-		height: "70px",
-		display: "flex",
-		background: "#e3827a",
-		color: "beige",
-		top: "17%",
-		left: "17%",
-	}}>
+	return (<div class={styles.Transient} timer={timer()} >
 		{children()}
 	</div>)
 };
 
 const watchguard = new MutationObserver(() => {
 	const bombs = document.querySelectorAll("[timer]");
-	console.log(bombs);
 	bombs.forEach(async (bomb) => await detonate(bomb));
 });
 

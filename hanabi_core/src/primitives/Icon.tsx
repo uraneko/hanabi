@@ -2,28 +2,6 @@ import { Component } from "solid-js";
 import { constr, _, parse_svg } from '../misc';
 import styles from "./Icon.module.css";
 
-export const Icon: Component<{
-	svg: string,
-	width: number,
-	height: number,
-}> = (props: _) => {
-	let svg: _ = () => props.svg;
-	const width = () => props.width;
-	const height = () => props.height;
-
-	svg = parse_svg(svg());
-	const stl = svg.style;
-
-	stl.setProperty("width", width() + "px");
-	stl.setProperty("height", height() + "px");
-
-	return (
-		<span class={styles.Icon}>
-			{svg()}
-		</span>
-	)
-};
-
 export function svg() {
 	return {
 		paths_: null as null | Record<string, number | number[]>,
@@ -98,11 +76,11 @@ export function svg() {
 					.forEach(([path, indexes]: _) => {
 						const props = filter_path_props(this.props_!, indexes);
 						const nodes = new Array(...svg.querySelectorAll(path));
-						console.log(nodes);
+						// console.log(nodes);
 						nodes.forEach((node: HTMLElement) => {
 							const styles = node.style;
 							props.forEach(([prop, val]: _) => {
-								console.log('-', prop, val);
+								// console.log('-', prop, val);
 								styles.setProperty(prop, val);
 							});
 						})
@@ -168,11 +146,11 @@ function filter_path_props(
 		idx: number
 	}>,
 	indexes: number | number[]) {
-	console.log(props, indexes);
+	// console.log(props, indexes);
 	const ty = constr(indexes);
 	return Object.entries(props).filter(([prop, val_idx]: _) => {
 		const idx = val_idx.idx;
-		console.log(indexes, idx, ty === "Number", indexes === idx);
+		// console.log(indexes, idx, ty === "Number", indexes === idx);
 
 		return ty === "Number" ?
 			idx === indexes : (indexes as number[]).includes(idx);

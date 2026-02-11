@@ -55,9 +55,6 @@ export const App: Component = () => {
 
 	return (
 		<div class={styles.App}>
-			<Transient timer={4000}>
-				<span>im aboutta disappear</span>
-			</Transient>
 			<Switch>
 				<Match when={is_non_init(user())}>
 					<Initialize />

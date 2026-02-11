@@ -1,6 +1,6 @@
 import { CheckBox } from './primitives/CheckBox';
 import { Logo } from './primitives/Logo';
-import { Icon, svg } from './primitives/Icon';
+import { svg } from './primitives/Icon';
 import { Splash } from './primitives/Splash';
 import { PasswordField } from './primitives/PasswordField';
 import { TextField } from './primitives/TextField';
@@ -13,7 +13,7 @@ import { Transient, transient_guard } from './primitives/Transient';
 
 export {
 	Transient, transient_guard,
-	Icon, svg,
+	svg,
 	ColorPicker,
 	WildText,
 	Separator,

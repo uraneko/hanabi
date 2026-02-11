@@ -1,5 +1,5 @@
 import { type Component, createSignal, createResource, JSX } from 'solid-js';
-import { Logo, Catalyst, Icon } from "core/primitives";
+import { Logo, Catalyst } from "core/primitives";
 import {
 	content_ctx, MainContent, configs_ctx, colors_ctx, color_rules, colorschemes, colorscheme
 } from "core/context";
@@ -47,7 +47,8 @@ function verdant() {
 
 function black_star() {
 	const root_rules = color_rules().props({
-		opaque: "#303553",
+		// opaque: "#303553",
+		opaque: "#502941",
 		abstract: "rgba(73, 126, 172, 0.21)",
 		black: "#e3e2e4",
 		// #131c5c
@@ -61,7 +62,10 @@ function black_star() {
 		// blue #a68cb5
 		// coffee-ish #a07634
 		// blue: "#485d6c"
-		blue: "#778c9b", green: "#87a187", red: "#A95525",
+		// blue: "#778c9b",
+		blue: "#887364",
+		green: "#87a187",
+		red: "#A95525",
 		// "grad-start": "#01012afc", 
 		"grad-start": "#43001e",
 		"grad-end": "#000000",
@@ -78,7 +82,8 @@ function black_star() {
 			"i": "rgb(151, 164, 194)",
 			"dot": "rgb(151, 164, 194)",
 			// "ra": "#876756",
-			"ra": "#2573c7",
+			// "ra": "#2573c7",
+			ra: "var(--blue)",
 		}).selectors("svg.hanabi_svg")
 		.prefix(true);
 

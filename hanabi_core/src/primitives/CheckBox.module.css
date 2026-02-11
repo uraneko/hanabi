@@ -65,7 +65,7 @@
 
 	border-radius: 0.03em;
 
-	transition: border-radius 150ms ease-in-out, width 150ms ease-in-out, height 150ms ease-in-out;
+	transition: border-radius 125ms ease-in-out, width 125ms ease-in-out, height 125ms ease-in-out;
 }
 
 .Text {

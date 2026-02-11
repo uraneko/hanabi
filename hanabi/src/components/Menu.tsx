@@ -9,7 +9,7 @@ import styles from './Menu.module.css';
 import { styles as umstyles } from './UserMenu';
 import { form_ctx } from '../routes/Auth';
 import { UserMenu } from './UserMenu';
-import { Settings } from './Settings';
+import { Configs } from './Configs';
 
 // alt red color #A95525
 
@@ -60,9 +60,9 @@ export const Menu = () => {
 				<Match when={is_logged_in(user())}>
 					<ContentItem
 						class={styles.ContentItem}
-						dialog={<Settings />}
+						dialog={<Configs />}
 						icon={configs}
-						text="settings"
+						text="configs"
 						show={false}
 						events="keypress" />
 					<ContentItem

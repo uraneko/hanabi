@@ -109,3 +109,7 @@ export function dbl_method(up_dbl: _, millis: number): _ {
 export function constr(t: _): string {
 	return t.constructor.name;
 }
+
+export function nullish_coercion<T>(t: T | null): T | undefined {
+	return t as T | undefined;
+}

@@ -1,1 +1,11 @@
-.Transient {}
+.Transient {
+	position: fixed;
+	display: flex;
+	padding: 1rem;
+	background: var(--opaque);
+	color: var(--blue);
+	/* top: 5vh; */
+	left: 10vw;
+
+	z-index: 12;
+}

@@ -1,18 +1,18 @@
-import { type Component, Show, createSignal } from "solid-js";
+import { type Component, Show, createSignal, DEV } from "solid-js";
 import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
 import { Catalyst, ColorPicker } from "core/primitives";
 import { user_ctx, content_ctx } from "core/context";
 import { styles as gstyles } from "../App";
 import { Dialog } from 'core/containers';
 
-import styles from "./Settings.module.css";
+import styles from "./Configs.module.css";
 import atSVG from "../../../assets/icons/at.svg?raw";
 import puzzleSVG from "../../../assets/icons/puzzle.svg?raw";
 import colorsSVG from "../../../assets/icons/colors.svg?raw";
 import sharedSVG from "../../../assets/icons/shared.svg?raw";
 import diceSVG from "../../../assets/icons/dice.svg?raw";
 
-export const Settings = () => {
+export const Configs = () => {
 	const account = parse_svg(atSVG);
 	const apps = parse_svg(puzzleSVG);
 	const scheme = parse_svg(colorsSVG);
@@ -29,7 +29,7 @@ export const Settings = () => {
 	});
 
 	return (
-		<Dialog class={styles.Settings} width={54} height={56} top={50} left={50} center overtakes>
+		<Dialog class={styles.Configs} width={54} height={56} top={50} left={50} center overtakes>
 			<div class={styles.Headers} on:mousedown={expansion}>
 				<Header text="| main" icon={main} switch={expand()} />
 				<Header text="| account" icon={account} switch={expand()} />

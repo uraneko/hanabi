@@ -1,10 +1,7 @@
-import { createContext, useContext, createSignal } from 'solid-js';
+import { createContext, useContext, createSignal, DEV } from 'solid-js';
+import { user_ctx } from "./user";
 import { _ } from "../misc";
 import { colors_ctx } from './colorscheme';
-
-async function load_configs() {
-	return default_configs() as Record<_, _>;
-}
 
 const [configs, re_configs] = createSignal(await load_configs());
 const configs_context = createContext({ configs, re_configs });
@@ -13,15 +10,31 @@ export function configs_ctx() {
 	return useContext(configs_context);
 }
 
-export function default_configs() {
-	return {
+export async function load_configs(): Promise<Record<_, _>> {
+	if (DEV !== undefined) return {
+		main: {
+			icon: "",
+			sub: [{ name: "", icon: "" }],
+			// then the subcategories as objects
+		},
 		account: {},
 		relations: {},
 		applications: {},
 		colorschemes: {
-			current: "verdant",
+			current: "black-star",
 		}
 	};
+
+	const { user, re_user } = user_ctx();
+	const resp = await fetch("/configs?headers=decorated&inner=full", {
+		method: "GET",
+		credentials: "include",
+		headers: {
+			"authorization": `Bearer<${user().access_token!}>`,
+		}
+	});
+
+	return resp.json();
 }
 
 /// extends an existing colorscheme with new :root properties

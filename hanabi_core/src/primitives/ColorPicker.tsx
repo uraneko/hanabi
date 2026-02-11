@@ -2,7 +2,10 @@ import { Component, createEffect, createSignal, Show } from "solid-js";
 import { Dialog } from "../containers";
 import { _, parse_svg, spread_classes } from "../misc";
 import { Catalyst } from './Catalyst';
+import { Transient } from './Transient';
+
 import styles from './ColorPicker.module.css';
+
 import cpSVG from '../../../assets/icons/palette.svg?raw';
 import spiral from '../../../assets/spiral.svg?raw';
 import copySVG from '../../../assets/icons/copy.svg?raw';
@@ -464,11 +467,12 @@ function das(x: number, rgba: number[]): string {
 	return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${x / 255})`;
 }
 
+const msg = <Transient timer={1500}><span>color copied!</span></Transient>;
 async function write_hex_to_clipboard(e: Event) {
 	const et = e.currentTarget as HTMLElement;
 	const target = et.parentElement!.firstElementChild! as HTMLInputElement;
 	const hex = target.value!;
-	console.log("copied color to clipboard");
+	et.appendChild((msg as _)());
 
 	await navigator.clipboard.writeText(hex);
 }
