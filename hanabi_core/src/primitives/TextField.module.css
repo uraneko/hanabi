@@ -81,6 +81,8 @@ TextField[bad-value=true] {
 	font-size: 10.4pt;
 	font-style: italic;
 	color: #595858d8;
+	/* dark scheme */
+	/* color: rgba(147, 147, 147, 0.85); */
 	text-align: start;
 	padding: 0;
 	transform: translateY(16px);

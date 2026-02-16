@@ -57,6 +57,7 @@
 
 	& svg {
 		width: 4em;
+		height: fit-content;
 		padding: 10px;
 	}
 

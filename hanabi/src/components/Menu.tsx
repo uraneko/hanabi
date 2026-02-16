@@ -1,15 +1,13 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
-import { Catalyst, } from "core/primitives";
+import { Catalyst } from "core/primitives";
 // TODO sync_scheme should also come from the wrapper comp module, instead of the context module
 import { colors_ctx, colorschemes, content_ctx, configs_ctx } from "core/context";
 import { _, spread_classes } from "core";
 import { user_ctx, is_logged_in, is_authless } from "core/context";
 import { Dialog } from 'core/containers';
 import styles from './Menu.module.css';
-import { styles as umstyles } from './UserMenu';
+import { umstyles, UserMenu, Configs } from 'configs';
 import { form_ctx } from '../routes/Auth';
-import { UserMenu } from './UserMenu';
-import { Configs } from './Configs';
 
 // alt red color #A95525
 
@@ -195,7 +193,7 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		colorschemes().refresh(scheme);
 		const { configs, re_configs } = configs_ctx();
 		re_configs((configs: _) => {
-			configs.colorschemes.current = scheme;
+			configs.colorschemes.manage.current = scheme;
 
 			return structuredClone(configs);
 		});

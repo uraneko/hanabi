@@ -4,6 +4,33 @@ import { Splash } from 'core/primitives';
 import { user_ctx, is_non_init } from 'core/context';
 import { _ } from 'core';
 
+// assets layouts 
+// helps decouple icon fetching from data fetching 
+const layouts_resources = ["configs", "main-menu", "user-menu"];
+
+async function layouts(re_user: _) {
+	re_user((user: _) => {
+		layouts_resources.map(async (layout: string) => {
+			const resp = await fetch("/layouts/" + layout);
+
+			return [layout, await resp.json()];
+		}).forEach(([r, l]: _) => user.layouts[r] = l);
+
+		return structuredClone(user);
+	});
+}
+
+async function icons(re_user: _) {
+	const resp = await fetch("/icons");
+	const icons = await resp.json();
+
+	re_user((user: _) => {
+		user.data.icons = icons;
+
+		return structuredClone(user);
+	});
+}
+
 export const Initialize: Component = () => {
 	return (<div class={styles.Initialize} >
 		<Splash />

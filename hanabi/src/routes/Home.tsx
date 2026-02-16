@@ -22,13 +22,14 @@ async function get_apps_meta() {
 	// fetch what apps the user has installed
 	return [
 		{
-			name: "calendar", icon: parse_svg(eventsSVG), accent: "#00a86b",
+			name: "calendar", icon: parse_svg(eventsSVG), accent: "#c29884",
 			depict: "manage your schedule and affairs [not yet available]"
 		},
 		{
+			// "#a18369",
 			// "#9aca43" 
-			name: "drive", icon: parse_svg(driveSVG), accent: "#a18369",
-			depict: "store, share and backup your files [pre-alpha release]"
+			name: "drive", icon: parse_svg(driveSVG), accent: "#859f60",
+			depict: "store, share and backup your files [not yet available]"
 		},
 		{
 			name: "comms", icon: parse_svg(radioSVG), accent: "#1475dc",

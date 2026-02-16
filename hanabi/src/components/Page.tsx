@@ -48,22 +48,27 @@ function verdant() {
 function black_star() {
 	const root_rules = color_rules().props({
 		// opaque: "#303553",
-		opaque: "#502941",
+		// opaque: "#502941",
+		// opaque: "#b574447a",
+		opaque: "linear-gradient(132deg, #b574447a 0%, #502941 100%)",
 		abstract: "rgba(73, 126, 172, 0.21)",
 		black: "#e3e2e4",
 		// #131c5c
 		white: "#1f212e",
 		// blue: "rgb(151, 164, 194)",
 		// blue: "rgb(183, 162, 147)",
+		// blue: "rgb(187, 154, 131)",
+		blue: "#9e8776",
 		// blue: "#738897",
 		// blue #bbbbb3
 		// whiteish #E5E5E5
-		// blue #9390bf
-		// blue #a68cb5
-		// coffee-ish #a07634
+		// blue #9390bf // good
+		// blue #a68cb5 // not bad
+		// coffee-ish #806a48 // good
 		// blue: "#485d6c"
 		// blue: "#778c9b",
-		blue: "#887364",
+		// blue: "#887364",
+		// blue: "#c44675",
 		green: "#87a187",
 		red: "#A95525",
 		// "grad-start": "#01012afc", 
@@ -164,7 +169,7 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 const { configs, re_configs } = configs_ctx();
 const watchguard = new MutationObserver(() => {
 	// console.log(colors());
-	colorschemes().refresh(configs().colorschemes.current);
+	colorschemes().refresh(configs().colorschemes.manage.current);
 	watchguard.disconnect();
 	// new Promise(_ => setTimeout(_, 100));
 	// if (nodes === 1) {

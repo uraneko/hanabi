@@ -3,6 +3,7 @@ import { Router, Route } from "@solidjs/router";
 import { Home } from './routes/Home';
 import { Auth } from './routes/Auth';
 import { Initialize } from './routes/Initialize';
+import { Testing } from './routes/Testing';
 import { Page } from './components/Page';
 import { Splash, Transient, transient_guard } from 'core/primitives';
 import { user_ctx, is_non_init, is_authless, is_logged_in } from 'core/context';
@@ -65,6 +66,7 @@ export const App: Component = () => {
 							<Route path="/" component={Home} />
 							<Route path="/auth" component={Auth} />
 							<Route path="*" component={Splash} />
+							<Route path="/testing" component={Testing} />
 						</Router>
 					</Page>
 				</Match>

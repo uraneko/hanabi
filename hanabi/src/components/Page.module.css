@@ -25,3 +25,9 @@
 	padding-top: 6px;
 	position: fixed;
 }
+
+/* NOTE gradient text color */
+/* background: linear-gradient(52deg, crimson, violet); */
+/*   -webkit-background-clip: text; */
+/*   background-clip: text; */
+/*   color: transparent; */

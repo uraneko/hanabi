@@ -5,10 +5,10 @@ import { user_ctx } from "core/context";
 import { Dialog } from 'core/containers';
 
 import styles from "./UserMenu.module.css";
-import logoutSVG from "../../../assets/icons/logout2.svg?raw";
-import glassesSVG from "../../../assets/icons/glasses.svg?raw";
-import peopleSVG from "../../../assets/icons/people.svg?raw";
-import rocketSVG from "../../../assets/icons/rocket.svg?raw";
+import logoutSVG from "../../assets/icons/logout2.svg?raw";
+import glassesSVG from "../../assets/icons/glasses.svg?raw";
+import peopleSVG from "../../assets/icons/people.svg?raw";
+import rocketSVG from "../../assets/icons/rocket.svg?raw";
 
 export const UserMenu = () => {
 	const { user, re_user } = user_ctx();

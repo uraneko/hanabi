@@ -12,9 +12,6 @@
 	"packageManager": "pnpm@10.25.0",
 	"dependencies": {
 		"@solidjs/router": "^0.15.4",
-		"esbuild": "^0.27.3",
-		"esbuild-plugin-solid": "^0.6.0",
-		"esbuild-solid": "^0.0.1",
 		"solid-js": "^1.9.11"
 	},
 	"devDependencies": {
@@ -22,11 +19,7 @@
 		"lightningcss": "^1.31.1",
 		"typescript": "^5.9.3",
 		"vite-plugin-solid": "^2.11.10",
+		"vite": "^8.0.0-beta.13",
 		"vitest": "^4.0.18"
-	},
-	"pnpm": {
-		"overrides": {
-			"vite": "npm:rolldown-vite@7.3.1"
-		}
 	}
 }

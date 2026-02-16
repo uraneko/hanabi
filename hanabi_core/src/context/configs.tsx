@@ -10,23 +10,44 @@ export function configs_ctx() {
 	return useContext(configs_context);
 }
 
+const root = document.documentElement;
+const root_style = root.style;
 export async function load_configs(): Promise<Record<_, _>> {
 	if (DEV !== undefined) return {
 		main: {
-			icon: "",
-			sub: [{ name: "", icon: "" }],
-			// then the subcategories as objects
+			force_persistence: false,
+			persistence_duration: 7 * 60 * 60 * 24,
+			send_me_emails: false,
 		},
-		account: {},
-		relations: {},
-		applications: {},
+		account: {
+			profile: {
+				user_name: null,
+				email: null,
+			},
+			security: {
+				password: null,
+			}
+		},
+		relations: {
+			people: {},
+			manage: {},
+		},
+		applications: {
+			manage: {},
+			install: {},
+		},
 		colorschemes: {
-			current: "black-star",
+			manage: {
+				current: "black-star",
+				installed: [],
+			},
+			new: {}
+
 		}
 	};
 
 	const { user, re_user } = user_ctx();
-	const resp = await fetch("/configs?headers=decorated&inner=full", {
+	const resp = await fetch("/configs?thorough", {
 		method: "GET",
 		credentials: "include",
 		headers: {

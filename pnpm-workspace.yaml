@@ -1,7 +1,7 @@
 packages:
   - hanabi
   - hanabi_core
-  - hanabi_drive
+  - hanabi_configs
   - '!**/test/**'
 
 onlyBuiltDependencies:

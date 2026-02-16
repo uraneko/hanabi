@@ -1,7 +1,15 @@
 import { createSignal } from "solid-js";
+import { svg } from "./primitives/Icon";
+import fallbackSVG from "../../assets/fallback.svg?raw";
 
-export const parse_svg = (svg: string): SVGSVGElement => {
-	return new DOMParser().parseFromString(svg, "image/svg+xml").querySelector("svg")!;
+export function parse_svg(raw: string): SVGSVGElement {
+	const parsed = new DOMParser().parseFromString(raw, "image/svg+xml");
+	if (constr(parsed) === "Error") return fallback();
+
+	const svg = parsed.querySelector("svg");
+	if (svg === null) return fallback();
+
+	return svg;
 }
 
 export type _ = any;
@@ -113,3 +121,6 @@ export function constr(t: _): string {
 export function nullish_coercion<T>(t: T | null): T | undefined {
 	return t as T | undefined;
 }
+
+const fallback = () => svg().parse(fallbackSVG);
+export { fallback }

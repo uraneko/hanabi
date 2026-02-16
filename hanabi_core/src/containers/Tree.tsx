@@ -1,6 +1,6 @@
 import { Component, Show, For, JSX } from "solid-js";
 import { Catalyst } from "../primitives";
-import { _, nullish_coercion } from "../misc";
+import { _, nullish_coercion, spread_classes } from "../misc";
 import styles from "./Tree.module.css";
 
 type Tree = _;
@@ -13,28 +13,30 @@ export const Tree: Component<{
 	flat?: boolean,
 	padding?: number,
 	title?: string,
+	class?: string | string[],
 }> = (props: _) => {
 	const tree = () => props.tree;
-	if (tree()! === undefined) {
+	if (tree()! !== undefined) {
 		return tree().into();
 	}
 	const flat = () => props.flat ?? false;
 	const title = () => props.title;
 	const children = () => props.children;
 	// handles null / undefined and 0
-	const padding = () => props.padding ? props.padding : 3;
-	const cls = flat() ? styles.Flat : styles.Tree;
+	const padding = () => flat() ? 0 : props.padding ? props.padding : 8;
+	const cls = () => props.class ?? "";
 
-	return <div class={cls}>
+	return <div
+		class={spread_classes([...cls(), styles.Tree])}
+		style={{ "--padding": padding() + "px" }}
+	>
 		<Show when={title() !== undefined}>
 			<span class={styles.TreeTitle}>{title()}</span>
 		</Show>
 		<Show when={children() !== undefined}>
-			<div style={{ padding: padding() + "px" }}>
-				{children()}
-			</div>
+			{children()}
 		</Show>
-	</div>
+	</div>;
 };
 
 export const Branch: Component<{
@@ -45,7 +47,7 @@ export const Branch: Component<{
 	const children = () => props.children;
 	const value = () => props.value;
 	// zero padding mitigation
-	const padding = () => props.padding ? props.padding : 3;
+	const padding = () => props.padding ? props.padding : 8;
 
 	return <div class={styles.Branch}>
 		<Show when={value() !== undefined}>
@@ -53,7 +55,7 @@ export const Branch: Component<{
 				<span>{value()}</span>
 			</Catalyst>
 		</Show>
-		<div class={styles.BranchInner} style={{ padding: padding() + "px" }}>
+		<div class={styles.BranchInner} /* style={{ 'padding-left': padding() + "px" }} */>
 			{children()}
 		</div>
 	</div>;
