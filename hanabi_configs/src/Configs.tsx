@@ -28,15 +28,17 @@ const HEADERS = [
 	}
 ];
 
-export const Configs = (props: { headers: _, contents: _ }) => {
-	const headers = () => props.headers;
-	const contents = () => props.contents;
+export const Configs = () => {
+	const { configs, re_configs } = configs_ctx();
+	const headers = () => configs()["headers"];
+	const contents = () => Object.fromEntries(
+		Object.entries(configs()).filter((kv: _) => kv[0] !== "headers"));
 	const init = constr(headers()[0]) === "String" ? headers()[0] : Object.keys(headers()[0])[0];
 	const [content, re_content] = createSignal(init);
-	return (<Dialog class={styles.Configs} width={54} height={56} top={50} left={50} center overtakes >
+	return (<div class={styles.Configs}>
 		<Headers headers={headers()} updater={re_content} />
 		<Contents contents={contents()} header={content()} />
-	</Dialog>);
+	</div>);
 };
 
 const Headers = (props: { headers: _, updater: _ }) => {

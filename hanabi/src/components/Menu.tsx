@@ -56,13 +56,10 @@ export const Menu = () => {
 					<AnchorItem link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
 				<Match when={is_logged_in(user())}>
-					<ContentItem
-						class={styles.ContentItem}
-						dialog={<Configs headers={HEADERS} contents={CONTENTS} />}
+					<AnchorItem
+						link="/configs"
 						icon={configs}
-						text="configs"
-						show={false}
-						events="keypress" />
+						text="configs" />
 					<ContentItem
 						class={styles.ContentItem}
 						dialog={<UserMenu />}
@@ -75,26 +72,6 @@ export const Menu = () => {
 		</div>
 	);
 };
-
-const HEADERS = [
-	"main",
-	"account",
-	"colors",
-	{
-		plugins: ["installed", "available", "banned"],
-		relations: ["friends", "acquaintances", "blocked"],
-	}
-];
-
-const CONTENTS = {
-	main: `<div><span>
-			no idea what goes here.
-		</span><button>go ahead, click me (^-^)!</button></div>`,
-	"plugins/installed": `<div class={styles.Contents}>
-			<a href="/">I lead back to the main page.</a>
-		</div>`,
-};
-
 
 export const AnchorItem: Component<{ link: string, text: string, icon: SVGSVGElement, call?: _ }> = (props: _) => {
 	const icon = () => props.icon;
