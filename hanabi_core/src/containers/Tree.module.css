@@ -4,7 +4,9 @@
 	align-items: start;
 }
 
-.Leaf {}
+.Leaf {
+	display: flex;
+}
 
 .Branch {
 	display: flex;
@@ -12,7 +14,7 @@
 	align-items: start;
 
 	& :not(.BranchName) {
-		margin-left: var(--ident);
+		padding-left: var(--ident) !important;
 	}
 }
 

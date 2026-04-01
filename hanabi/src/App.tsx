@@ -2,6 +2,7 @@ import { type Component, DEV, Switch, Match, createSignal, createContext, useCon
 import { Router, Route } from "@solidjs/router";
 import { Home } from './routes/Home';
 import { Auth } from './routes/Auth';
+import { Configs } from 'configs';
 import { Initialize } from './routes/Initialize';
 import { Testing } from './routes/Testing';
 import { Page } from './components/Page';
@@ -65,6 +66,7 @@ export const App: Component = () => {
 						<Router>
 							<Route path="/" component={Home} />
 							<Route path="/auth" component={Auth} />
+							<Route path="/configs" component={Configs} />
 							<Route path="*" component={Splash} />
 							<Route path="/testing" component={Testing} />
 						</Router>

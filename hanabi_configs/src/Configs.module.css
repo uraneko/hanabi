@@ -3,28 +3,28 @@
 	box-shadow: 9px 11px 0 #25272833;
 	display: flex;
 	flex-direction: row;
+	color: var(--black);
 }
 
 .Headers {
 	display: flex;
-	flex-direction: column;
-	align-items: start;
 
-	width: 7rem;
 	height: -webkit-fill-available;
-	padding: 0.5rem;
+	/* padding: 0.5rem; */
 
 	background: var(--abstract);
 
 
-	.Header {
+	[class*="Branch"] {
+		width: stretch;
+	}
+
+	[class*="Leaf"] {
 		color: var(--blue);
 		font-weight: bold;
 
-		text-align: start;
-
 		width: stretch;
-		border-radius: 3px;
+		/* border-radius: 3px; */
 		padding: .3rem 0.4rem;
 		margin-bottom: 0.1rem;
 
@@ -32,6 +32,10 @@
 			background: var(--opaque);
 		}
 	}
+
+
+
+
 }
 
 .Contents {

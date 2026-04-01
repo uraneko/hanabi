@@ -213,7 +213,7 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		colorschemes().refresh(scheme);
 		const { configs, re_configs } = configs_ctx();
 		re_configs((configs: _) => {
-			configs.colorschemes.manage.current = scheme;
+			// configs.colorschemes.manage.current = scheme;
 
 			return structuredClone(configs);
 		});

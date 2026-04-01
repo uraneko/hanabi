@@ -18,10 +18,18 @@ function generate_value_checker(name: () => string) {
 	}
 };
 
-export const TextField: Component<{ ty?: string, legend: string, name: string, type: string, mandatory?: boolean }> = (props: _) => {
+export const TextField: Component<{
+	ty?: string,
+	legend: string,
+	name: string,
+	type: string,
+	value?: string,
+	mandatory?: boolean
+}> = (props: _) => {
 	const ty = () => props.ty ?? "str";
 	const name = () => props.name;
 	const type = () => props.type;
+	const initial_value = () => props.value ?? null;
 	const mandatory = () => props.mandatory ?? false;
 	const legend: () => string = (): _ => {
 		if (state().blank_mandatory) return () => props.legend + required;
@@ -31,7 +39,7 @@ export const TextField: Component<{ ty?: string, legend: string, name: string, t
 	};
 
 	const [state, re_state] = createSignal({ lights_up: false, blank_mandatory: false, bad_value: false });
-	const [value, re_value] = createSignal(null as _);
+	const [value, re_value] = createSignal(initial_value as _);
 	const [is_available] = createResource(value, generate_value_checker(name), { initialValue: true });
 
 	const change_signal = (e: Event) => re_state((state: _) => {
@@ -77,7 +85,7 @@ export const TextField: Component<{ ty?: string, legend: string, name: string, t
 				on:input={change_signal}
 				data-type={ty()}
 				class={`${styles.InputField}${mandatory() ? " mandatory" : ""}`}
-				name={name()} />
+				name={name()} value={initial_value()} />
 		</div>
 	);
 };

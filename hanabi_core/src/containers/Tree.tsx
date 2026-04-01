@@ -20,8 +20,6 @@ export const BuildTree: Component<{ data: _, transform?: _, ident?: string }> = 
 // data is an array of string | record 
 function default_transform(data: _, tree?: Element, ident?: string): Element {
 	tree = tree ?? <div class={styles.Tree} style={{ "--ident": ident! }}></div> as Element;
-	console.log("type of tree:", typeof tree);
-	console.log("tree constructor:", tree.constructor.name);
 
 	for (const entry of data) {
 		// record of string,  array
@@ -29,7 +27,7 @@ function default_transform(data: _, tree?: Element, ident?: string): Element {
 			const keys = Object.keys(entry);
 			for (const key of keys) {
 				const branch = <div class={styles.Branch}>
-					<Catalyst class={styles.BranchName}>{key}</Catalyst>
+					<Catalyst class={`${styles.BranchName} ${styles.Leaf}`}>{key}</Catalyst>
 				</div> as Element;
 				default_transform(entry[key], branch);
 				tree.appendChild(branch);

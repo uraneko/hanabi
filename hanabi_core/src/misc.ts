@@ -12,13 +12,9 @@ export function parse_svg(raw: string): SVGSVGElement {
 	return svg;
 }
 
+// NOTE cant import them simultaneously
+export let _ = null as _;
 export type _ = any;
-
-// TODO deprecate this stuff
-export type Maybe<T> = T | undefined;
-export function is<T>(t: T): boolean {
-	return t !== undefined
-}
 
 export function map_from_json(json: Object): Map<string, _> {
 	return new Map(Object.entries(json));
@@ -118,9 +114,15 @@ export function constr(t: _): string {
 	return t.constructor.name;
 }
 
+export function is_instance_of(t: _, constr: string): boolean {
+	return t.constructor.name === constr;
+}
+
 export function nullish_coercion<T>(t: T | null): T | undefined {
 	return t as T | undefined;
 }
 
-const fallback = () => svg().parse(fallbackSVG);
+const fallback = () => svg()
+	.style({ width: "20px", height: "20px" })
+	.parse(fallbackSVG);
 export { fallback }

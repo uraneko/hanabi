@@ -112,3 +112,11 @@
 		stroke: attr(color-value);
 	}
 }
+
+.SliderBox {
+	& svg {
+		scale: 2;
+		position: fixed;
+		cursor: pointer;
+	}
+}

@@ -73,9 +73,9 @@ const ParseConfigs = (props: { configs: string }) => {
 
 function get_header_contents(contents: _, header: string) {
 	return contents[header] ??
-		`<div styles='display: flex; flex-direction: row;'>
+		`<div>
 			<span>This section is a work-in-progress</span>
-			<span styles='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
+			<span style='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
 	</div>`;
 	// console.log(contents, "<" + header + ">");
 	// if (constr(header) === "String") ;

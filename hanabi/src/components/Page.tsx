@@ -1,9 +1,8 @@
 import { type Component, createSignal, createResource, JSX } from 'solid-js';
 import { Logo, Catalyst } from "core/primitives";
 import {
-	content_ctx, MainContent, configs_ctx, colors_ctx, color_rules, colorschemes, colorscheme
+	MainContent, configs_ctx, colors_ctx, color_rules, colorschemes, colorscheme
 } from "core/context";
-import { ColorScheme } from 'core/wrappers';
 import { Menu } from "../components/Menu";
 import { _ } from "core";
 import styles from './Page.module.css';
@@ -11,6 +10,7 @@ import hanabiSVG from "../../../assets/icons/hanabi.svg?raw";
 
 function verdant() {
 	const root_rules = color_rules().props({
+		// blue #3e5c00
 		// blue alt #450000
 		// blue alt #5f8099
 		// blue alt #005c43
@@ -47,6 +47,7 @@ function verdant() {
 
 function black_star() {
 	const root_rules = color_rules().props({
+		// rgb(61, 65, 66): black-star box shadow
 		// opaque: "#303553",
 		// opaque: "#502941",
 		// opaque: "#b574447a",
@@ -169,7 +170,7 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 const { configs, re_configs } = configs_ctx();
 const watchguard = new MutationObserver(() => {
 	// console.log(colors());
-	colorschemes().refresh(configs().colorschemes.manage.current);
+	colorschemes().refresh("black-star");
 	watchguard.disconnect();
 	// new Promise(_ => setTimeout(_, 100));
 	// if (nodes === 1) {

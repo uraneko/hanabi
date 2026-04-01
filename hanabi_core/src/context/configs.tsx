@@ -3,6 +3,26 @@ import { user_ctx } from "./user";
 import { _ } from "../misc";
 import { colors_ctx } from './colorscheme';
 
+
+const HEADERS = [
+	"main",
+	"account",
+	"colors",
+	{
+		plugins: ["installed", "available", "banned"],
+		relations: ["friends", "acquaintances", "blocked"],
+	}
+];
+
+const CONTENTS = {
+	main: `<div><span>
+			no idea what goes here.
+		</span><button>go ahead, click me (^-^)!</button></div>`,
+	"plugins/installed": `<div class={styles.Contents}>
+			<a href="/">I lead back to the main page.</a>
+		</div>`,
+};
+
 const [configs, re_configs] = createSignal(await load_configs());
 const configs_context = createContext({ configs, re_configs });
 
@@ -13,41 +33,14 @@ export function configs_ctx() {
 const root = document.documentElement;
 const root_style = root.style;
 export async function load_configs(): Promise<Record<_, _>> {
-	if (DEV !== undefined) return {
-		main: {
-			force_persistence: false,
-			persistence_duration: 7 * 60 * 60 * 24,
-			send_me_emails: false,
-		},
-		account: {
-			profile: {
-				user_name: null,
-				email: null,
-			},
-			security: {
-				password: null,
-			}
-		},
-		relations: {
-			people: {},
-			manage: {},
-		},
-		applications: {
-			manage: {},
-			install: {},
-		},
-		colorschemes: {
-			manage: {
-				current: "black-star",
-				installed: [],
-			},
-			new: {}
-
-		}
-	};
+	if (DEV !== undefined)
+		return {
+			headers: HEADERS,
+			...CONTENTS
+		};
 
 	const { user, re_user } = user_ctx();
-	const resp = await fetch("/configs?thorough", {
+	const resp = await fetch("/configs/read", {
 		method: "GET",
 		credentials: "include",
 		headers: {

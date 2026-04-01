@@ -13,7 +13,11 @@ const defaultProps = {
 
 // NOTE name is always optional in these input types 
 // since having no name means the value is not send in the post request as part of the form data
-export const CheckBox: Component<{ name?: string, legend?: string }> = (props_: _) => {
+export const CheckBox: Component<{
+	name?: string,
+	legend?: string,
+	state?: boolean
+}> = (props_: _) => {
 	const props = mergeProps(defaultProps, props_);
 
 	const state = () => props.state;

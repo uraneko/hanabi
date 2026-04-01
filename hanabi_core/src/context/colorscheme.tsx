@@ -47,12 +47,12 @@ export function colorschemes(ctx?: { colors: _, re_colors: _ }) {
 		refresh(name?: string) {
 			const { colors, re_colors } = this.ctx;
 			const { configs, re_configs } = configs_ctx();
-			name = name ?? configs().colorschemes.current;
+			name = name ?? configs().colors.current;
 			const scheme = colors()[name!];
 			if (scheme === undefined) throw new Error("no such colorscheme is registered");
 			apply_scheme(scheme);
 			re_configs((configs: _) => {
-				configs.colorschemes.current = name;
+				// configs.colorschemes.current = name;
 
 				return structuredClone(configs);
 			});

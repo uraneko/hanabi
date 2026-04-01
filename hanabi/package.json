@@ -12,16 +12,16 @@
 	"license": "MIT",
 	"devDependencies": {
 		"browserlist": "^1.0.2",
-		"lightningcss": "^1.31.1",
-		"typescript": "^5.9.3",
-		"vite": "^8.0.0-beta.13",
-		"vite-plugin-solid": "^2.11.10",
-		"vitest": "^4.0.16"
+		"lightningcss": "^1.32.0",
+		"typescript": "^6.0.2",
+		"vite": "^8.0.3",
+		"vite-plugin-solid": "^2.11.11",
+		"vitest": "^4.1.2"
 	},
 	"dependencies": {
-		"@solidjs/router": "^0.15.4",
-		"configs": "workspace:../hanabi_configs",
-		"core": "workspace:../hanabi_core",
-		"solid-js": "^1.9.10"
+		"@solidjs/router": "^0.16.1",
+		"configs": "link:../hanabi_configs",
+		"core": "link:../hanabi_core",
+		"solid-js": "^1.9.12"
 	}
 }

@@ -5,20 +5,6 @@ import { BuildTree, Dialog } from "core/containers";
 // the nesting level of the component within the tree 
 // the class of the component within the tree
 
-const data = {
-	branch0: null,
-	branch1: {
-		leaf0: null,
-		leaf1: {
-			fallen0: null,
-			fallen1: null,
-			fallen2: {
-				soil0: null,
-				soil1: null
-			}
-		}
-	}
-};
 const test = [
 	"branch0",
 	{

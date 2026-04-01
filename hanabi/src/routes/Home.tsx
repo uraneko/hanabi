@@ -36,7 +36,7 @@ async function get_apps_meta() {
 			depict: "talk with people in text, audio or video format [not yet available]"
 		},
 		{
-			name: "machines", icon: parse_svg(canvasSVG), accent: "#ce1f57",
+			name: "machines", icon: parse_svg(canvasSVG), accent: "#bd0841",
 			depict: "manage your virtual machines [not yet available]"
 		}];
 }
@@ -62,7 +62,7 @@ export const Apps = () => {
 	);
 };
 
-export const App: Component<{ name: string, depict: string, icon: SVGSVGElement, accent: string, rtt: _, re_rtt: _ }> =
+const App: Component<{ name: string, depict: string, icon: SVGSVGElement, accent: string, rtt: _, re_rtt: _ }> =
 	(props: _) => {
 		const rtt = () => props.rtt;
 		const re_rtt = () => props.re_rtt;
