@@ -12,7 +12,7 @@
 	align-items: start;
 
 	& :not(.BranchName) {
-		margin-left: 5px;
+		margin-left: var(--ident);
 	}
 }
 

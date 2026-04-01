@@ -3,8 +3,9 @@ import { Catalyst } from "../primitives";
 import { _, constr, nullish_coercion, spread_classes } from "../misc";
 import styles from "./Tree.module.css";
 
-export const BuildTree: Component<{ data: _, transform?: _, }> = (props: _) => {
+export const BuildTree: Component<{ data: _, transform?: _, ident?: string }> = (props: _) => {
 	const data = () => props.data;
+	const ident = () => props.ident ?? "5px";
 	const transform = () => props.transform ?? default_transform;
 
 	// return <div class={styles.Tree}>
@@ -13,19 +14,14 @@ export const BuildTree: Component<{ data: _, transform?: _, }> = (props: _) => {
 	// 	</For>
 	// </div>;
 
-	return transform()(data());
-};
-
-const Leaf: Component<{ value: _ }> = (props: _) => {
-	const value = () => props.value;
-	return <div class={styles.Leaf}>
-		<Catalyst>{value()}</Catalyst>
-	</div>
+	return transform()(data(), null, ident());
 };
 
 // data is an array of string | record 
-function default_transform(data: _, tree?: Element): Element {
-	tree = tree ?? <div class={styles.Tree}></div> as HTMLElement;
+function default_transform(data: _, tree?: Element, ident?: string): Element {
+	tree = tree ?? <div class={styles.Tree} style={{ "--ident": ident! }}></div> as Element;
+	console.log("type of tree:", typeof tree);
+	console.log("tree constructor:", tree.constructor.name);
 
 	for (const entry of data) {
 		// record of string,  array
