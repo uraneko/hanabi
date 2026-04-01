@@ -1,8 +1,8 @@
-import { type Component, Show, For, createSignal, DEV } from "solid-js";
-import { dbl_signal, dbl_method, _, spread_classes, parse_svg } from "core";
+import { type Component, JSX, Show, For, createSignal, DEV } from "solid-js";
+import { dbl_signal, dbl_method, _, spread_classes, parse_svg, constr } from "core";
 import { Catalyst, ColorPicker } from "core/primitives";
 import { user_ctx, content_ctx, configs_ctx } from "core/context";
-import { Dialog, Tree, Branch } from 'core/containers';
+import { Dialog, BuildTree } from 'core/containers';
 
 import styles from "./Configs.module.css";
 import atSVG from "../../assets/icons/at.svg?raw";
@@ -18,110 +18,89 @@ import newSVG from "../../assets/icons/new.svg?raw";
 import manageSVG from "../../assets/icons/manage.svg?raw";
 import prevSVG from "../../assets/icons/prev.svg?raw";
 
-const icons = {
-	main: diceSVG,
-	account: atSVG,
-	relations: sharedSVG,
-	applications: puzzleSVG,
-	colorschemes: colorsSVG,
-	profile: glassesSVG,
-	security: keySVG,
-	people: peopleSVG,
-	install: rocketSVG,
-	new: newSVG,
-	manage: manageSVG,
-} as Record<string, string>;
+const HEADERS = [
+	"main",
+	"account",
+	"colors",
+	{
+		plugins: ["installed", "available", "banned"],
+		relations: ["friends", "acquaintances", "blocked"],
+	}
+];
 
-const headers = {
-	account: ["profile", "security"],
-	relations: ["manage", "people"],
-	applications: ["manage", "install"],
-	colorschemes: ["manage", "new"],
-} as Record<string, string[]>;
+export const Configs = (props: { headers: _, contents: _ }) => {
+	const headers = () => props.headers;
+	const contents = () => props.contents;
+	const init = constr(headers()[0]) === "String" ? headers()[0] : Object.keys(headers()[0])[0];
+	const [content, re_content] = createSignal(init);
+	return (<Dialog class={styles.Configs} width={54} height={56} top={50} left={50} center overtakes >
+		<Headers headers={headers()} updater={re_content} />
+		<Contents contents={contents()} header={content()} />
+	</Dialog>);
+};
 
-export const Configs = () => {
-	const { configs, re_configs } = configs_ctx();
-	const [keys, re_keys] = createSignal(Object.keys(configs()));
+const Headers = (props: { headers: _, updater: _ }) => {
+	const headers = () => props.headers;
+	const re_content = () => props.updater;
+	const onclick = (e: Event) => re_content()((path: string) => {
+		const et = e.target as HTMLButtonElement;
 
-	const account = parse_svg(atSVG);
-	const apps = parse_svg(puzzleSVG);
-	const scheme = parse_svg(colorsSVG);
-	const relations = parse_svg(sharedSVG);
-	const main = parse_svg(diceSVG);
-
-	const [dbl, up_dbl] = dbl_signal();
-	const dbl_clk = dbl_method(up_dbl, 700);
-	const [expand, re_expand] = createSignal(true);
-	const expansion = (e: Event) => re_expand((expand: boolean) => {
-		dbl_clk(e);
-
-		return dbl().trigger ? !expand : expand
+		return collect_header_path(et);
 	});
 
-	const prev = parse_svg(prevSVG);
-	const turn_back = (e: Event) => re_keys((keys: _) => Object.keys(configs()));
-	return (
-		<Dialog class={styles.Configs} width={54} height={56} top={50} left={50} center overtakes>
-			<div class={styles.Headers} on:mousedown={expansion}>
-				<div >
-					<For each={keys()}>
-						{(key: string) =>
-							<Header
-								text={"| " + key}
-								icon={parse_svg(icons[key])}
-								switch={expand()}
-								keys={headers[key]}
-								re_keys={re_keys}
-							/>}
-					</For>
-				</div>
-				<Catalyst class={styles.TurnBack} call={turn_back}>{prev}</Catalyst>
-			</div>
-			<div class={styles.Contents}>
-				<ColorItem name="red" />
-			</div>
-		</Dialog>
-	);
+	return (<div class={styles.Headers} on:click={onclick}>
+		<BuildTree data={headers()} ident="15px" />
+	</div >);
 };
 
-export const Header: Component<{
-	text: string,
-	icon: SVGSVGElement,
-	switch: boolean,
-	keys?: string[],
-	re_keys?: _,
-}> = (props: _) => {
-	const text = () => props.text;
-	const icon = () => props.icon;
-	const switch_ = () => props.switch;
-	const keys = () => props.keys;
-	const re_keys = () => props.re_keys;
+const Contents = (props: { header: string, contents: _ }) => {
+	const header = () => /* props.header.includes('/') ? props.header.split('/') : */ props.header;
+	const configs = () => get_header_contents(props.contents, header());
 
-	let headers_update = null;
-	if (keys !== undefined && re_keys !== undefined) {
-		headers_update = (e: Event) => re_keys()((_keys: _) => keys()!);
-	}
+	return <div class={styles.Contents}>
+		<ParseConfigs configs={configs()} />
+	</div>;
+};
 
-	return (<div
-		class={`${styles.Header} ${switch_() ? styles.TextfulHeader : styles.TextlessHeader}`}
-		on:mousedown={headers_update!}
-	>
-		{icon()}
-		<Show when={switch_()}>
-			<span class={styles.HeaderText}>
-				{text()}
-			</span>
-		</Show>
-	</div >);
+// configs is a json object
+const ParseConfigs = (props: { configs: string }) => {
+	const configs = () => new DOMParser().parseFromString(props.configs, "text/html").body.firstElementChild;
+
+	return <div class={styles.ConfigContents}>
+		{configs()}
+	</div>;
+};
+
+function get_header_contents(contents: _, header: string) {
+	return contents[header] ??
+		`<div styles='display: flex; flex-direction: row;'>
+			<span>This section is a work-in-progress</span>
+			<span styles='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
+	</div>`;
+	// console.log(contents, "<" + header + ">");
+	// if (constr(header) === "String") ;
+	// let value = contents[header[0]];
+	// for (const h of header.slice(1)) {
+	// 	console.log("val ->", value);
+	// 	value = value[h];
+	// }
+	//
+	// return value;
 }
 
-export const ColorItem: Component<{ name: string, }> = (props: _) => {
-	const name = () => "--" + props.name;
+// NOTE this works only on 2 levels, which is enough here 
+function collect_header_path(current: HTMLElement): string {
+	let path = "";
+	const parent = current.parentElement!;
+	if (parent.tagName === "BODY") throw new Error("reached dom root");
+	else if (parent.className.includes("Tree")) return path.length === 0 ? current.textContent! : path + '/' + current.textContent;
+	else if (current.className.includes("Leaf")) {
+		// assumes user didnt provide a custom tree transform 
+		path += (path.length === 0 ? '' : '/') + parent.firstElementChild!.textContent;
+		path += '/' + current.textContent;
+	}
 
-	return (<div>
-		<ColorPicker prop="--blue" />
-		<ColorPicker prop="--grad-start" />
-		<ColorPicker prop="--grad-end" />
-		<ColorPicker prop="--white" />
-	</div>);
-};
+	return path;
+}
+
+
