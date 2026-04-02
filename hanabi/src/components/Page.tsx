@@ -170,7 +170,7 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 const { configs, re_configs } = configs_ctx();
 const watchguard = new MutationObserver(() => {
 	// console.log(colors());
-	colorschemes().refresh("black-star");
+	colorschemes().refresh("verdant");
 	watchguard.disconnect();
 	// new Promise(_ => setTimeout(_, 100));
 	// if (nodes === 1) {

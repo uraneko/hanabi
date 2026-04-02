@@ -158,8 +158,12 @@ export function colorscheme(selectors?: _, props?: _) {
 			return this;
 		},
 		/// changes existing color rule(s) in the scheme
+		// WARN this method is not implemented 
+		// probably doesnt need to be 
 		mutate() { },
 		/// removes (a) color rule(s) from the scheme
+		// WARN this function is not implemented 
+		// probably doesnt need to be 
 		reduce() {
 			Reflect.deleteProperty(this, "prop");
 		},

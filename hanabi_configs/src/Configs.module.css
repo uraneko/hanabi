@@ -1,13 +1,27 @@
 .Configs {
 	border-radius: 3px;
 	/* box-shadow: 9px 11px 0 #25272833; */
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	display: flex;
 	flex-direction: row;
 	color: var(--black);
 
-	grid-row: 2/10;
-	grid-column: 2/9;
+
+	&[auth-status=true] {
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		grid-row: 2/10;
+		grid-column: 2/8;
+	}
+
+	&[auth-status=false] {
+		grid-row: 4/5;
+		grid-column: 5/7;
+
+		& [class*=WildText] {
+			width: stretch;
+			padding: 4rem 0;
+			font-weight: bold;
+		}
+	}
 }
 
 .Headers {
@@ -17,7 +31,45 @@
 	/* padding: 0.5rem; */
 
 	background: var(--abstract);
+	padding: 1rem;
 
+	& [class*=Tree] {
+		/* 	width: stretch !important; */
+		min-width: 15rem;
+	}
+
+	.LeafWrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		width: stretch;
+		cursor: pointer;
+		padding: .15rem 0.4rem;
+
+		& svg {
+			fill: var(--blue);
+			width: 20px;
+		}
+
+		&:hover {
+			background: var(--opaque);
+		}
+
+		&[class$=off] {
+			display: none;
+		}
+
+		& svg[class=up] {
+			transform: rotateX(180deg);
+		}
+	}
+
+	div[class*=Branch] {
+		[class*=LeafWrapper]:not(:has([class*=BranchName])) {
+			padding-left: var(--ident);
+		}
+	}
 
 	[class*="Branch"] {
 		width: stretch;
@@ -28,14 +80,9 @@
 		font-weight: bold;
 		font-size: larger;
 
-		width: stretch;
 		/* border-radius: 3px; */
-		padding: .15rem 0.4rem;
 		margin-bottom: 0.1rem;
 
-		&:hover {
-			background: var(--opaque);
-		}
 	}
 
 
