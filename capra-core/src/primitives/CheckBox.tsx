@@ -1,5 +1,5 @@
 import { type Component, Show, createSignal, mergeProps } from 'solid-js';
-import { type _ } from '../misc';
+import { type _ } from '../lib';
 import styles from './CheckBox.module.css';
 
 const defaultProps = {

@@ -21,9 +21,8 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.16.1",
-		"config": "link:../capra-config",
-		"core": "link:../capra-core",
-		"auth": "link:../capra-auth",
+		"core": "workspace:../capra-core",
+		"user": "workspace:../capra-user",
 		"solid-js": "^1.9.12"
 	}
 }

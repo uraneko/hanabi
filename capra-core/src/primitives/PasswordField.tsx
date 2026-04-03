@@ -1,7 +1,7 @@
 import { type Component, Match, Switch, createSignal } from 'solid-js';
-import { parse_svg } from "../misc";
+import { parse_svg } from "../lib";
 import { TextField } from './TextField';
-import { _ } from '../misc';
+import { _ } from '../lib';
 import { colorschemes, colorscheme, color_rules, colors_ctx } from '../context';
 
 import styles from './PasswordField.module.css';

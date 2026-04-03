@@ -2,27 +2,22 @@ import { type Component, DEV } from 'solid-js';
 import {
 	TextLine, Separator, PasswordField, CheckBox, Catalyst, TextField,
 } from "core/primitives";
-import { user_ctx, configs_ctx } from "core/context";
+import { user_ctx, user_state as ustate, load_configs } from "../user";
 import { Form, form_styles as fstyles, submit } from "core/containers";
 import { type _, json_from_map } from "core";
 
 async function login(e: SubmitEvent) {
 	const { user, re_user } = user_ctx();
-	const { configs, re_configs } = configs_ctx();
+	const config = await load_configs(ustate(user));
 	if (DEV !== undefined) {
 		e.preventDefault();
 		re_user({
 			name: "some name",
-			email: "some@email",
+			address: "some@address",
 			access_token: "34hereqwqjrerEWRYTQQ#$%$^&^YTGR",
+			config: config
 		});
-		re_configs((configs: _) => {
-			// configs.account.user_name = user().name;
-			// configs.account.email = user().email;
 
-			console.log('->', configs);
-			return structuredClone(configs);
-		});
 		return;
 	}
 
@@ -49,18 +44,11 @@ async function login(e: SubmitEvent) {
 		re_user((user: _) => {
 			return {
 				name: user.name,
-				email: user.email,
+				address: user.address,
 				access_token: undefined,
+				config: user.config,
 			}
 		});
-	re_configs((configs: _) => {
-		// configs.account.user_name = user().name;
-		// configs.account.email = user().email;
-
-		console.log('->', configs);
-		return structuredClone(configs);
-	});
-	console.log(configs());
 
 	// purge access token after 20 mins
 	await new Promise(_ => setTimeout(clear_access, 1200 * 1000));

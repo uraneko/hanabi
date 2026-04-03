@@ -1,7 +1,7 @@
 import { type Component, createEffect, createSignal, createResource, Suspense, DEV } from 'solid-js';
 import styles from './Initialize.module.css';
 import { Splash } from 'core/primitives';
-import { user_ctx, is_non_init } from 'core/context';
+import { user_state, user_ctx } from "user";
 import { _ } from 'core';
 
 // assets layouts 
@@ -43,7 +43,7 @@ export const Negotiate = () => {
 	const [auth] = createResource(user(), negotiate);
 
 	createEffect(() => {
-		if (is_non_init(user()) && auth() !== undefined) re_user(auth()! as _)
+		if (user_state(user).is_non_init() && auth() !== undefined) re_user(auth()! as _)
 	});
 
 	return (
@@ -62,7 +62,7 @@ async function negotiate(user: _) {
 	if (user.name !== undefined) return user;
 	if (DEV !== undefined) return {
 		name: user.name ?? "",
-		email: user.email,
+		address: user.address,
 		access_token: user.access_token,
 	};
 
@@ -74,7 +74,7 @@ async function negotiate(user: _) {
 
 	if (res.headers.get("content-length") === "0") return {
 		name: user.name ?? "",
-		email: user.email,
+		address: user.address,
 		access_token: user.access_token,
 	};
 
@@ -82,7 +82,7 @@ async function negotiate(user: _) {
 
 	return {
 		name: user_state.name,
-		email: user_state.email,
+		address: user_state.address,
 		access_token: user_state.access_token,
 	}
 }

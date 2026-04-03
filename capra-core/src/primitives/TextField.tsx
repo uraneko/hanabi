@@ -1,5 +1,5 @@
 import { type Component, createResource, createSignal, DEV } from 'solid-js';
-import { type _ } from '../misc';
+import { type _ } from '../lib';
 import styles from './TextField.module.css';
 
 // TODO #567356 second cha color 

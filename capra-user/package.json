@@ -1,5 +1,5 @@
 {
-	"name": "capra-auth",
+	"name": "capra-user",
 	"version": "0.1.0",
 	"description": "",
 	"type": "module",
@@ -11,6 +11,11 @@
 		"test": "vitest"
 	},
 	"license": "MIT",
+	"exports": {
+		".": "./src/user.tsx",
+		"./auth": "./src/auth.ts",
+		"./config": "./src/config.ts"
+	},
 	"devDependencies": {
 		"@solidjs/testing-library": "^0.8.10",
 		"@testing-library/jest-dom": "^6.9.1",

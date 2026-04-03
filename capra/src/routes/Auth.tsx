@@ -1,8 +1,7 @@
 import { type Component, createSignal, createEffect, createContext, useContext, Switch, Match } from 'solid-js';
 import styles from './Auth.module.css';
-import { is_authless, is_logged_in, user_ctx } from "core/context";
-import { Signup } from "../components/Signup";
-import { Signin } from "../components/Signin";
+import { user_state } from "user";
+import { Signup, Signin } from "user/auth";
 import { WildText } from "core/primitives";
 import { _ } from "core";
 
@@ -14,7 +13,7 @@ export function form_ctx() {
 }
 
 export const Auth: Component = () => {
-	const { user, re_user } = user_ctx();
+	const user = user_state();
 	// 0 for login 
 	// 1 for register
 	const { form, set_form } = form_ctx();
@@ -26,7 +25,7 @@ export const Auth: Component = () => {
 	return (
 		<div class={styles.Auth} >
 			<Switch>
-				<Match when={is_authless(user())}>
+				<Match when={user.is_logged_out()}>
 					<Switch>
 						<Match when={form() == 0}>
 							<Signin swap_call={swap_form} />
@@ -36,7 +35,7 @@ export const Auth: Component = () => {
 						</Match>
 					</Switch>
 				</Match>
-				<Match when={is_logged_in(user())}>
+				<Match when={user.is_logged_in()}>
 					<WildText text="You are already logged-in." />
 				</Match>
 			</Switch>

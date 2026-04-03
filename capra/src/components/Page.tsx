@@ -1,8 +1,9 @@
 import { type Component, createSignal, createResource, JSX } from 'solid-js';
 import { Logo, Catalyst } from "core/primitives";
 import {
-	MainContent, configs_ctx, colors_ctx, color_rules, colorschemes, colorscheme
+	MainContent, colors_ctx, color_rules, colorschemes, colorscheme
 } from "core/context";
+// import { config_ctx } from "config";
 import { Menu } from "../components/Menu";
 import { _ } from "core";
 import styles from './Page.module.css';
@@ -29,13 +30,7 @@ function verdant() {
 		"grad-rotate": "328deg",
 	}).prefix(true);
 	const logo_rules = color_rules().selectors("svg.capra_svg").props({
-		"h": "#000000",
-		"a0": "#000000",
-		"n": "#000000",
-		"a1": "#000000",
-		"b": "#000000",
-		"i": "#000000",
-		"dot": "#000000",
+		"cap": "var(--black)",
 		"ra": "#649279",
 	}).prefix(true);
 
@@ -80,13 +75,7 @@ function black_star() {
 	const logo_rules = color_rules()
 		.props({
 			// selector:css-prop -> prop-val,
-			"h": "rgb(151, 164, 194)",
-			"a0": "rgb(151, 164, 194)",
-			"n": "rgb(151, 164, 194)",
-			"a1": "rgb(151, 164, 194)",
-			"b": "rgb(151, 164, 194)",
-			"i": "rgb(151, 164, 194)",
-			"dot": "rgb(151, 164, 194)",
+			cap: "var(--black)",
 			// "ra": "#876756",
 			// "ra": "#2573c7",
 			ra: "var(--blue)",
@@ -167,7 +156,7 @@ export const Page: Component<{ children: JSX.Element }> = (props: _) => {
 	);
 };
 
-const { configs, re_configs } = configs_ctx();
+// const { config, re_config } = config_ctx();
 const watchguard = new MutationObserver(() => {
 	// console.log(colors());
 	colorschemes().refresh("verdant");

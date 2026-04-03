@@ -1,7 +1,7 @@
 import { Component, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import styles from "./Form.module.css";
-import { _ } from "../misc";
+import { _ } from "../lib";
 
 export const Form: Component<{ children: JSX.Element, method: "get" | "post", action: string, target?: string, submit: _ }> = (props: _) => {
 	const action = () => props.action;

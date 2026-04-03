@@ -1,5 +1,5 @@
 import { Component, createEffect, children, JSX, Show } from "solid-js";
-import { _, spread_classes } from '../misc';
+import { _, spread_classes } from '../lib';
 import styles from './Dialog.module.css';
 
 export const Dialog: Component<{

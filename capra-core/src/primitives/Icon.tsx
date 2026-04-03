@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { fallback, constr, _, parse_svg } from '../misc';
+import { fallback, constr, _, parse_svg } from '../lib';
 import styles from "./Icon.module.css";
 
 export function svg() {

@@ -1,8 +1,7 @@
 packages:
   - capra
   - capra-core
-  - capra-auth
-  - capra-config
+  - capra-user
   - '!**/test/**'
 
 onlyBuiltDependencies:

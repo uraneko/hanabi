@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { _, spread_classes } from '../misc';
+import { _, spread_classes } from '../lib';
 import styles from './WildText.module.css';
 
 export const WildText: Component<{ text: string, class?: string | string[] }> = (props: _) => {

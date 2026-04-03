@@ -1,5 +1,5 @@
 import { Component, JSX, children, createEffect, createContext, useContext, createSignal } from 'solid-js';
-import { _ } from "../misc";
+import { _ } from "../lib";
 
 /// when content is true -> the main content is active/focused
 /// when false a modal is focused and we blur the main content

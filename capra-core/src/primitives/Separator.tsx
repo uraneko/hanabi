@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js';
 import styles from './Separator.module.css';
-import { _ } from '../misc';
+import { _ } from '../lib';
 
 export const Separator = () => {
 	const [lights, check_light] = createSignal(false);

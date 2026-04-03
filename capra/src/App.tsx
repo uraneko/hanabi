@@ -2,12 +2,12 @@ import { type Component, DEV, Switch, Match, createSignal, createContext, useCon
 import { Router, Route } from "@solidjs/router";
 import { Home } from './routes/Home';
 import { Auth } from './routes/Auth';
-import { Configs } from 'configs';
+import { Configs } from "user/config";
 import { Initialize } from './routes/Initialize';
 import { Testing } from './routes/Testing';
 import { Page } from './components/Page';
 import { Splash, Transient, transient_guard } from 'core/primitives';
-import { user_ctx, is_non_init, is_authless, is_logged_in } from 'core/context';
+import { user_ctx, user_state } from "user";
 import { _ } from "core";
 import styles from './App.module.css';
 
@@ -42,7 +42,7 @@ function dev_ssn_rtt(user: _, e: Event) {
 
 	return {
 		name: user.name == "" ? "scarecrow" : "",
-		email: undefined,
+		address: undefined,
 		access_token: undefined,
 	};
 }
@@ -50,18 +50,19 @@ function dev_ssn_rtt(user: _, e: Event) {
 transient_guard();
 export const App: Component = () => {
 	const { user, re_user } = user_ctx();
+	const ustate = user_state(user);
 
 	// log-in/out on the frontend state for development ease
 	const session_rotation = (e: MouseEvent) =>
 		re_user((user: _) => dev_ssn_rtt(user, e));
 
 	return (
-		<div class={styles.App}>
+		<div class={styles.App} >
 			<Switch>
-				<Match when={is_non_init(user())}>
+				<Match when={ustate.is_non_init()}>
 					<Initialize />
 				</Match>
-				<Match when={is_authless(user()) || is_logged_in(user())}>
+				<Match when={ustate.is_logged_out() || ustate.is_logged_in()}>
 					<Page>
 						<Router>
 							<Route path="/" component={Home} />
@@ -83,12 +84,12 @@ async function cache_state() {
 	if (DEV !== undefined) return;
 	if (!document.hidden) return;
 
-	const { user, re_user } = user_ctx();
-	if (!is_logged_in(user())) return;
+	const user = user_state();
+	if (!user.is_logged_in()) return;
 	const state = JSON.stringify({
-		name: user().name,
-		email: user().email,
-		access_token: user().access_token
+		name: user.name(),
+		address: user.address(),
+		access_token: user.access_token()
 	});
 	// localStorage.set("state", state);
 

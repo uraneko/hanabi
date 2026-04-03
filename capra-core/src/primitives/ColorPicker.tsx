@@ -1,6 +1,6 @@
 import { Component, createEffect, createSignal, Show } from "solid-js";
 import { Dialog } from "../containers";
-import { _, parse_svg, spread_classes } from "../misc";
+import { _, parse_svg, spread_classes } from "../lib";
 import { Catalyst } from './Catalyst';
 import { Transient } from './Transient';
 

@@ -1,6 +1,6 @@
 import { type Component, createResource, createSignal, For, Switch, Match } from 'solid-js';
 import { parse_svg, _ } from "core";
-import { is_logged_in, is_authless, user_ctx } from 'core/context';
+import { user_state } from "user";
 import { WildText } from 'core/primitives';
 import styles from './Home.module.css';
 
@@ -42,13 +42,13 @@ async function get_apps_meta() {
 }
 
 export const Apps = () => {
-	const { user, re_user } = user_ctx();
+	const user = user_state();
 	const [apps] = createResource(get_apps_meta);
 	const [rtt, re_rtt] = createSignal(0);
 
 	return (
 		<Switch>
-			<Match when={is_logged_in(user())}>
+			<Match when={user.is_logged_in()}>
 				<div class={styles.Apps}>
 					<For each={apps()}>
 						{(app: _) => <App icon={app.icon} depict={app.depict} name={app.name} accent={app.accent} rtt={rtt()} re_rtt={re_rtt} />}

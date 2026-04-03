@@ -1,6 +1,6 @@
 import { Component, JSX } from 'solid-js';
 import styles from './TextLine.module.css';
-import { _, spread_classes } from '../misc';
+import { _, spread_classes } from '../lib';
 
 export const TextLine: Component<{ children: JSX.Element, class?: string | string[] }> = (props: _) => {
 	const children = () => props.children;

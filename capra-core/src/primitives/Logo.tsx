@@ -1,11 +1,11 @@
 import { type Component, Show } from 'solid-js';
-import { _, parse_svg } from "../misc";
+import { _, parse_svg } from "../lib";
 import styles from './Logo.module.css';
 import logo from "../../../assets/icons/capra.svg?raw";
 
 export const Logo: Component<{ width?: number, height?: number }> = (props: _) => {
-	const width = () => props.width ?? 140;
-	const height = () => props.height ?? 60;
+	const width = () => props.width ?? 280;
+	const height = () => props.height ?? 120;
 
 	const capra = parse_svg(logo);
 	capra.classList.add("capra_svg");

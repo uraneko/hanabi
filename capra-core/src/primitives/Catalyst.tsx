@@ -1,6 +1,6 @@
 import { Component, Switch, Match, JSX } from 'solid-js';
 import styles from './Catalyst.module.css';
-import { _, spread_classes } from '../misc';
+import { _, spread_classes } from '../lib';
 
 export const Catalyst: Component<{
 	children: JSX.Element,

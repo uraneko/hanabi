@@ -30,4 +30,12 @@
 	path[id='path8'] {
 		fill: var(--ra) !important;
 	}
+
+	path#text1 {
+		fill: var(--ra) !important;
+	}
+
+	text#text3 {
+		fill: var(--cap) !important;
+	}
 }

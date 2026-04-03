@@ -1,6 +1,6 @@
 import { createContext, useContext, createSignal } from 'solid-js';
-import { _, constr } from "../misc";
-import { configs_ctx } from "../context";
+import { _, constr } from "../lib";
+// import { configs_ctx } from "../context";
 
 type Scheme = Record<string, string>;
 const [colors, re_colors] = createSignal(new Object() as Record<string, Scheme>);
@@ -44,18 +44,18 @@ export function colorschemes(ctx?: { colors: _, re_colors: _ }) {
 		},
 		/// applies a colorscheme's rules
 		/// if no scheme name is passed, this uses colorschemes.current from the configs context
-		refresh(name?: string) {
+		refresh(name: string) {
 			const { colors, re_colors } = this.ctx;
-			const { configs, re_configs } = configs_ctx();
-			name = name ?? configs().colors.current;
+			// const { configs, re_configs } = configs_ctx();
+			// name = name ?? configs().colors.current;
 			const scheme = colors()[name!];
 			if (scheme === undefined) throw new Error("no such colorscheme is registered");
 			apply_scheme(scheme);
-			re_configs((configs: _) => {
-				// configs.colorschemes.current = name;
-
-				return structuredClone(configs);
-			});
+			// re_configs((configs: _) => {
+			// 	// configs.colorschemes.current = name;
+			//
+			// 	return structuredClone(configs);
+			// });
 		},
 		/// checks if schemes contains a scheme by the passed name
 		contains(name: string): boolean {
@@ -200,7 +200,7 @@ export function color_rules() {
 	return {
 		selectors_: new Array() as string[],
 		props_: new Object() as Record<string, string>,
-		/// i belive setting the default to true is unexpected and non-intuitive
+		// setting the default to true should be unexpected and non-intuitive
 		prefix_: false,
 		selectors(...selectors: string[]) {
 			this.selectors_ = selectors;

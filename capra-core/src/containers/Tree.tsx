@@ -1,6 +1,6 @@
 import { Component, Show, For, JSX } from "solid-js";
 import { Catalyst } from "../primitives";
-import { _, constr, nullish_coercion, spread_classes } from "../misc";
+import { _, constr, nullish_coercion, spread_classes } from "../lib";
 import styles from "./Tree.module.css";
 
 export const BuildTree: Component<{ data: _, transform?: _, ident?: string }> = (props: _) => {

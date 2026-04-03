@@ -87,7 +87,7 @@ export const Signup: Component<{ swap_call: _ }> = (props: _) => {
 		>
 			<h4 class={fstyles.FormTitle}>Register</h4>
 			<TextField type="text" name="user_name" legend="User Name" mandatory />
-			<TextField type="email" name="user_email" legend="Email" />
+			<TextField type="email" name="user_addr" legend="Address" />
 			<PasswordField name="user_pswd" mandatory />
 			<PasswordField name="verify_pswd" legend="Verify Password" mandatory />
 			<CheckBox name="auto_login" legend="&nbsp;auto login" />

@@ -12,7 +12,7 @@
 	},
 	"license": "MIT",
 	"exports": {
-		".": "./src/misc.ts",
+		".": "./src/lib.ts",
 		"./primitives": "./src/primitives.tsx",
 		"./containers": "./src/containers.tsx",
 		"./wrappers": "./src/wrappers.tsx",

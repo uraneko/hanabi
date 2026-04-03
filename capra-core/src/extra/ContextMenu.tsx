@@ -1,6 +1,6 @@
 import { onMount, type Component, createSignal, createEffect, createResource, For, JSX } from 'solid-js';
 
-import { type _, type Maybe } from '../misc';
+import { type _, type Maybe } from '../lib';
 import styles from './ContextMenu.module.css';
 
 type CtxParams = {

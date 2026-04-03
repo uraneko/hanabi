@@ -1,5 +1,5 @@
 import { type Component, For } from 'solid-js';
-import { type _ } from '../misc';
+import { type _ } from '../lib';
 import styles from './Matrix.module.css';
 
 export const Matrix = (props: { arr: _[], call: Component<_>, r_init?: _, r_call?: Component[] }) => {

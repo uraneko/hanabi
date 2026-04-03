@@ -1,24 +1,25 @@
-import { children, JSX, For, Switch, Match, createSignal, createEffect, DEV } from "solid-js";
+import { children, JSX, For, Switch, Match, createSignal, createResource, createEffect, DEV } from "solid-js";
 import { dbl_signal, dbl_method, _, spread_classes, fallback, parse_svg, constr } from "core";
 import { Catalyst, ColorPicker, svg } from "core/primitives";
-import { user_ctx, is_logged_in, is_authless, content_ctx, configs_ctx } from "core/context";
-import { Dialog, BuildTree } from 'core/containers';
-import { WildText } from 'core/primitives';
+import { user_state } from "../user";
+import { BuildTree } from "core/containers";
+import { WildText } from "core/primitives";
 
 import styles from "./Configs.module.css";
-import atSVG from "../../assets/icons/at.svg?raw";
-import puzzleSVG from "../../assets/icons/puzzle.svg?raw";
-import colorsSVG from "../../assets/icons/colors.svg?raw";
-import sharedSVG from "../../assets/icons/shared.svg?raw";
-import diceSVG from "../../assets/icons/dice.svg?raw";
-import glassesSVG from "../../assets/icons/glasses.svg?raw";
-import peopleSVG from "../../assets/icons/people.svg?raw";
-import rocketSVG from "../../assets/icons/rocket.svg?raw";
-import keySVG from "../../assets/icons/key.svg?raw";
-import newSVG from "../../assets/icons/new.svg?raw";
-import manageSVG from "../../assets/icons/manage.svg?raw";
-import upSVG from "../../assets/icons/up.svg?raw";
-import downSVG from "../../assets/icons/down.svg?raw";
+
+import atSVG from "../../../assets/icons/at.svg?raw";
+import puzzleSVG from "../../../assets/icons/puzzle.svg?raw";
+import colorsSVG from "../../../assets/icons/colors.svg?raw";
+import sharedSVG from "../../../assets/icons/shared.svg?raw";
+import diceSVG from "../../../assets/icons/dice.svg?raw";
+import glassesSVG from "../../../assets/icons/glasses.svg?raw";
+import peopleSVG from "../../../assets/icons/people.svg?raw";
+import rocketSVG from "../../../assets/icons/rocket.svg?raw";
+import keySVG from "../../../assets/icons/key.svg?raw";
+import newSVG from "../../../assets/icons/new.svg?raw";
+import manageSVG from "../../../assets/icons/manage.svg?raw";
+// import upSVG from "../../../assets/icons/up.svg?raw";
+import downSVG from "../../../assets/icons/down.svg?raw";
 
 const ICONS = {
 	account: parse_svg(atSVG),
@@ -35,24 +36,30 @@ const ICONS = {
 }
 
 export const Configs = () => {
-	const { user, re_user } = user_ctx();
-	const { configs, re_configs } = configs_ctx();
-	const headers = () => configs()["headers"];
+	const user = user_state();
+	if (!Object.hasOwn(user.config(), "headers")) {
+		throw new Error("user configuration data has not been loaded on signin");
+		// const [config_update] = createResource(user, load_configs);
+		// console.log(config_update());
+		// re_config(config_update()!);
+	}
+	// @ts-ignore
+	const headers = () => user.config()["headers"];
 	const contents = () => Object.fromEntries(
-		Object.entries(configs()).filter((kv: _) => kv[0] !== "headers"));
+		Object.entries(user.config()).filter((kv: _) => kv[0] !== "headers"));
 	const init = constr(headers()[0]) === "String" ? headers()[0] : Object.keys(headers()[0])[0];
 	const [content, re_content] = createSignal(init);
-	return (<div class={styles.Configs} auth-status={is_logged_in(user())}>
+	return <div class={styles.Configs} auth-status={user.is_logged_in()}>
 		<Switch>
-			<Match when={is_logged_in(user())}>
+			<Match when={user.is_logged_in()}>
 				<Headers headers={headers()} updater={re_content} />
 				<Contents contents={contents()} header={content()} />
 			</Match>
-			<Match when={is_authless(user())} >
+			<Match when={user.is_logged_out()} >
 				<WildText text="You are not logged-in." />
 			</Match>
 		</Switch>
-	</div >);
+	</div >;
 };
 
 const Headers = (props: { headers: _, updater: _ }) => {
@@ -159,14 +166,14 @@ const DOWN = svg()
 	.override({ "stroke-width": "200px" }, "#path1")
 	.parse(downSVG);
 
-const UP = svg()
-	.style({
-		fill: "none",
-		color: "var(--blue)",
-		height: "20px"
-	})
-	.override({ "stroke-width": "200px" }, "#path1")
-	.parse(upSVG);
+// const UP = svg()
+// 	.style({
+// 		fill: "none",
+// 		color: "var(--blue)",
+// 		height: "20px"
+// 	})
+// 	.override({ "stroke-width": "200px" }, "#path1")
+// 	.parse(upSVG);
 
 function toggle_tree_nested(headers: Element) {
 	new Array(...headers.querySelectorAll("[class*=BranchName]"))

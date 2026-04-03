@@ -1,12 +1,12 @@
 import { type Component, For, createSignal, createResource, createEffect, Switch, Match, Show, JSX } from 'solid-js';
 import { Catalyst } from "core/primitives";
 // TODO sync_scheme should also come from the wrapper comp module, instead of the context module
-import { colors_ctx, colorschemes, content_ctx, configs_ctx } from "core/context";
+import { colors_ctx, colorschemes, content_ctx } from "core/context";
 import { _, spread_classes } from "core";
-import { user_ctx, is_logged_in, is_authless } from "core/context";
+import { user_state } from "user";
 import { Dialog } from 'core/containers';
 import styles from './Menu.module.css';
-import { umstyles, UserMenu, Configs } from 'configs';
+import { umstyles, UserMenu } from "user/config";
 import { form_ctx } from '../routes/Auth';
 
 // alt red color #A95525
@@ -20,7 +20,7 @@ import homeSVG from "../../../assets/icons/home.svg?raw";
 import icecreamSVG from "../../../assets/icons/icecream.svg?raw";
 
 export const Menu = () => {
-	const { user, re_user } = user_ctx();
+	const user = user_state();
 	const { form, set_form } = form_ctx();
 
 	const login = parse_svg(loginSVG);
@@ -51,11 +51,11 @@ export const Menu = () => {
 				text="colors"
 				dialog={<ColorSchemeDropDown />} />
 			<Switch>
-				<Match when={is_authless(user())}>
+				<Match when={user.is_logged_out()}>
 					<AnchorItem link="/auth" call={login_form} icon={login} text="login" />
 					<AnchorItem link="/auth" call={register_form} icon={register} text="register" />
 				</Match>
-				<Match when={is_logged_in(user())}>
+				<Match when={user.is_logged_in()}>
 					<AnchorItem
 						link="/configs"
 						icon={configs}
@@ -64,7 +64,7 @@ export const Menu = () => {
 						class={styles.ContentItem}
 						dialog={<UserMenu />}
 						icon={home}
-						text={user().name!}
+						text={user.name()!}
 						show={false}
 						events={"click"} />
 				</Match>
@@ -188,12 +188,6 @@ export const ColorSchemeTitle: Component<{ title: string }> = (props: _) => {
 		const btn = et.firstElementChild;
 		const scheme = et.textContent!;
 		colorschemes().refresh(scheme);
-		const { configs, re_configs } = configs_ctx();
-		re_configs((configs: _) => {
-			// configs.colorschemes.manage.current = scheme;
-
-			return structuredClone(configs);
-		});
 	};
 
 	return (<Catalyst call={change_scheme} class={umstyles.Entry} style={{ "justify-content": "center" }}>

@@ -1,5 +1,5 @@
 import { type Component, JSX } from "solid-js";
-import { _ } from "../misc";
+import { _ } from "../lib";
 import styles from "./Transient.module.css";
 
 export const Transient: Component<{ children: JSX.Element, timer: number }> = (props: _) => {

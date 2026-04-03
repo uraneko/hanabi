@@ -1,5 +1,5 @@
 import { createSignal, type Component, JSX } from 'solid-js';
-import { type _ } from '../misc';
+import { type _ } from '../lib';
 import styles from './InteractiveArea.module.css';
 
 export const InteractiveArea = (props: { children: JSX.Element }) => {
