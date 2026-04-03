@@ -20,8 +20,8 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.16.1",
-		"configs": "link:../hanabi_configs",
-		"core": "link:../hanabi_core",
+		"configs": "link:../hanabi-configs",
+		"core": "link:../hanabi-core",
 		"solid-js": "^1.9.12"
 	}
 }

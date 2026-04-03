@@ -22,13 +22,13 @@ export const TextField: Component<{
 	ty?: string,
 	legend: string,
 	name: string,
-	type: string,
+	type?: string,
 	value?: string,
 	mandatory?: boolean
 }> = (props: _) => {
 	const ty = () => props.ty ?? "str";
 	const name = () => props.name;
-	const type = () => props.type;
+	const type = () => props.type ?? "text";
 	const initial_value = () => props.value ?? null;
 	const mandatory = () => props.mandatory ?? false;
 	const legend: () => string = (): _ => {

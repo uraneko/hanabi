@@ -1,26 +1,24 @@
 import { createContext, useContext, createSignal, DEV } from 'solid-js';
+
+import { Account, Security } from 'configs';
 import { user_ctx } from "./user";
 import { _ } from "../misc";
 import { colors_ctx } from './colorscheme';
 
 
 const HEADERS = [
-	"main",
-	"account",
 	"colors",
+	"plugins",
 	{
-		plugins: ["installed", "available", "banned"],
-		relations: ["friends", "acquaintances", "blocked"],
+		account: ["security"],
 	}
 ];
 
 const CONTENTS = {
-	main: `<div><span>
-			no idea what goes here.
-		</span><button>go ahead, click me (^-^)!</button></div>`,
-	"plugins/installed": `<div class={styles.Contents}>
-			<a href="/">I lead back to the main page.</a>
-		</div>`,
+	account: Account,
+	"account/security": Security,
+	colors: undefined,
+	plugins: undefined,
 };
 
 const [configs, re_configs] = createSignal(await load_configs());
