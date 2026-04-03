@@ -6,7 +6,7 @@ import {
 import { Menu } from "../components/Menu";
 import { _ } from "core";
 import styles from './Page.module.css';
-import hanabiSVG from "../../../assets/icons/hanabi.svg?raw";
+import capraSVG from "../../../assets/icons/capra.svg?raw";
 
 function verdant() {
 	const root_rules = color_rules().props({
@@ -28,7 +28,7 @@ function verdant() {
 		"grad-end": "rgb(245, 244, 225)",
 		"grad-rotate": "328deg",
 	}).prefix(true);
-	const logo_rules = color_rules().selectors("svg.hanabi_svg").props({
+	const logo_rules = color_rules().selectors("svg.capra_svg").props({
 		"h": "#000000",
 		"a0": "#000000",
 		"n": "#000000",
@@ -90,7 +90,7 @@ function black_star() {
 			// "ra": "#876756",
 			// "ra": "#2573c7",
 			ra: "var(--blue)",
-		}).selectors("svg.hanabi_svg")
+		}).selectors("svg.capra_svg")
 		.prefix(true);
 
 	return colorscheme().extend(root_rules).extend(logo_rules).make();
@@ -105,14 +105,14 @@ function black_star() {
 // 	"grad-start": "rgb(204, 217, 208)",
 // 	"grad-end": "rgb(245, 244, 225)",
 // 	"grad-rotate": "328deg",
-// 	"svg.hanabi_svg:h": "#000000",
-// 	"svg.hanabi_svg:a0": "#000000",
-// 	"svg.hanabi_svg:n": "#000000",
-// 	"svg.hanabi_svg:a1": "#000000",
-// 	"svg.hanabi_svg:b": "#000000",
-// 	"svg.hanabi_svg:I": "#000000",
-// 	"svg.hanabi_svg:dot": "#000000",
-// 	"svg.hanabi_svg:ra": "#649279",
+// 	"svg.capra_svg:h": "#000000",
+// 	"svg.capra_svg:a0": "#000000",
+// 	"svg.capra_svg:n": "#000000",
+// 	"svg.capra_svg:a1": "#000000",
+// 	"svg.capra_svg:b": "#000000",
+// 	"svg.capra_svg:I": "#000000",
+// 	"svg.capra_svg:dot": "#000000",
+// 	"svg.capra_svg:ra": "#649279",
 // };
 //
 // export const black_star_ = {
@@ -132,16 +132,16 @@ function black_star() {
 // 	"grad-end": "#000000",
 // 	"grad-rotate": "341deg",
 // 	// selector:css-prop -> prop-val,
-// 	"svg.hanabi_svg:h": "rgb(151, 164, 194)",
-// 	"svg.hanabi_svg:a0": "rgb(151, 164, 194)",
-// 	"svg.hanabi_svg:n": "rgb(151, 164, 194)",
-// 	"svg.hanabi_svg:a1": "rgb(151, 164, 194)",
-// 	"svg.hanabi_svg:b": "rgb(151, 164, 194)",
-// 	"svg.hanabi_svg:I": "rgb(151, 164, 194)",
-// 	"svg.hanabi_svg:dot": "rgb(151, 164, 194)",
-// 	// "svg.hanabi_svg:ra": "#876756",
+// 	"svg.capra_svg:h": "rgb(151, 164, 194)",
+// 	"svg.capra_svg:a0": "rgb(151, 164, 194)",
+// 	"svg.capra_svg:n": "rgb(151, 164, 194)",
+// 	"svg.capra_svg:a1": "rgb(151, 164, 194)",
+// 	"svg.capra_svg:b": "rgb(151, 164, 194)",
+// 	"svg.capra_svg:I": "rgb(151, 164, 194)",
+// 	"svg.capra_svg:dot": "rgb(151, 164, 194)",
+// 	// "svg.capra_svg:ra": "#876756",
 // 	ra: #46394E
-// 	"svg.hanabi_svg:ra": "#2573c7",
+// 	"svg.capra_svg:ra": "#2573c7",
 // };
 
 const { colors, re_colors } = colors_ctx();

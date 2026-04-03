@@ -1,7 +1,8 @@
 packages:
-  - hanabi
-  - hanabi-core
-  - hanabi-configs
+  - capra
+  - capra-core
+  - capra-auth
+  - capra-config
   - '!**/test/**'
 
 onlyBuiltDependencies:

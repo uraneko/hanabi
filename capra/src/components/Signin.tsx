@@ -84,7 +84,7 @@ export const Signin: Component<{ swap_call: _ }> = (props: _) => {
 			<Separator />
 			<TextLine>
 				<span class={fstyles.Note}>
-					New to hanabi?
+					New to capra?
 				</span>
 				<Catalyst class={fstyles.SwapButton} call={call()}>
 					<span>Register.</span>

@@ -1,6 +1,5 @@
 import { createContext, useContext, createSignal, DEV } from 'solid-js';
 
-import { Account, Security } from 'configs';
 import { user_ctx } from "./user";
 import { _ } from "../misc";
 import { colors_ctx } from './colorscheme';
@@ -15,8 +14,8 @@ const HEADERS = [
 ];
 
 const CONTENTS = {
-	account: Account,
-	"account/security": Security,
+	account: "<div>Account</div>",
+	"account/security": "<div>sec</div>",
 	colors: undefined,
 	plugins: undefined,
 };

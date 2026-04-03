@@ -1,4 +1,4 @@
-<h1>hanabi</h1>
+<h1>capra</h1>
 
 This is the web frontend for my home server. Written in solidjs.
 

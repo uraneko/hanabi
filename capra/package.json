@@ -1,13 +1,14 @@
 {
-	"name": "hanabi",
-	"version": "0.0.0",
-	"description": "",
+	"name": "capra",
+	"version": "0.1.0",
+	"description": "-",
 	"type": "module",
 	"scripts": {
 		"start": "vite -d",
 		"dev": "vite",
 		"build": "vite build -d",
-		"serve": "vite preview -d"
+		"serve": "vite preview -d",
+		"test": "vitest"
 	},
 	"license": "MIT",
 	"devDependencies": {
@@ -20,8 +21,9 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.16.1",
-		"configs": "link:../hanabi-configs",
-		"core": "link:../hanabi-core",
+		"config": "link:../capra-config",
+		"core": "link:../capra-core",
+		"auth": "link:../capra-auth",
 		"solid-js": "^1.9.12"
 	}
 }

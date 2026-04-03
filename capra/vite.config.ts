@@ -25,8 +25,8 @@ export default defineConfig({
 				assetFileNames: (file) => {
 					if (file.names[0] == "index.css") {
 						return 'assets/styles.css';
-					} else if (file.names[0] == "hanabi.svg") {
-						return 'assets/hanabi.svg';
+					} else if (file.names[0] == "capra.svg") {
+						return 'assets/capra.svg';
 					} else {
 						return `assets/[name]-[hash].[ext]`
 					}
