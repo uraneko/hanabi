@@ -6,7 +6,6 @@
 	color: var(--black);
 	margin: 0 2rem;
 
-
 	&[auth-status=true] {
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 		grid-row: 2/10;
@@ -50,7 +49,7 @@
 
 		& svg {
 			fill: var(--blue);
-			width: 20px;
+			width: 38px;
 		}
 
 		&:hover {
@@ -76,6 +75,10 @@
 		width: stretch;
 	}
 
+	[class*=Leaf] {
+		width: stretch;
+	}
+
 	[class*="Leaf"] {
 		color: var(--blue);
 		font-weight: bold;
@@ -83,12 +86,7 @@
 
 		/* border-radius: 3px; */
 		margin-bottom: 0.1rem;
-
 	}
-
-
-
-
 }
 
 [class*=Leaf] {

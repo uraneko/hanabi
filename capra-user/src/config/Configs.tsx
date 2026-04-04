@@ -18,7 +18,7 @@ import rocketSVG from "../../../assets/icons/rocket.svg?raw";
 import keySVG from "../../../assets/icons/key.svg?raw";
 import newSVG from "../../../assets/icons/new.svg?raw";
 import manageSVG from "../../../assets/icons/manage.svg?raw";
-// import upSVG from "../../../assets/icons/up.svg?raw";
+import upSVG from "../../../assets/icons/up.svg?raw";
 import downSVG from "../../../assets/icons/down.svg?raw";
 
 const ICONS = {
@@ -35,9 +35,15 @@ const ICONS = {
 	manage: parse_svg(manageSVG),
 }
 
+export const Panic = (props: { text: string }) => {
+	const text = () => props.text;
+	return <WildText text={text()} />;
+};
+
 export const Configs = () => {
 	const user = user_state();
-	if (!Object.hasOwn(user.config(), "headers")) {
+	if (user.config() === undefined || !Object.hasOwn(user.config(), "headers")) {
+		return <Panic text="no user configuration data found. Are you surely logged-in?" />;
 		throw new Error("user configuration data has not been loaded on signin");
 		// const [config_update] = createResource(user, load_configs);
 		// console.log(config_update());
@@ -72,7 +78,7 @@ const Headers = (props: { headers: _, updater: _ }) => {
 	});
 	const tree = <BuildTree data={headers()} ident="35px" />;
 	iter_map(tree, add_icons_to_headers);
-	iter_map(tree, toggle_tree_nested);
+	iter_map(tree, setup_tree_nested);
 
 	return (<div class={styles.Headers} on:click={onclick}>
 		{tree}
@@ -166,22 +172,25 @@ const DOWN = svg()
 	.override({ "stroke-width": "200px" }, "#path1")
 	.parse(downSVG);
 
-// const UP = svg()
-// 	.style({
-// 		fill: "none",
-// 		color: "var(--blue)",
-// 		height: "20px"
-// 	})
-// 	.override({ "stroke-width": "200px" }, "#path1")
-// 	.parse(upSVG);
+const UP = svg()
+	.style({
+		fill: "none",
+		color: "var(--blue)",
+		height: "20px"
+	})
+	.override({ "stroke-width": "200px" }, "#path1")
+	.parse(upSVG);
 
-function toggle_tree_nested(headers: Element) {
+function setup_tree_nested(headers: Element) {
 	new Array(...headers.querySelectorAll("[class*=BranchName]"))
 		.forEach((bn: _) => {
 			const down = DOWN.cloneNode(true);
 			const wrapper = bn.parentElement;
 			wrapper.appendChild(down);
 			wrapper.addEventListener("dblclick", toggle_nested_leaves);
+
+			const leaves = new Array(...wrapper.parentElement!.children).slice(1);
+			leaves.forEach((leafw: _) => leafw.classList.toggle("off"));
 		})
 }
 
@@ -192,8 +201,9 @@ function toggle_nested_leaves(e: Event) {
 	const leaves = new Array(...branch.children).slice(1);
 	leaves.forEach((leafw: _) => leafw.classList.toggle("off"));
 	const toggler = et.lastElementChild!;
-	toggler.hasAttribute("class") ? toggler.removeAttribute("class") :
-		toggler.setAttribute("class", "up");
+	toggler.classList.toggle("up");
+	// toggler.hasAttribute("class") ? toggler.removeAttribute("class") :
+	// 	toggler.setAttribute("class", "up");
 
 }
 
