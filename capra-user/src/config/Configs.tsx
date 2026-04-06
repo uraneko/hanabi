@@ -4,8 +4,11 @@ import { Catalyst, ColorPicker, svg } from "core/primitives";
 import { user_state } from "../user";
 import { BuildTree } from "core/containers";
 import { WildText } from "core/primitives";
-import { Account, Address } from "./Account";
+import { Account, } from "./Account";
 import { Security } from "./Security";
+import { Plugins } from "./Plugins";
+// import { Colors } from "./Colors";
+// import { Build } from "./Build";
 
 import styles from "./Configs.module.css";
 
@@ -32,6 +35,7 @@ const ICONS = {
 	glasses: parse_svg(glassesSVG),
 	relations: parse_svg(peopleSVG),
 	installed: parse_svg(rocketSVG),
+	build: parse_svg(rocketSVG),
 	security: parse_svg(keySVG),
 	available: parse_svg(newSVG),
 	manage: parse_svg(manageSVG),
@@ -111,7 +115,10 @@ const ParseConfigs = (props: { header: string, configs: _ }) => {
 		<Match when={header() === "account/security"}>
 			<Security configs={configs()} />
 		</Match>
-		<Match when={configs() === undefined}>
+		<Match when={header() === "plugins"}>
+			<Plugins configs={configs()} />
+		</Match>
+		<Match when={true}>
 			<div>
 				<span>This section is a work-in-progress</span>
 				<span style='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
@@ -185,7 +192,7 @@ const DOWN = svg()
 		color: "var(--blue)",
 		height: "20px"
 	})
-	.override({ "stroke-width": "200px" }, "#path1")
+	.override({ "stroke-width": "160px" }, "#path1")
 	.parse(downSVG);
 
 const UP = svg()
@@ -194,7 +201,7 @@ const UP = svg()
 		color: "var(--blue)",
 		height: "20px"
 	})
-	.override({ "stroke-width": "200px" }, "#path1")
+	.override({ "stroke-width": "160px" }, "#path1")
 	.parse(upSVG);
 
 function setup_tree_nested(headers: Element) {

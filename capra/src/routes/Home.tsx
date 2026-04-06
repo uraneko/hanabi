@@ -6,7 +6,7 @@ import styles from './Home.module.css';
 
 import radioSVG from "../../../assets/icons/radio.svg?raw"
 import driveSVG from "../../../assets/icons/drive.svg?raw"
-import eventsSVG from "../../../assets/icons/events.svg?raw"
+import calendarSVG from "../../../assets/icons/calendar.svg?raw"
 import canvasSVG from "../../../assets/icons/canvas.svg?raw"
 
 export const Home: Component = () => {
@@ -17,12 +17,12 @@ export const Home: Component = () => {
 	);
 };
 
-// TODO
+// TODO use user context's config instead 
 async function get_apps_meta() {
 	// fetch what apps the user has installed
 	return [
 		{
-			name: "calendar", icon: parse_svg(eventsSVG), accent: "#c29884",
+			name: "calendar", icon: parse_svg(calendarSVG), accent: "#c29884",
 			depict: "manage your schedule and affairs [not yet available]"
 		},
 		{

@@ -23,7 +23,7 @@ async function login(e: SubmitEvent) {
 	if (DEV !== undefined) {
 		e.preventDefault();
 		re_user({
-			name: "balmung isaac shneider",
+			name: "isaac shneider",
 			address: "catapulting@shezalion.kon",
 			access_token: "34hereqwqjrerEWRYTQQ#$%$^&^YTGR",
 			config: config,

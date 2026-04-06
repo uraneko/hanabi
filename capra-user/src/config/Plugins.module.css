@@ -1,0 +1,86 @@
+.Chapter {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+.Section {
+	width: stretch;
+	height: stretch;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.Title {
+	width: max-content;
+	color: var(--blue);
+
+	font-size: 24pt;
+	padding: 1rem;
+}
+
+.SectionContents {
+	display: flex;
+	flex-direction: column;
+	width: max-content;
+	padding: 1rem;
+	margin-left: 1rem;
+
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.PluginCard {
+	padding: 1.3rem 0 0.2rem 0;
+	display: flex;
+	align-items: end;
+	width: 20rem;
+	justify-content: space-between;
+
+	border: 2px solid var(--accent);
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+
+	.PluginInfo {
+		display: flex;
+		align-items: end;
+
+		svg:first-child {
+			color: var(--accent);
+			fill: var(--accent);
+			width: 2rem;
+			height: 2rem;
+
+			& image {
+				width: 2rem;
+				height: 2rem;
+			}
+		}
+
+		.PluginName {
+			color: var(--accent);
+			padding-left: 4px;
+			font-size: 14pt;
+			font-weight: bold;
+
+			position: relative;
+			top: 2px;
+		}
+	}
+
+
+	svg:last-child {
+		cursor: pointer;
+		width: 1.5rem;
+		height: 1.5rem;
+		fill: var(--black);
+		clip-path: rect(4px 20px 20px 4px round 20%);
+
+		&:hover {
+			fill: var(--red);
+		}
+
+	}
+
+}

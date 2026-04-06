@@ -1,11 +1,14 @@
 import { DEV, createContext, useContext, createSignal } from 'solid-js';
-import { _, is_instance_of } from "core";
+import { _, is_instance_of, parse_svg } from "core";
+
+import driveSVG from "../../assets/icons/drive.svg?raw";
+import calendarSVG from "../../assets/icons/calendar.svg?raw";
 
 const HEADERS = [
-	"colors",
 	"plugins",
 	{
 		account: ["security"],
+		colors: ["build"]
 	}
 ];
 
@@ -15,8 +18,26 @@ const CONTENTS = {
 		send_me_emails: true,
 		expose_my_address: false,
 	},
-	colors: undefined,
-	plugins: undefined,
+	colors: {
+		installed: {
+			verdant: true,
+			black_star: true,
+		},
+	},
+	plugins: {
+		drive: {
+			icon: parse_svg(driveSVG),
+			depict: "store, share and backup your files [not yet available]",
+			root: "http://127.0.0.1:6608",
+			accent: "#859f60",
+		},
+		calendar: {
+			icon: parse_svg(calendarSVG),
+			depict: "manage your schedule and affairs [not yet available]",
+			root: undefined,
+			accent: "#c29884",
+		}
+	},
 };
 
 export async function init_configs() {
