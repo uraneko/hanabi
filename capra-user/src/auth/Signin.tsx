@@ -23,8 +23,8 @@ async function login(e: SubmitEvent) {
 	if (DEV !== undefined) {
 		e.preventDefault();
 		re_user({
-			name: "some name",
-			address: "some@address",
+			name: "balmung isaac shneider",
+			address: "catapulting@shezalion.kon",
 			access_token: "34hereqwqjrerEWRYTQQ#$%$^&^YTGR",
 			config: config,
 			pfp: pfpIMGLink,
