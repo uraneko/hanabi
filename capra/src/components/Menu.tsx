@@ -57,7 +57,7 @@ export const Menu = () => {
 				</Match>
 				<Match when={user.is_logged_in()}>
 					<AnchorItem
-						link="/configs"
+						link="/config"
 						icon={configs}
 						text="configs" />
 					<ContentItem

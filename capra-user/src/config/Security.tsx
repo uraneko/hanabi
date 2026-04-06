@@ -5,9 +5,10 @@ import { _, is_alphanumeric, is_ascii, json_from_map } from 'core';
 
 import styles from './Security.module.css';
 
-export const Security = (props: { email_comms: boolean, unsecure_address: boolean }) => {
-	const unsecure_address = () => props.unsecure_address;
-	const email_comms = () => props.email_comms;
+// export const Security = (props: { email_comms: boolean, unsecure_address: boolean }) => {
+export const Security = (props: { configs: _ }) => {
+	const unsecure_address = () => props.configs.unsecure_address;
+	const email_comms = () => props.configs.email_comms;
 	return <div class={styles.Chapter}>
 		<div class={styles.Section}>
 			<span class={styles.Title}>Email-Address</span>

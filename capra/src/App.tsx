@@ -67,7 +67,7 @@ export const App: Component = () => {
 						<Router>
 							<Route path="/" component={Home} />
 							<Route path="/auth" component={Auth} />
-							<Route path="/configs" component={Configs} />
+							<Route path="/config" component={Configs} />
 							<Route path="*" component={Splash} />
 							<Route path="/testing" component={Testing} />
 						</Router>

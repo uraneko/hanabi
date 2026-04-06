@@ -47,21 +47,29 @@
 		cursor: pointer;
 		padding: .15rem 0.4rem;
 
-		& svg {
-			fill: var(--blue);
-			width: 38px;
-		}
-
 		&:hover {
 			background: var(--opaque);
 		}
 
 		&[class$=off] {
 			display: none;
+			/* animation: dspl 250ms; */
+		}
+
+		& svg {
+			fill: var(--blue);
+			width: 38px;
+
+		}
+
+		& svg[class=down] {
+			rotate: 0deg;
+			transition: rotate 250ms linear;
 		}
 
 		& svg[class=up] {
-			transform: rotateX(180deg);
+			rotate: 540deg;
+			transition: rotate 250ms linear;
 		}
 	}
 
@@ -100,3 +108,13 @@
 	width: stretch;
 	padding: 2rem 1rem;
 }
+
+/* @keyframes dspl { */
+/* 	from { */
+/* 		display: flex; */
+/* 	} */
+/**/
+/* 	to { */
+/* 		display: none; */
+/* 	} */
+/* } */

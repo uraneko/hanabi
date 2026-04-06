@@ -4,6 +4,8 @@ import { Catalyst, ColorPicker, svg } from "core/primitives";
 import { user_state } from "../user";
 import { BuildTree } from "core/containers";
 import { WildText } from "core/primitives";
+import { Account, Address } from "./Account";
+import { Security } from "./Security";
 
 import styles from "./Configs.module.css";
 
@@ -51,7 +53,7 @@ export const Configs = () => {
 	}
 	// @ts-ignore
 	const headers = () => user.config()["headers"];
-	const contents = () => Object.fromEntries(
+	const data = () => Object.fromEntries(
 		Object.entries(user.config()).filter((kv: _) => kv[0] !== "headers"));
 	const init = constr(headers()[0]) === "String" ? headers()[0] : Object.keys(headers()[0])[0];
 	const [content, re_content] = createSignal(init);
@@ -59,7 +61,7 @@ export const Configs = () => {
 		<Switch>
 			<Match when={user.is_logged_in()}>
 				<Headers headers={headers()} updater={re_content} />
-				<Contents contents={contents()} header={content()} />
+				<Contents data={data()} header={content()} />
 			</Match>
 			<Match when={user.is_logged_out()} >
 				<WildText text="You are not logged-in." />
@@ -85,30 +87,44 @@ const Headers = (props: { headers: _, updater: _ }) => {
 	</div >);
 };
 
-const Contents = (props: { header: string, contents: _ }) => {
+const Contents = (props: { header: string, data: _ }) => {
 	const header = () => /* props.header.includes('/') ? props.header.split('/') : */ props.header;
-	const configs = () => get_header_contents(props.contents, header());
+	const configs = () => get_header_configs(props.data, props.header);
 
 	return <div class={styles.Contents}>
-		<ParseConfigs configs={configs()} />
+		<ParseConfigs configs={configs()} header={header()} />
 	</div>;
 };
 
 // configs is a json object
-const ParseConfigs = (props: { configs: string }) => {
-	const configs = () => new DOMParser().parseFromString(props.configs, "text/html").body.firstElementChild;
+const ParseConfigs = (props: { header: string, configs: _ }) => {
+	// const configs = () => new DOMParser().parseFromString(props.configs, "text/html").body.firstElementChild;
+	const configs = () => props.configs;
+	const header = () => props.header;
 
 	return <div class={styles.ConfigContents}>
+		<Switch>
+			<Match when={header() === "account"}>
+				<Account />
+			</Match>
+			<Match when={header() === "account/security"}>
+				<Security configs={configs()} />
+			</Match>
+			<Match when={configs() === undefined}>
+				<div>
+					<span>This section is a work-in-progress</span>
+					<span style='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
+				</div>
+			</Match>
+
+		</Switch >
 		{configs()}
-	</div>;
+	</div >;
 };
 
-function get_header_contents(contents: _, header: string) {
-	return contents[header] ??
-		`<div>
-			<span>This section is a work-in-progress</span>
-			<span style='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
-	</div>`;
+function get_header_configs(configs: _, header: string) {
+	return configs[header];
+
 	// console.log(contents, "<" + header + ">");
 	// if (constr(header) === "String") ;
 	// let value = contents[header[0]];
@@ -124,15 +140,19 @@ function get_header_contents(contents: _, header: string) {
 function collect_header_path(current: HTMLElement): string {
 	let path = "";
 	let parent = current.parentElement!;
+	console.log(parent);
 	if (parent.className.includes("LeafWrapper")) {
 		parent = parent.parentElement!;
 	}
 	if (parent.tagName === "BODY") throw new Error("reached dom root");
 	else if (parent.className.includes("Tree")) return path.length === 0 ? current.textContent! : path + '/' + current.textContent;
 	else if (current.className.includes("Leaf")) {
+		console.log(0);
 		// assumes user didnt provide a custom tree transform 
-		path += (path.length === 0 ? '' : '/') + parent.firstElementChild!.children[1].textContent;
-		path += '/' + current.textContent;
+		if (!current.className.includes("BranchName")) {
+			path += (path.length === 0 ? '' : '/') + parent.firstElementChild!.children[1].textContent;
+		}
+		path += (path.length === 0 ? '' : '/') + current.textContent;
 	}
 
 	return path;
@@ -184,15 +204,32 @@ const UP = svg()
 function setup_tree_nested(headers: Element) {
 	new Array(...headers.querySelectorAll("[class*=BranchName]"))
 		.forEach((bn: _) => {
-			const down = DOWN.cloneNode(true);
+			const down = DOWN.cloneNode(true) as SVGSVGElement;
+			down.classList.add("down");
 			const wrapper = bn.parentElement;
 			wrapper.appendChild(down);
-			wrapper.addEventListener("dblclick", toggle_nested_leaves);
+			wrapper.addEventListener("auxclick", toggle_nested_leaves);
 
 			const leaves = new Array(...wrapper.parentElement!.children).slice(1);
 			leaves.forEach((leafw: _) => leafw.classList.toggle("off"));
 		})
 }
+
+// function rotate_toggler(toggler: SVGSVGElement) {
+// 	const rotate = toggler.style.getPropertyValue("--rotate");
+// 	console.log(rotate);
+// 	let rtt = rotate;
+// 	if (rotate === "0deg") {
+// 		toggler.classList.remove("reset");
+// 		rtt = "180deg";
+// 	} else if (rotate === "180deg") {
+// 		rtt = "360deg";
+// 	} else if (rotate === "360deg") {
+// 		toggler.classList.add("reset");
+// 		rtt = "0deg";
+// 	}
+// 	toggler.style.setProperty("--rotate", rtt);
+// }
 
 function toggle_nested_leaves(e: Event) {
 	const et = e.currentTarget! as Element;
@@ -201,7 +238,9 @@ function toggle_nested_leaves(e: Event) {
 	const leaves = new Array(...branch.children).slice(1);
 	leaves.forEach((leafw: _) => leafw.classList.toggle("off"));
 	const toggler = et.lastElementChild!;
+	toggler.classList.toggle("down");
 	toggler.classList.toggle("up");
+
 	// toggler.hasAttribute("class") ? toggler.removeAttribute("class") :
 	// 	toggler.setAttribute("class", "up");
 

@@ -1,29 +1,28 @@
 import { Match, Switch } from "solid-js";
 import { parse_svg } from 'core';
 import { Catalyst, TextField } from 'core/primitives';
+import { user_state } from "../user";
 
 import styles from './Account.module.css';
 import homeSVG from "../../../assets/icons/home.svg?raw";
 
-export const Account = (props: { user: string, email_address?: string, pfp?: Blob }) => {
-	const user = () => props.user;
-	const pfp = () => props.pfp;
-	const address = () => props.email_address;
+export const Account = () => {
+	const user = user_state();
 
 	return <div class={styles.Chapter}>
-		<Profile user={user()} pfp={pfp()} />
-		<EmailAddress address={address()} />
+		<Profile name={user.name()} pfp={user.pfp()} />
+		<Address address={user.address()} />
 	</div>;
 };
 
-export const Profile = (props: { user: string, pfp?: Blob }) => {
-	const user = () => props.user;
+export const Profile = (props: { name: string, pfp?: Blob }) => {
+	const name = () => props.name;
 	const pfp = () => props.pfp;
 
 	return <div class={styles.Section}>
 		<span class={styles.Title}>Profile</span>
 		<Pfp pfp={pfp()} />
-		<TextField legend="user name" value={user()} name="profile-name" mandatory />
+		<TextField legend="user name" value={name()} name="profile-name" mandatory />
 	</div>;
 };
 
@@ -42,7 +41,9 @@ export const Pfp = (props: { pfp?: Blob }) => {
 		</Switch></Catalyst>;
 };
 
-export const EmailAddress = (props: { address?: string }) => {
+export const Address = (props: { address?: string }) => {
+	const addr = () => props.address;
+
 	return <div class={styles.Section}>
 		<span class={styles.Title}>Email-Address</span>
 	</div>;

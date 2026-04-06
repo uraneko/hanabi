@@ -10,8 +10,8 @@ const HEADERS = [
 ];
 
 const CONTENTS = {
-	account: "<div>Account</div>",
-	"account/security": "<div>security</div>",
+	account: {},
+	"account/security": {},
 	colors: undefined,
 	plugins: undefined,
 };
@@ -25,6 +25,7 @@ export async function init_configs() {
 			name: user_.name,
 			address: user_.address,
 			access_token: user_.access_token,
+			pfp: user_.pfp,
 		}
 	});
 }
@@ -54,6 +55,7 @@ const [user, re_user] = createSignal({
 	address: undefined as string | undefined,
 	access_token: undefined as string | undefined,
 	config: undefined as Record<string, _> | undefined,
+	pfp: undefined as undefined | Blob,
 });
 
 export function user_state(ctx?: _) {
@@ -87,6 +89,9 @@ export function user_state(ctx?: _) {
 		},
 		config() {
 			return this.ctx().config;
+		},
+		pfp() {
+			return this.ctx().pfp;
 		}
 	}
 }
@@ -95,4 +100,3 @@ const user_context = createContext({ user, re_user });
 export function user_ctx() {
 	return useContext(user_context);
 }
-

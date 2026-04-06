@@ -29,6 +29,7 @@ export async function logout() {
 			address: undefined,
 			access_token: undefined,
 			config: undefined,
+			pfp: undefined,
 		};
 	});
 }

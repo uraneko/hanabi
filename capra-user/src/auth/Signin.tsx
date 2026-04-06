@@ -15,7 +15,8 @@ async function login(e: SubmitEvent) {
 			name: "some name",
 			address: "some@address",
 			access_token: "34hereqwqjrerEWRYTQQ#$%$^&^YTGR",
-			config: config
+			config: config,
+			pfp: undefined,
 		});
 
 		return;
@@ -47,6 +48,7 @@ async function login(e: SubmitEvent) {
 				address: user.address,
 				access_token: undefined,
 				config: user.config,
+				pfp: user.pfp,
 			}
 		});
 

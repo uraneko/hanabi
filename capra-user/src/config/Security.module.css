@@ -1,0 +1,7 @@
+.Chapter {
+	display: flex;
+}
+
+.Section {
+	display: grid;
+}
