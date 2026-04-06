@@ -11,7 +11,10 @@ const HEADERS = [
 
 const CONTENTS = {
 	account: {},
-	"account/security": {},
+	"account/security": {
+		send_me_emails: true,
+		expose_my_address: false,
+	},
 	colors: undefined,
 	plugins: undefined,
 };

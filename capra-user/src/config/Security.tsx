@@ -1,29 +1,22 @@
-import { DEV, Switch, Match, Show, createSignal } from 'solid-js';
+import { DEV, Switch, Match, Show, createEffect, createSignal } from 'solid-js';
 import { CheckBox, PasswordField, Catalyst } from 'core/primitives';
 import { Form, submit } from 'core/containers';
 import { _, is_alphanumeric, is_ascii, json_from_map } from 'core';
 
 import styles from './Security.module.css';
 
-// export const Security = (props: { email_comms: boolean, unsecure_address: boolean }) => {
+// export const Security = (props: { send_me_emails: boolean, unsecure_address: boolean }) => {
 export const Security = (props: { configs: _ }) => {
-	const unsecure_address = () => props.configs.unsecure_address;
-	const email_comms = () => props.configs.email_comms;
+	const expose_my_address = () => props.configs.expose_my_address;
+	const send_me_emails = () => props.configs.send_me_emails;
 	return <div class={styles.Chapter}>
 		<div class={styles.Section}>
 			<span class={styles.Title}>Email-Address</span>
-			<CheckBox
-				name="email_comms"
-				legend="use email communication"
-				state={email_comms()}
-			/>
-			<CheckBox
-				name="unsecure_addr"
-				legend="leave address unsecure"
-				state={unsecure_address()}
+			<AddressOptions
+				send_me_emails={send_me_emails()}
+				expose_my_address={expose_my_address()}
 			/>
 		</div>
-
 		<div class={styles.Section}>
 			<span class={styles.Title}>Password</span>
 			<ResetPassword />
@@ -31,29 +24,61 @@ export const Security = (props: { configs: _ }) => {
 	</div>;
 };
 
+const AddressOptions = (props: {
+	send_me_emails: boolean,
+	expose_my_address: boolean
+}) => {
+	const send = () => props.send_me_emails;
+	const expose = () => props.expose_my_address;
+	return <div class={`${styles.SectionContents} ${styles.Address}`}>
+		<CheckBox
+			name="send_me_emails"
+			legend="send me emails"
+			state={send()}
+		/>
+		<CheckBox
+			name="unsecure_addr"
+			legend="expose my address"
+			state={expose()}
+		/>
+	</div>
+};
+
 const ResetPassword = () => {
 	const [reset, re_reset] = createSignal(false);
 	const toggle_reset = (e: Event) => re_reset((rst: boolean) => !rst);
-	const toggle_text = () => reset() ? "Cancel" : "Reset Password";
 
-	return <div class={styles.ResetPassword}>
-		<Catalyst call={toggle_reset}>
-			{toggle_text()}
-		</Catalyst>
-		<Show when={reset()}>
-			<Form
-				action="/configs/reset-password"
-				method="post"
-				target="_blank"
-				submit={pswd_rst}
-			>
-				<PasswordField legend="Current pswd" name="old_pswd" mandatory />
-				<PasswordField legend="New pswd" name="new_pswd" mandatory />
-				<PasswordField legend="Confirm pswd" name="confirm_pswd" mandatory />
-				<Catalyst type="submit">Reset</Catalyst>
-			</Form>
-		</Show>
-	</div>;
+	return <div class={`${styles.SectionContents} ${styles.Password}`}>
+		<Switch>
+			<Match when={!reset()}>
+				<Catalyst class={styles.Trigger} call={toggle_reset}>
+					Reset Password
+				</Catalyst>
+			</Match>
+			<Match when={reset()} >
+				<Form
+					action="/configs/reset-password"
+					method="post"
+					target="_blank"
+					submit={pswd_rst}
+				>
+					<h4 class={styles.FormTitle}>Password-Reset</h4>
+					<PasswordField legend="Current pswd" name="old_pswd" mandatory />
+					<PasswordField legend="New pswd" name="new_pswd" mandatory />
+					<PasswordField legend="Confirm pswd" name="confirm_pswd" mandatory />
+					<div class={styles.ButtonGroup}>
+						<Catalyst type="button"
+							class={`${styles.Trigger} ${styles.FormOff}`}
+							call={toggle_reset}
+						>
+							Cancel
+						</Catalyst>
+						<Catalyst class={styles.Trigger} type="submit">Reset</Catalyst>
+					</div>
+				</Form>
+			</Match>
+		</Switch>
+	</div >;
 };
 
 async function pswd_rst(e: SubmitEvent) {

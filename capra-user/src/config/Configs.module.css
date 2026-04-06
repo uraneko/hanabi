@@ -109,6 +109,15 @@
 	padding: 2rem 1rem;
 }
 
+.Panic {
+	width: fit-content;
+	height: fit-content;
+	padding: 2rem;
+	grid-area: 5 / 2 / 6 / 9;
+	align-self: center;
+	justify-self: center;
+}
+
 /* @keyframes dspl { */
 /* 	from { */
 /* 		display: flex; */

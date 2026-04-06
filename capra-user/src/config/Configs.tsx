@@ -39,13 +39,13 @@ const ICONS = {
 
 export const Panic = (props: { text: string }) => {
 	const text = () => props.text;
-	return <WildText text={text()} />;
+	return <WildText class={styles.Panic} text={text()} />;
 };
 
 export const Configs = () => {
 	const user = user_state();
 	if (user.config() === undefined || !Object.hasOwn(user.config(), "headers")) {
-		return <Panic text="no user configuration data found. Are you surely logged-in?" />;
+		return <Panic text="no user configuration found. Are you surely logged-in?" />;
 		throw new Error("user configuration data has not been loaded on signin");
 		// const [config_update] = createResource(user, load_configs);
 		// console.log(config_update());
@@ -75,7 +75,6 @@ const Headers = (props: { headers: _, updater: _ }) => {
 	const re_content = () => props.updater;
 	const onclick = (e: Event) => re_content()((_path: string) => {
 		const et = resolve_target_to_leaf(e.target as Element) as HTMLButtonElement;
-		console.log(et);
 		if (et.className.includes("Tree")) return _path;
 
 
