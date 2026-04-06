@@ -75,6 +75,9 @@ const Headers = (props: { headers: _, updater: _ }) => {
 	const re_content = () => props.updater;
 	const onclick = (e: Event) => re_content()((_path: string) => {
 		const et = resolve_target_to_leaf(e.target as Element) as HTMLButtonElement;
+		console.log(et);
+		if (et.className.includes("Tree")) return _path;
+
 
 		return collect_header_path(et);
 	});
