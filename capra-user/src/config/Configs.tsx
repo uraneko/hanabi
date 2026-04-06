@@ -102,24 +102,20 @@ const ParseConfigs = (props: { header: string, configs: _ }) => {
 	const configs = () => props.configs;
 	const header = () => props.header;
 
-	return <div class={styles.ConfigContents}>
-		<Switch>
-			<Match when={header() === "account"}>
-				<Account />
-			</Match>
-			<Match when={header() === "account/security"}>
-				<Security configs={configs()} />
-			</Match>
-			<Match when={configs() === undefined}>
-				<div>
-					<span>This section is a work-in-progress</span>
-					<span style='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
-				</div>
-			</Match>
-
-		</Switch >
-		{configs()}
-	</div >;
+	return <Switch>
+		<Match when={header() === "account"}>
+			<Account />
+		</Match>
+		<Match when={header() === "account/security"}>
+			<Security configs={configs()} />
+		</Match>
+		<Match when={configs() === undefined}>
+			<div>
+				<span>This section is a work-in-progress</span>
+				<span style='font-weight: bold;'>(˶ᵔ ᵕ ᵔ˶)</span>
+			</div>
+		</Match>
+	</Switch >;
 };
 
 function get_header_configs(configs: _, header: string) {
@@ -140,14 +136,12 @@ function get_header_configs(configs: _, header: string) {
 function collect_header_path(current: HTMLElement): string {
 	let path = "";
 	let parent = current.parentElement!;
-	console.log(parent);
 	if (parent.className.includes("LeafWrapper")) {
 		parent = parent.parentElement!;
 	}
 	if (parent.tagName === "BODY") throw new Error("reached dom root");
 	else if (parent.className.includes("Tree")) return path.length === 0 ? current.textContent! : path + '/' + current.textContent;
 	else if (current.className.includes("Leaf")) {
-		console.log(0);
 		// assumes user didnt provide a custom tree transform 
 		if (!current.className.includes("BranchName")) {
 			path += (path.length === 0 ? '' : '/') + parent.firstElementChild!.children[1].textContent;

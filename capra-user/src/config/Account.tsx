@@ -15,7 +15,7 @@ export const Account = () => {
 	</div>;
 };
 
-export const Profile = (props: { name: string, pfp?: Blob }) => {
+export const Profile = (props: { name: string, pfp?: string }) => {
 	const name = () => props.name;
 	const pfp = () => props.pfp;
 
@@ -26,19 +26,12 @@ export const Profile = (props: { name: string, pfp?: Blob }) => {
 	</div>;
 };
 
-export const Pfp = (props: { pfp?: Blob }) => {
-	const pfp = () => props.pfp ? <img src={URL.createObjectURL(props.pfp!)} /> : undefined;
-	const home = () => props.pfp ? parse_svg(homeSVG) : undefined;
+export const Pfp = (props: { pfp?: string }) => {
+	const pfp = () => props.pfp ? <img src={props.pfp} /> : parse_svg(homeSVG);
 
 	return <Catalyst class={styles.Pfp}>
-		<Switch>
-			<Match when={!pfp()}>
-				{home()!}
-			</Match>
-			<Match when={pfp()}>
-				{pfp()!}
-			</Match>
-		</Switch></Catalyst>;
+		{pfp()}
+	</Catalyst>;
 };
 
 export const Address = (props: { address?: string }) => {

@@ -6,6 +6,17 @@ import { user_ctx, user_state as ustate, load_configs } from "../user";
 import { Form, form_styles as fstyles, submit } from "core/containers";
 import { type _, json_from_map } from "core";
 
+import pfpIMGLink from "../../../assets/images/round-eyes.png";
+
+// function parse_image_into_blob(img: _) {
+// 	const encoder = new TextEncoder();
+// 	const octets = encoder.encode(img);
+// 	// @ts-ignore
+// 	return new Blob([octets.buffer], { type: "image/png" });
+//
+// 	// return URL.createObjectURL(blob, { type: "image/png" });
+// }
+
 async function login(e: SubmitEvent) {
 	const { user, re_user } = user_ctx();
 	const config = await load_configs(ustate(user));
@@ -16,7 +27,7 @@ async function login(e: SubmitEvent) {
 			address: "some@address",
 			access_token: "34hereqwqjrerEWRYTQQ#$%$^&^YTGR",
 			config: config,
-			pfp: undefined,
+			pfp: pfpIMGLink,
 		});
 
 		return;

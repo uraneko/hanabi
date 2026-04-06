@@ -55,7 +55,7 @@ const [user, re_user] = createSignal({
 	address: undefined as string | undefined,
 	access_token: undefined as string | undefined,
 	config: undefined as Record<string, _> | undefined,
-	pfp: undefined as undefined | Blob,
+	pfp: undefined as undefined | string,
 });
 
 export function user_state(ctx?: _) {
