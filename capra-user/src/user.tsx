@@ -1,5 +1,6 @@
 import { DEV, createContext, useContext, createSignal } from 'solid-js';
 import { _, is_instance_of, parse_svg } from "core";
+import { colors_ctx, color_rules, colorscheme } from "core/context";
 
 import driveSVG from "../../assets/icons/drive.svg?raw";
 import calendarSVG from "../../assets/icons/calendar.svg?raw";
@@ -19,9 +20,26 @@ const CONTENTS = {
 		expose_my_address: false,
 	},
 	colors: {
-		installed: {
-			verdant: true,
-			black_star: true,
+		verdant: {
+			scheme: {
+				red: "#A95525", green: "#87a187", blue: "#485d6c",
+				abstract: "#f0f8ff35", opaque: "#a0c65578",
+				black: "black", white: "#f0f8ff",
+				"grad-start": "rgb(204, 217, 208)", "grad-end": "rgb(245, 244, 225)",
+				"grad-rotate": "328deg",
+			},
+			pinned: true,
+		},
+		"black-star": {
+			scheme: {
+				opaque: "linear-gradient(132deg, #b574447a 0%, #502941 100%)",
+				abstract: "rgba(73, 126, 172, 0.21)",
+				black: "#e3e2e4", white: "#1f212e",
+				blue: "#9e8776", green: "#87a187", red: "#A95525",
+				"grad-start": "#43001e", "grad-end": "#000000",
+				"grad-rotate": "341deg",
+			},
+			pinned: true,
 		},
 	},
 	plugins: {

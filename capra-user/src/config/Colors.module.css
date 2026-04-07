@@ -1,0 +1,118 @@
+.Chapter {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+.Section {
+	width: stretch;
+	height: stretch;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.Title {
+	width: max-content;
+	color: var(--blue);
+
+	font-size: 24pt;
+	padding: 1rem;
+}
+
+.SectionContents {
+	display: flex;
+	flex-direction: row;
+	width: max-content;
+	padding: 1rem;
+	margin-left: 1rem;
+
+}
+
+.ColorschemeCard {
+	padding: 1rem 0 0.2rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	width: stretch;
+	justify-content: space-between;
+
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	margin-bottom: 2rem;
+
+	.SchemeInfo {
+		width: stretch;
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		padding: 1rem;
+		padding-top: 0;
+		margin-bottom: 1rem;
+		border-bottom: 2px solid var(--opaque);
+
+		.SchemeName {
+			color: var(--accent);
+			padding-left: 4px;
+			font-size: 14pt;
+			font-weight: bold;
+			color: var(--green);
+		}
+
+		& .Switchs {
+			display: flex;
+			flex-direction: row;
+			align-items: end;
+
+			&>button {
+				padding: 0.195rem;
+				border-radius: 5px;
+				background: var(--opaque);
+			}
+
+			& .PinSwitch {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				& svg {
+					width: 1rem !important;
+					height: 1rem !important;
+				}
+			}
+		}
+	}
+
+	.SchemeColors {
+		display: flex;
+		flex-direction: column;
+		width: stretch;
+		padding: 0 2rem;
+
+		& .ColorBox {
+			color: var(--blue);
+			display: flex;
+			justify-content: space-between;
+			padding: 0.5rem;
+
+			.PropertyName {
+				font-weight: bold;
+				margin-right: 4rem;
+			}
+
+			.PropertyValue {
+				width: 50px;
+				height: 20px;
+				border-radius: 2px;
+				display: flex;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			}
+
+			.PropertyText {
+				width: 50px;
+				height: 20px;
+				border-radius: 2px;
+				display: flex;
+			}
+		}
+	}
+}

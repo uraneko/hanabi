@@ -7,7 +7,7 @@ import { WildText } from "core/primitives";
 import { Account, } from "./Account";
 import { Security } from "./Security";
 import { Plugins } from "./Plugins";
-// import { Colors } from "./Colors";
+import { Colors } from "./Colors";
 // import { Build } from "./Build";
 
 import styles from "./Configs.module.css";
@@ -117,6 +117,9 @@ const ParseConfigs = (props: { header: string, configs: _ }) => {
 		</Match>
 		<Match when={header() === "plugins"}>
 			<Plugins configs={configs()} />
+		</Match>
+		<Match when={header() === "colors"}>
+			<Colors configs={configs()} />
 		</Match>
 		<Match when={true}>
 			<div>

@@ -107,6 +107,7 @@
 	background: var(--white);
 	width: stretch;
 	padding: 2rem 1rem;
+	overflow: scroll;
 }
 
 .Panic {
