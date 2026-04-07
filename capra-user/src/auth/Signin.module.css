@@ -1,1 +1,9 @@
-.Signin {}
+.Signin {
+	& [class*=TextField] {
+		width: 14rem;
+	}
+
+	& [class*=PswSwitch] {
+		margin-left: 66%;
+	}
+}

@@ -54,6 +54,16 @@
 		box-shadow: none;
 		padding: 1rem;
 	}
+
+	[class*=PasswordField] {
+		[class*=TextField] {
+			width: 15rem;
+		}
+
+		[class*=PswSwitch] {
+			margin-left: 80%;
+		}
+	}
 }
 
 

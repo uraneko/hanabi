@@ -32,9 +32,9 @@ function new_actuator(
 	link?: string,
 ): JSX.Element {
 	return link === undefined ?
-		<button class={`${styles.Button} ${spread_classes(cls)}`}
+		<button class={`${styles.Button}${spread_classes(cls)}`}
 			on:mousedown={call}>{children}</button> :
-		<a class={`${styles.Catalyst} ${spread_classes(cls)}`}
+		<a class={`${styles.Catalyst}${spread_classes(cls)}`}
 			href={link} on:mousedown={call}>{children}</a>
 }
 

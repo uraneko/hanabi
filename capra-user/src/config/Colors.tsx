@@ -51,13 +51,25 @@ const ColorSchemeCard = (props: { name: string, scheme: _, pinned: boolean }) =>
 	const pin_svg = parse_svg(pinSVG);
 
 	const [pin, re_pin] = createSignal(pinned());
-	const toggle_pin = (e: Event) => ((pinned: boolean) => !pinned);
+	const toggle_pin = (e: Event) => {
+		const et = e.currentTarget as HTMLButtonElement;
+		re_pin((pinned: boolean) => {
+			et.classList.toggle("Pinned");
+
+			return !pinned;
+		})
+	};
+	const pin_cls = `${styles.PinSwitch}${pin() ? " Pinned" : ""}`;
 
 	return <div class={styles.ColorschemeCard}>
 		<div class={styles.SchemeInfo}>
 			<span class={styles.SchemeName}>{name()}</span>
-			<div class={styles.Switchs}>
-				<Catalyst class={styles.PinSwitch} call={toggle_pin}>
+			<div class={styles.Switches}>
+				<Catalyst
+					class={pin_cls}
+					call={toggle_pin}
+					attrs={{ title: "is pinned?" }}
+				>
 					{pin_svg}
 				</Catalyst>
 			</div>

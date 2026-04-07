@@ -6,10 +6,12 @@ import driveSVG from "../../assets/icons/drive.svg?raw";
 import calendarSVG from "../../assets/icons/calendar.svg?raw";
 
 const HEADERS = [
-	"plugins",
 	{
 		account: ["security"],
-		colors: ["build"]
+	},
+	"plugins",
+	{
+		colors: ["build"],
 	}
 ];
 

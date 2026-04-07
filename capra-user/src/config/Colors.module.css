@@ -58,7 +58,7 @@
 			color: var(--green);
 		}
 
-		& .Switchs {
+		& .Switches {
 			display: flex;
 			flex-direction: row;
 			align-items: end;
@@ -66,7 +66,25 @@
 			&>button {
 				padding: 0.195rem;
 				border-radius: 5px;
-				background: var(--opaque);
+				background: gray;
+				transition: background 150ms;
+
+				& svg {
+					fill: var(--white);
+					color: var(--white);
+					transition: fill, color 300ms;
+				}
+
+				&[class*=Pinned] {
+					background: var(--opaque);
+					transition: background 150ms;
+
+					& svg {
+						fill: var(--black);
+						color: var(--black);
+						transition: fill, color 300ms;
+					}
+				}
 			}
 
 			& .PinSwitch {

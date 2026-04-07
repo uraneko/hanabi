@@ -6,6 +6,7 @@ import { user_ctx, user_state as ustate, load_configs } from "../user";
 import { Form, form_styles as fstyles, submit } from "core/containers";
 import { type _, json_from_map } from "core";
 
+import styles from "./Signin.module.css";
 import pfpIMGLink from "../../../assets/images/round-eyes.png";
 
 // function parse_image_into_blob(img: _) {
@@ -71,7 +72,7 @@ export const Signin: Component<{ swap_call: _ }> = (props: _) => {
 	const call = () => props.swap_call;
 
 	return (
-		<Form
+		<Form class={styles.Signin}
 			action="/auth/remembrance"
 			method="post"
 			target="_blank"

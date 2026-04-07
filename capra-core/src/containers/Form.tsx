@@ -1,16 +1,24 @@
 import { Component, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import styles from "./Form.module.css";
-import { _ } from "../lib";
+import { _, spread_classes } from "../lib";
 
-export const Form: Component<{ children: JSX.Element, method: "get" | "post", action: string, target?: string, submit: _ }> = (props: _) => {
+export const Form: Component<{
+	children: JSX.Element,
+	method: "get" | "post",
+	action: string,
+	target?: string,
+	submit: _,
+	class?: string | string[],
+}> = (props: _) => {
 	const action = () => props.action;
 	const method = () => props.method;
 	const children = () => props.children;
 	const target = () => props.target;
 	const submit = () => props.submit;
+	const cls = () => props.class;
 
-	return (<form class={styles.Form} action={action()} method={method()} target={target() ?? "_self"} on:submit={submit()} >
+	return (<form class={`${styles.Form}${spread_classes(cls())}`} action={action()} method={method()} target={target() ?? "_self"} on:submit={submit()} >
 		{children()}
 	</form>);
 
