@@ -8,6 +8,7 @@ import { Dialog } from 'core/containers';
 import styles from './Menu.module.css';
 import { umstyles, UserMenu } from "user/config";
 import { form_ctx } from '../routes/Auth';
+import { Pfp } from "user/config";
 
 // alt red color #A95525
 
@@ -63,7 +64,7 @@ export const Menu = () => {
 					<ContentItem
 						class={styles.ContentItem}
 						dialog={<UserMenu />}
-						icon={home}
+						icon={<Pfp pfp={user.pfp()} />}
 						text={user.name()!}
 						show={false}
 						events={"click"} />
@@ -72,6 +73,10 @@ export const Menu = () => {
 		</div>
 	);
 };
+
+function pfp_or_home(user: _) {
+	return user.pfp() ? <img src={user.pfp()} /> : parse_svg(homeSVG);
+}
 
 export const AnchorItem: Component<{ link: string, text: string, icon: SVGSVGElement, call?: _ }> = (props: _) => {
 	const icon = () => props.icon;
@@ -114,7 +119,7 @@ export const ButtonItem: Component<{
 
 export const ContentItem: Component<{
 	text: string,
-	icon: SVGSVGElement,
+	icon: JSX.Element,
 	dialog: JSX.Element,
 	class?: string | string[],
 	events?: string | string[],

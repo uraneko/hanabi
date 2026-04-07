@@ -28,7 +28,7 @@ const Profile = (props: { name: string, pfp?: string, address?: string }) => {
 	</div>;
 };
 
-const Pfp = (props: { pfp?: string }) => {
+export const Pfp = (props: { pfp?: string }) => {
 	const pfp = () => props.pfp ? <img src={props.pfp} /> : parse_svg(homeSVG);
 
 	return <Catalyst class={styles.Pfp}>
