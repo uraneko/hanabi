@@ -4,6 +4,7 @@ import {
 } from "core/primitives";
 import { user_ctx, user_state as ustate, load_configs } from "../user";
 import { Form, form_styles as fstyles, submit } from "core/containers";
+import { colors_ctx } from "core/context";
 import { type _, json_from_map } from "core";
 
 import styles from "./Signin.module.css";
@@ -18,11 +19,23 @@ import pfpIMGLink from "../../../assets/images/round-eyes.png";
 // 	// return URL.createObjectURL(blob, { type: "image/png" });
 // }
 
+function sync_schemes_to_ctx(schemes: _, re_colors: _) {
+	re_colors((colors: _) => {
+		Object.entries(schemes).forEach((e: _) => {
+			colors[e[0]] = e[1];
+		});
+
+		return structuredClone(colors);
+	});
+}
+
+
 async function login(e: SubmitEvent) {
 	const { user, re_user } = user_ctx();
-	const config = await load_configs(ustate(user));
+	const { colors, re_colors } = colors_ctx();
 	if (DEV !== undefined) {
 		e.preventDefault();
+		const config = await load_configs(ustate(user));
 		re_user({
 			name: "isaac shneider",
 			address: "catapulting@shezalion.kon",
@@ -30,6 +43,7 @@ async function login(e: SubmitEvent) {
 			config: config,
 			pfp: pfpIMGLink,
 		});
+		sync_schemes_to_ctx(user().config!.colors, re_colors);
 
 		return;
 	}
@@ -48,10 +62,11 @@ async function login(e: SubmitEvent) {
 		},
 		body: data,
 	});
-	if (!res.ok) return;
-	const user_state = await res.json();
+	if (!res.ok) throw new Error("login request failed");
 
+	const user_state = await res.json();
 	re_user(user_state);
+	sync_schemes_to_ctx(user().config!.colors, re_colors);
 
 	const clear_access = () =>
 		re_user((user: _) => {

@@ -13,19 +13,9 @@ function treat_props(props: _) {
 	return Object.fromEntries(treated_arr);
 }
 
-function sync_schemes_to_ctx(schemes: _, re_colors: _) {
-	re_colors((colors: _) => {
-		Object.entries(schemes).forEach((e: _) => {
-			colors[e[0]] = e[1];
-		});
-
-		return structuredClone(colors);
-	});
-}
 
 export const Colors = (props: { configs: _ }) => {
 	const { colors, re_colors } = colors_ctx();
-	sync_schemes_to_ctx(props.configs, re_colors);
 
 	const plugins = () =>
 		Object.entries(colors()).map((kv: _): Scheme => {
