@@ -1,4 +1,6 @@
 .Signin {
+	padding: 2rem;
+
 	& [class*=TextField] {
 		width: 14rem;
 	}

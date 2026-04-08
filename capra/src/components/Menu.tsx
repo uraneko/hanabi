@@ -174,7 +174,9 @@ watchguard.observe(document.body, {
 
 export const ColorSchemeDropDown = () => {
 	const { colors, re_colors } = colors_ctx();
-	const schemes = Object.keys(colors())
+	const schemes = Object.entries(colors())
+		.filter((c: _) => c[1].pinned)
+		.map((c: _) => c[0]);
 
 	return (<Dialog class={umstyles.UserMenu}>
 		<For each={schemes} >

@@ -55,7 +55,9 @@ const PluginCard = (props: { name: string, icon: string, accent: string }) => {
 			{icon()}
 			<span class={styles.PluginName}>{name()}</span>
 		</div>
-		{rm}
+		<Catalyst class={styles.DisablePlugin} attrs={{ title: "disable" }}>
+			{rm}
+		</Catalyst>
 	</div>;
 };
 

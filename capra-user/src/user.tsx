@@ -4,6 +4,8 @@ import { colors_ctx, color_rules, colorscheme } from "core/context";
 
 import driveSVG from "../../assets/icons/drive.svg?raw";
 import calendarSVG from "../../assets/icons/calendar.svg?raw";
+import radioSVG from "../../assets/icons/radio.svg?raw"
+import canvasSVG from "../../assets/icons/canvas.svg?raw"
 
 const HEADERS = [
 	{
@@ -22,40 +24,52 @@ const CONTENTS = {
 		expose_my_address: false,
 	},
 	colors: {
-		verdant: {
-			scheme: {
-				red: "#A95525", green: "#87a187", blue: "#485d6c",
-				abstract: "#f0f8ff35", opaque: "#a0c65578",
-				black: "black", white: "#f0f8ff",
-				"grad-start": "rgb(204, 217, 208)", "grad-end": "rgb(245, 244, 225)",
-				"grad-rotate": "328deg",
+		qahwa: {
+			props: {
+				"--red": { "value": "#A95525", "idx": 0 },
+				"--green": { "value": "#87a187", "idx": 1 },
+				"--blue": { "value": "#485d6c", "idx": 2 },
+				"--black": { "value": "black", "idx": 3 },
+				"--white": { "value": "#f0f8ff", "idx": 4 },
+				"--abstract": { "value": "#f0f8ff35", "idx": 5 },
+				"--opaque": { "value": "#a0c65578", "idx": 6 },
+				"--grad-start": { "value": "rgb(204, 217, 208)", "idx": 7 },
+				"--grad-end": { "value": "rgb(245, 244, 225)", "idx": 8 },
+				"--grad-rotate": { "value": "328deg", "idx": 9 },
+				"--cap": { "value": "var(--black)", "idx": 10 },
+				"--ra": { "value": "#649279", "idx": 11 },
 			},
-			pinned: true,
-		},
-		"black-star": {
-			scheme: {
-				opaque: "linear-gradient(132deg, #b574447a 0%, #502941 100%)",
-				abstract: "rgba(73, 126, 172, 0.21)",
-				black: "#e3e2e4", white: "#1f212e",
-				blue: "#9e8776", green: "#87a187", red: "#A95525",
-				"grad-start": "#43001e", "grad-end": "#000000",
-				"grad-rotate": "341deg",
+			selectors: {
+				":root": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+				"svg.capra_svg": [10, 11],
 			},
-			pinned: true,
+			pinned: false,
 		},
 	},
 	plugins: {
 		drive: {
 			icon: parse_svg(driveSVG),
 			depict: "store, share and backup your files [not yet available]",
-			root: "http://127.0.0.1:6608",
+			root: "/drive",
 			accent: "#859f60",
 		},
 		calendar: {
 			icon: parse_svg(calendarSVG),
 			depict: "manage your schedule and affairs [not yet available]",
-			root: undefined,
+			root: "/events",
 			accent: "#c29884",
+		},
+		comms: {
+			accent: "#1475dc",
+			icon: parse_svg(radioSVG),
+			depict: "talk with people in text, audio or video format [not yet available]",
+			root: "/comms",
+		},
+		machines: {
+			icon: parse_svg(canvasSVG),
+			accent: "#bd0841",
+			root: "/machines",
+			depict: "manage your virtual machines [not yet available]",
 		}
 	},
 };

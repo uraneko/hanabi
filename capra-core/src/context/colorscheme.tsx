@@ -125,9 +125,15 @@ export function colorscheme(selectors?: _, props?: _) {
 	return {
 		selectors: selectors ?? new Object() as Record<string, number | number[]>,
 		props: props ?? new Object() as Record<string, { value: string, idx: number }>,
+		pinned: false,
+		pin(pin: boolean) {
+			this.pinned = pin;
+
+			return this;
+		},
 		/// returns a colorscheme object, with/o the methods
 		make() {
-			return { selectors: this.selectors, props: this.props };
+			return { selectors: this.selectors, props: this.props, pinned: this.pinned };
 		},
 		/// adds color rule(s) to the scheme
 		extend(rules: _) {

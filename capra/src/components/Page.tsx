@@ -35,6 +35,7 @@ function verdant() {
 	}).prefix(true);
 
 	return colorscheme()
+		.pin(true)
 		.extend(root_rules)
 		.extend(logo_rules)
 		.make();
@@ -75,6 +76,7 @@ function black_star() {
 	const logo_rules = color_rules()
 		.props({
 			// selector:css-prop -> prop-val,
+			// #d3bebe
 			cap: "var(--black)",
 			// "ra": "#876756",
 			// "ra": "#2573c7",
@@ -82,7 +84,7 @@ function black_star() {
 		}).selectors("svg.capra_svg")
 		.prefix(true);
 
-	return colorscheme().extend(root_rules).extend(logo_rules).make();
+	return colorscheme().extend(root_rules).extend(logo_rules).pin(true).make();
 }
 
 // export const verdant_ = {

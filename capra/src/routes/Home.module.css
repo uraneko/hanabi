@@ -3,7 +3,7 @@
 	grid-column: 1/10;
 }
 
-.Apps {
+.Plugins {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -33,7 +33,7 @@
 	}
 }
 
-.App {
+.Plugin {
 	cursor: pointer;
 
 	align-self: start;
@@ -80,18 +80,18 @@
 	}
 }
 
-.AppText {
+.PluginText {
 	display: flex;
 	flex-direction: column;
 	padding-top: 1em;
 }
 
-.AppTitle {
+.PluginTitle {
 	align-self: end;
 	font-size: 18pt;
 }
 
-.AppDepict {
+.PluginDepict {
 	font-size: 14pt;
 }
 

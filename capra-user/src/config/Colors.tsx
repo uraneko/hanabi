@@ -1,16 +1,35 @@
 import { Match, Switch, Show, For, JSX, createSignal } from "solid-js";
 import { parse_svg } from 'core';
-import { Transient, Catalyst, TextField, ColorPicker } from 'core/primitives';
-import { user_state } from "../user";
+import { Transient, Catalyst } from 'core/primitives';
 import { _ } from 'core';
+import { colors_ctx } from "core/context";
 
 import styles from './Colors.module.css';
 import pinSVG from "../../../assets/icons/true-pin.svg?raw";
 
+function treat_props(props: _) {
+	const treated_arr = Object.entries(props).map((kv: _) => [kv[0].startsWith("--") ? kv[0].slice(2) : kv[0], kv[1].value]);
+
+	return Object.fromEntries(treated_arr);
+}
+
+function sync_schemes_to_ctx(schemes: _, re_colors: _) {
+	re_colors((colors: _) => {
+		Object.entries(schemes).forEach((e: _) => {
+			colors[e[0]] = e[1];
+		});
+
+		return structuredClone(colors);
+	});
+}
+
 export const Colors = (props: { configs: _ }) => {
+	const { colors, re_colors } = colors_ctx();
+	sync_schemes_to_ctx(props.configs, re_colors);
+
 	const plugins = () =>
-		Object.entries(props.configs).map((kv: _): Scheme => {
-			return { name: kv[0], pinned: kv[1].pinned, scheme: kv[1].scheme }
+		Object.entries(colors()).map((kv: _): Scheme => {
+			return { name: kv[0], pinned: kv[1].pinned, scheme: treat_props(kv[1].props) }
 		});
 
 	return <div class={styles.Chapter}>
@@ -45,6 +64,7 @@ const ColorsSchemes = (props: { schemes: Scheme[] }) => {
 };
 
 const ColorSchemeCard = (props: { name: string, scheme: _, pinned: boolean }) => {
+	const { colors, re_colors } = colors_ctx();
 	const name = () => props.name;
 	const scheme = () => props.scheme;
 	const pinned = () => props.pinned;
@@ -55,6 +75,14 @@ const ColorSchemeCard = (props: { name: string, scheme: _, pinned: boolean }) =>
 		const et = e.currentTarget as HTMLButtonElement;
 		re_pin((pinned: boolean) => {
 			et.classList.toggle("Pinned");
+			re_colors((colors: _) => {
+				console.log(colors[name()]);
+				if (colors[name()] === undefined) return colors;
+				colors[name()].pinned = !pinned;
+
+				return structuredClone(colors);
+			});
+			console.log(colors());
 
 			return !pinned;
 		})
@@ -87,7 +115,6 @@ async function copy_to_clipboard(e: Event) {
 	const et = e.currentTarget as HTMLElement;
 	const target = et.lastElementChild! as HTMLInputElement;
 	const hex = target.style.getPropertyValue("background");
-	console.log(target);
 	await navigator.clipboard.writeText(hex);
 	et.appendChild((msg as _)());
 }

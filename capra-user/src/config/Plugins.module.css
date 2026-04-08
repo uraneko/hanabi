@@ -69,18 +69,21 @@
 		}
 	}
 
-
-	svg:last-child {
-		cursor: pointer;
+	.DisablePlugin {
 		width: 1.5rem;
 		height: 1.5rem;
-		fill: var(--black);
-		clip-path: rect(4px 20px 20px 4px round 20%);
 
-		&:hover {
-			fill: var(--red);
+		svg:last-child {
+			width: 1.5rem;
+			height: 1.5rem;
+			fill: var(--black);
+			clip-path: rect(4px 20px 20px 4px round 20%);
+
+			&:hover {
+				fill: var(--red);
+			}
+
 		}
-
 	}
 
 }
