@@ -7,7 +7,7 @@ import calendarSVG from "../../assets/icons/calendar.svg?raw";
 import radioSVG from "../../assets/icons/radio.svg?raw"
 import canvasSVG from "../../assets/icons/canvas.svg?raw"
 
-const HEADERS = [
+export const HEADERS = [
 	{
 		account: ["security"],
 	},
@@ -17,12 +17,7 @@ const HEADERS = [
 	}
 ];
 
-const CONTENTS = {
-	account: {},
-	"account/security": {
-		send_me_emails: true,
-		expose_my_address: false,
-	},
+export const INIT_CONTENTS = {
 	colors: {
 		qahwa: {
 			props: {
@@ -36,8 +31,8 @@ const CONTENTS = {
 				"--grad-start": { "value": "rgb(214, 210, 204)", "idx": 7 },
 				"--grad-end": { "value": "rgb(171, 139, 89)", "idx": 8 },
 				"--grad-rotate": { "value": "328deg", "idx": 9 },
-				"--cap": { "value": "var(--black)", "idx": 10 },
-				"--ra": { "value": "#649279", "idx": 11 },
+				"--cap": { "value": "#ffb85e", "idx": 10 },
+				"--ra": { "value": "#f1fcf6", "idx": 11 },
 			},
 			selectors: {
 				":root": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -45,6 +40,14 @@ const CONTENTS = {
 			},
 			pinned: false,
 		},
+	},
+};
+
+export const LOGIN_CONTENTS = {
+	account: {},
+	"account/security": {
+		send_me_emails: true,
+		expose_my_address: false,
 	},
 	plugins: {
 		drive: {
@@ -74,39 +77,25 @@ const CONTENTS = {
 	},
 };
 
-export async function init_configs() {
-	const { user, re_user } = user_ctx();
-	const config = await load_configs(user_state(user));
-	re_user((user_: _) => {
-		return {
-			config: config,
-			name: user_.name,
-			address: user_.address,
-			access_token: user_.access_token,
-			pfp: user_.pfp,
-		}
-	});
-}
-
-export async function load_configs(user: _): Promise<Record<_, _>> {
-	if (DEV !== undefined) {
-		return {
-			headers: HEADERS,
-			...CONTENTS
-		};
-	}
-
-	const resp = await fetch("/config/read", {
-		method: "GET",
-		credentials: "include",
-		headers: {
-			"authorization": `Bearer<${user.access_token()}>`,
-		}
-	});
-
-	return resp.json();
-}
-
+// export async function load_configs(user: _): Promise<Record<_, _>> {
+// 	if (DEV !== undefined) {
+// 		return {
+// 			headers: HEADERS,
+// 			...CONTENTS
+// 		};
+// 	}
+//
+// 	const resp = await fetch("/config/read", {
+// 		method: "GET",
+// 		credentials: "include",
+// 		headers: {
+// 			"authorization": `Bearer<${user.access_token()}>`,
+// 		}
+// 	});
+//
+// 	return resp.json();
+// }
+//
 
 const [user, re_user] = createSignal({
 	name: undefined as string | undefined,

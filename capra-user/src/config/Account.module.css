@@ -50,7 +50,9 @@
 		height: 8rem;
 	}
 
-
+	& .PfpUpload {
+		display: none;
+	}
 }
 
 .UserInfo {

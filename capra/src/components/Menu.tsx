@@ -8,7 +8,6 @@ import { Dialog } from 'core/containers';
 import styles from './Menu.module.css';
 import { umstyles, UserMenu } from "user/config";
 import { form_ctx } from '../routes/Auth';
-import { Pfp } from "user/config";
 
 // alt red color #A95525
 
@@ -72,6 +71,14 @@ export const Menu = () => {
 			</Switch>
 		</div>
 	);
+};
+
+const Pfp = (props: { pfp?: string }) => {
+	const pfp = () => props.pfp ? <img src={props.pfp} /> : parse_svg(homeSVG);
+
+	return <Catalyst class={styles.Pfp}>
+		{pfp()}
+	</Catalyst>;
 };
 
 function pfp_or_home(user: _) {

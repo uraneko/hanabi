@@ -2,7 +2,7 @@ import { Match, Switch, Show, For, JSX, createSignal } from "solid-js";
 import { parse_svg } from 'core';
 import { Transient, Catalyst } from 'core/primitives';
 import { _ } from 'core';
-import { colors_ctx } from "core/context";
+import { colors_ctx, colorschemes } from "core/context";
 
 import styles from './Colors.module.css';
 import pinSVG from "../../../assets/icons/true-pin.svg?raw";
@@ -79,9 +79,11 @@ const ColorSchemeCard = (props: { name: string, scheme: _, pinned: boolean }) =>
 	};
 	const pin_cls = `${styles.PinSwitch}${pin() ? " Pinned" : ""}`;
 
+	const refresh_colorscheme = (_e: Event) => colorschemes({ colors, re_colors }).refresh(name())
+
 	return <div class={styles.ColorschemeCard}>
 		<div class={styles.SchemeInfo}>
-			<span class={styles.SchemeName}>{name()}</span>
+			<Catalyst class={styles.SchemeName} call={refresh_colorscheme}>{name()}</Catalyst>
 			<div class={styles.Switches}>
 				<Catalyst
 					class={pin_cls}

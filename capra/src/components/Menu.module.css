@@ -77,3 +77,21 @@
 		}
 	}
 }
+
+.Pfp {
+	grid-row: 1/2;
+	grid-column: 1/2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 1rem;
+	background: var(--opaque);
+	clip-path: circle(69px at 83px 80px);
+
+	& img {
+		clip-path: circle(62px at 67px 64px);
+		width: 8rem;
+		height: 8rem;
+	}
+}

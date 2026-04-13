@@ -57,7 +57,7 @@ export const App: Component = () => {
 		re_user((user: _) => dev_ssn_rtt(user, e));
 
 	return (
-		<div class={styles.App} >
+		<div class={styles.App} on:click={() => console.log(user())}>
 			<Switch>
 				<Match when={ustate.is_non_init()}>
 					<Initialize />

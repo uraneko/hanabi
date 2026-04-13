@@ -1,6 +1,6 @@
 import { Match, Switch } from "solid-js";
 import { parse_svg } from 'core';
-import { Catalyst, TextField } from 'core/primitives';
+import { Catalyst } from 'core/primitives';
 import { user_state } from "../user";
 
 import styles from './Account.module.css';
@@ -31,7 +31,29 @@ const Profile = (props: { name: string, pfp?: string, address?: string }) => {
 export const Pfp = (props: { pfp?: string }) => {
 	const pfp = () => props.pfp ? <img src={props.pfp} /> : parse_svg(homeSVG);
 
-	return <Catalyst class={styles.Pfp}>
+	const forward_click_to_upload = (e: Event) => {
+		const et = e.currentTarget as HTMLButtonElement;
+		const uploader = et.firstElementChild as HTMLInputElement;
+
+		uploader.click();
+	};
+
+	const change_pfp = async (e: Event) => {
+		const et = e.currentTarget as HTMLInputElement;
+		const pfp = et.files![0];
+		// console.log(pfp);
+		await fetch("/user/pfp/update", {
+			method: "POST",
+			headers: {
+				"content-type": pfp.type,
+				"content-disposition": `attachment; filename="${pfp.name}"`
+			},
+			body: pfp,
+		});
+	};
+
+	return <Catalyst class={styles.Pfp} call={forward_click_to_upload}>
+		<input class={styles.PfpUpload} type="file" accept="image/png, image/jpeg" on:change={change_pfp} />
 		{pfp()}
 	</Catalyst>;
 };
